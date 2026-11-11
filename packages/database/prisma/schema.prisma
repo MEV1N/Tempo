@@ -1,0 +1,503 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                 String                @id @default(uuid())
+  email              String                @unique
+  name               String?
+  passwordHash       String?
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  preference         UserPreference?
+  sessions           Session[]
+  tasks              Task[]
+  categories         TaskCategory[]
+  recurringSeries    RecurringTaskSeries[]
+  timetables         Timetable[]
+  timetableSessions  TimetableSession[]
+  calendarEvents     CalendarEvent[]
+  calendarExceptions CalendarException[]
+  schedules          Schedule[]
+  scheduleBlocks     ScheduleBlock[]
+  scheduleVersions   ScheduleVersion[]
+  activities         ActivitySession[]
+  pushSubscriptions  PushSubscription[]
+  notifications      Notification[]
+  oauthConnections   OAuthConnection[]
+
+  @@map("users")
+}
+
+model UserPreference {
+  id                         String   @id @default(uuid())
+  userId                     String   @unique
+  user                       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  timezone                   String   @default("Asia/Kolkata")
+  wakeTime                   String   @default("07:00")
+  sleepTime                  String   @default("23:00")
+  preferredWorkStart         String   @default("09:00")
+  preferredWorkEnd           String   @default("18:00")
+  breakfastTime              String   @default("08:30")
+  lunchTime                  String   @default("13:00")
+  dinnerTime                 String   @default("20:30")
+  preferredBreakDuration     Int      @default(15)
+  maxContinuousWorkDuration  Int      @default(90)
+  dailyLeisureTarget         Int      @default(120)
+  onboardingCompleted        Boolean  @default(false)
+  pushNotificationsEnabled   Boolean  @default(true)
+  autoNightlyPlanningEnabled Boolean  @default(true)
+  notifyTomorrowPlanReady    Boolean  @default(true)
+  notifyTaskReminders        Boolean  @default(true)
+  notifyScheduleReminders    Boolean  @default(true)
+  notifyScheduleChanges      Boolean  @default(true)
+  preferredPlanningTime      String   @default("21:00")
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+
+  @@index([userId])
+  @@map("user_preferences")
+}
+
+model Session {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  userAgent String?
+  ipAddress String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([tokenHash])
+  @@map("sessions")
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+  SKIPPED
+}
+
+enum TimeOfDay {
+  ANYTIME
+  MORNING
+  AFTERNOON
+  EVENING
+  NIGHT
+}
+
+enum EnergyLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum RecurrenceFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+  CUSTOM
+}
+
+model TaskCategory {
+  id              String                @id @default(uuid())
+  userId          String
+  user            User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name            String
+  color           String                @default("#38bdf8")
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  tasks           Task[]
+  recurringSeries RecurringTaskSeries[]
+
+  @@unique([userId, name])
+  @@index([userId])
+  @@map("task_categories")
+}
+
+model RecurringTaskSeries {
+  id                String              @id @default(uuid())
+  userId            String
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title             String
+  description       String?
+  categoryId        String?
+  category          TaskCategory?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  estimatedMinutes  Int                 @default(30)
+  priority          Priority            @default(MEDIUM)
+  preferredTime     TimeOfDay           @default(ANYTIME)
+  energyRequirement EnergyLevel         @default(MEDIUM)
+  canSplit          Boolean             @default(false)
+  minSessionMinutes Int                 @default(30)
+  frequency         RecurrenceFrequency @default(DAILY)
+  interval          Int                 @default(1)
+  daysOfWeek        Int[]               @default([])
+  startDate         DateTime
+  endDate           DateTime?
+  isPaused          Boolean             @default(false)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  tasks             Task[]
+
+  @@index([userId])
+  @@index([categoryId])
+  @@map("recurring_task_series")
+}
+
+model Task {
+  id                String               @id @default(uuid())
+  userId            String
+  user              User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title             String
+  description       String?
+  categoryId        String?
+  category          TaskCategory?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  estimatedMinutes  Int                  @default(30)
+  priority          Priority             @default(MEDIUM)
+  status            TaskStatus           @default(TODO)
+  preferredTime     TimeOfDay            @default(ANYTIME)
+  energyRequirement EnergyLevel          @default(MEDIUM)
+  canSplit          Boolean              @default(false)
+  minSessionMinutes Int                  @default(30)
+  dueDate           DateTime?
+  completedAt       DateTime?
+  recurringSeriesId String?
+  recurringSeries   RecurringTaskSeries? @relation(fields: [recurringSeriesId], references: [id], onDelete: SetNull)
+  recurrenceDate    String?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  scheduleBlocks    ScheduleBlock[]
+  activities        ActivitySession[]
+
+  @@unique([recurringSeriesId, recurrenceDate])
+  @@index([userId])
+  @@index([userId, status])
+  @@index([userId, dueDate])
+  @@index([categoryId])
+  @@index([recurringSeriesId])
+  @@map("tasks")
+}
+
+enum SessionType {
+  CLASS
+  LAB
+  BREAK
+  TRAVEL
+  OTHER
+}
+
+model Timetable {
+  id        String             @id @default(uuid())
+  userId    String
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String             @default("College Timetable")
+  isActive  Boolean            @default(true)
+  startDate DateTime?
+  endDate   DateTime?
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  sessions  TimetableSession[]
+
+  @@index([userId])
+  @@map("timetables")
+}
+
+model TimetableSession {
+  id          String              @id @default(uuid())
+  timetableId String
+  timetable   Timetable           @relation(fields: [timetableId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  dayOfWeek   Int                 // 1 = Monday ... 7 = Sunday
+  startTime   String              // HH:mm
+  endTime     String              // HH:mm
+  location    String?
+  description String?
+  sessionType SessionType         @default(CLASS)
+  color       String?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  exceptions  CalendarException[]
+
+  @@index([timetableId])
+  @@index([userId, dayOfWeek])
+  @@map("timetable_sessions")
+}
+
+enum EventType {
+  EXAM
+  APPOINTMENT
+  MEETING
+  COMMITMENT
+  SPECIAL
+  OTHER
+}
+
+model CalendarEvent {
+  id                     String    @id @default(uuid())
+  userId                 String
+  user                   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title                  String
+  description            String?
+  startTime              DateTime
+  endTime                DateTime
+  isAllDay               Boolean   @default(false)
+  eventType              EventType @default(COMMITMENT)
+  location               String?
+  color                  String?
+  googleEventId          String?
+  googleCalendarId       String?
+  etag                   String?
+  isGoogleEvent          Boolean   @default(false)
+  googleRecurringEventId String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([userId, startTime, endTime])
+  @@index([userId, googleEventId])
+  @@map("calendar_events")
+}
+
+enum ExceptionType {
+  HOLIDAY
+  CANCELLED_CLASS
+  EXAM
+  SPECIAL_EVENT
+  OTHER
+}
+
+model CalendarException {
+  id                 String            @id @default(uuid())
+  userId             String
+  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  timetableSessionId String?
+  timetableSession   TimetableSession? @relation(fields: [timetableSessionId], references: [id], onDelete: Cascade)
+  date               String            // "YYYY-MM-DD"
+  exceptionType      ExceptionType     @default(CANCELLED_CLASS)
+  isFullDay          Boolean           @default(false)
+  startTime          DateTime?
+  endTime            DateTime?
+  title              String?
+  description        String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  @@index([userId, date])
+  @@index([timetableSessionId])
+  @@map("calendar_exceptions")
+}
+
+enum ScheduleStatus {
+  PROPOSED
+  CONFIRMED
+  ARCHIVED
+}
+
+enum BlockType {
+  TASK
+  COLLEGE
+  EVENT
+  MEAL
+  BREAK
+  LEISURE
+  BUFFER
+  FREE_TIME
+}
+
+model Schedule {
+  id               String            @id @default(uuid())
+  userId           String
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date             String            // "YYYY-MM-DD"
+  status           ScheduleStatus    @default(PROPOSED)
+  version          Int               @default(1)
+  metrics          Json?
+  unscheduledTasks Json?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  blocks           ScheduleBlock[]
+  versions         ScheduleVersion[]
+
+  @@index([userId, date])
+  @@index([userId, date, status])
+  @@map("schedules")
+}
+
+model ScheduleVersion {
+  id               String         @id @default(uuid())
+  scheduleId       String
+  schedule         Schedule       @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  userId           String
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  versionNumber    Int
+  status           ScheduleStatus
+  changeReason     String?
+  metrics          Json?
+  unscheduledTasks Json?
+  blocksSnapshot   Json
+  createdAt        DateTime       @default(now())
+
+  @@unique([scheduleId, versionNumber])
+  @@index([scheduleId])
+  @@index([userId])
+  @@map("schedule_versions")
+}
+
+model ScheduleBlock {
+  id              String        @id @default(uuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scheduleId      String?
+  schedule        Schedule?     @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  taskId          String?
+  task            Task?         @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  eventId         String?
+  title           String
+  startTime       DateTime
+  endTime         DateTime
+  durationMinutes Int           @default(0)
+  blockType       BlockType     @default(TASK)
+  isFixed         Boolean       @default(false)
+  isLocked        Boolean       @default(false)
+  metadata        Json?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  activities      ActivitySession[]
+
+  @@index([userId])
+  @@index([scheduleId])
+  @@index([taskId])
+  @@map("schedule_blocks")
+}
+
+model SystemHealth {
+  id        String   @id @default(uuid())
+  status    String   @default("ok")
+  checkedAt DateTime @default(now())
+
+  @@map("system_health")
+}
+
+enum ActivityCategory {
+  STUDY
+  COLLEGE
+  WORK
+  PERSONAL
+  EXERCISE
+  LEISURE
+  OTHER
+}
+
+model ActivitySession {
+  id                 String           @id @default(uuid())
+  userId             String
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title              String
+  category           ActivityCategory @default(STUDY)
+  taskId             String?
+  task               Task?            @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  scheduleBlockId    String?
+  scheduleBlock      ScheduleBlock?   @relation(fields: [scheduleBlockId], references: [id], onDelete: SetNull)
+  startTime          DateTime
+  endTime            DateTime
+  durationMinutes    Int
+  date               String           // "YYYY-MM-DD"
+  notes              String?
+  completedAsPlanned Boolean          @default(true)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@index([userId, date])
+  @@index([userId, startTime])
+  @@index([userId, category])
+  @@index([taskId])
+  @@index([scheduleBlockId])
+  @@map("activity_sessions")
+}
+
+// ==========================================
+// PHASE 6: PUSH NOTIFICATIONS & AUTOMATION
+// ==========================================
+
+enum NotificationType {
+  TOMORROW_PLAN_READY
+  SCHEDULE_REMINDER
+  TASK_REMINDER
+  SCHEDULE_CHANGE
+  GENERAL
+}
+
+model PushSubscription {
+  id             String    @id @default(uuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint       String    @unique
+  p256dh         String
+  auth           String
+  expirationTime DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("push_subscriptions")
+}
+
+model Notification {
+  id          String           @id @default(uuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        NotificationType @default(GENERAL)
+  title       String
+  body        String
+  data        Json?
+  readAt      DateTime?
+  deliveredAt DateTime?
+  createdAt   DateTime         @default(now())
+
+  @@index([userId])
+  @@index([userId, readAt])
+  @@map("notifications")
+}
+
+model OAuthConnection {
+  id                    String    @id @default(uuid())
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider              String    // 'google'
+  providerId            String    // Google 'sub'
+  email                 String?
+  name                  String?
+  picture               String?
+  scope                 String?
+  encryptedRefreshToken String?
+  calendarConnected     Boolean   @default(false)
+  calendarSyncToken     String?
+  lastSyncedAt          DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@unique([provider, providerId])
+  @@unique([userId, provider])
+  @@index([userId])
+  @@map("oauth_connections")
+}

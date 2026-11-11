@@ -1,0 +1,34 @@
+{
+  "name": "tempo-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tempo - Intelligent Daily Time Management & Scheduling Monorepo",
+  "scripts": {
+    "dev": "concurrently -k -p \"[{name}]\" -n \"api,web,worker\" -c \"blue.bold,cyan.bold,magenta.bold\" \"pnpm --filter @tempo/api dev\" \"pnpm --filter @tempo/web dev\" \"pnpm --filter @tempo/worker dev\"",
+    "dev:api": "pnpm --filter @tempo/api dev",
+    "dev:web": "pnpm --filter @tempo/web dev",
+    "dev:worker": "pnpm --filter @tempo/worker dev",
+    "build:packages": "pnpm --filter @tempo/shared build && pnpm --filter @tempo/scheduler build && pnpm --filter @tempo/database build",
+    "build": "pnpm run build:packages && pnpm --filter @tempo/api build && pnpm --filter @tempo/worker build && pnpm --filter @tempo/web build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm --filter @tempo/api test",
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,md,yml,yaml}\"",
+    "db:generate": "pnpm --filter @tempo/database generate",
+    "db:push": "pnpm --filter @tempo/database push",
+    "db:seed": "pnpm --filter @tempo/database seed",
+    "db:studio": "pnpm --filter @tempo/database studio"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.2",
+    "typescript": "^5.5.3"
+  },
+  "packageManager": "pnpm@9.15.9"
+}
