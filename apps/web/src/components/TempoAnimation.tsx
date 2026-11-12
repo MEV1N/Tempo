@@ -26,7 +26,7 @@ const LIGHT_ANIMATION_URLS: Record<AnimationAssetName, string> = {
 // Dark-themed variants ending with dark; falls back to light asset if no dark asset exists
 const DARK_ANIMATION_URLS: Record<AnimationAssetName, string> = {
   loading: '/animations/loading%20dark.gif',
-  tea: '/animations/tea.gif',
+  tea: '/animations/tea%20dark.gif',
   sun: '/animations/sun.gif',
   moon: '/animations/moon.gif',
   tasks: '/animations/tasks%20dark.gif',
@@ -64,10 +64,9 @@ export const TempoAnimation = memo(function TempoAnimation({
 
   const src = isDark ? DARK_ANIMATION_URLS[name] : LIGHT_ANIMATION_URLS[name];
 
-  // In dark theme, tea and sun were authored with dark strokes on light background;
-  // inverting them yields white strokes on black, which mix-blend-mode: screen blends seamlessly
-  // against Tempo's #181818 dark surface. Light-theme GIFs remain completely untouched.
-  const shouldInvert = isDark && (name === 'tea' || name === 'sun');
+  // Contrast adaptation: clock, loading, tasks, tea, and moon have dedicated dark assets with white strokes.
+  // Only sun (lacking a dedicated dark asset) requires inversion in dark mode to yield white strokes.
+  const shouldInvert = isDark && name === 'sun';
 
   return (
     <img

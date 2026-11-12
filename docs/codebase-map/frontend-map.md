@@ -160,11 +160,12 @@ interface AuthContextType {
 - **Monochrome Aesthetics:** Light mode uses `#FAFAFA`/`#FFFFFF` with `#080808` text. Dark mode uses the `#181818` reference-colour identity: main background `#181818`, sidebar/navigation `#181818`, cards `#181818`, primary surface `#202020`, elevated surface `#282828`, hover surface `#303030`, borders `#383838`, subtle separators `#303030`, primary text `#F5F5F5`, secondary text `#BDBDBD`, muted text `#929292`, and inputs `#202020` (border `#383838`, text `#F5F5F5`, placeholder `#929292`, focus `#929292`).
 
 ### Universal Animation Integration (`apps/web/src/components/TempoAnimation.tsx`)
-- **Shared Assets:** `apps/web/public/animations/`:
+- **Shared Assets:** `apps/web/public/animations/` (and root `public/animation/`):
   - Light variants: `clock.gif`, `loading.gif`, `moon.gif`, `sun.gif`, `tasks.gif`, `tea.gif`.
-  - Dark variants: `loading dark.gif` (URL-encoded `loading%20dark.gif`), `tasks dark.gif` (`tasks%20dark.gif`), `clock dark.gif` (`clock%20dark.gif`).
-  - **Dark GIF Blending (Screen Blend Mode):** Dark-theme animation variants apply `mix-blend-mode: screen;` directly in `TempoAnimation.tsx`. This causes the dark backgrounds of `clock dark.gif`, `loading dark.gif`, `tasks dark.gif`, `moon.gif`, `tea`, and `sun` to blend seamlessly into Tempo's `#181818` background, while preserving the crisp white illustration lines without modifying the original GIF files. Light-theme GIFs remain completely untouched.
-- **Theme-Aware Selection:** `TempoAnimation` automatically selects dark variant assets and contrast inversion when dark theme is active (`useTheme().resolvedTheme === 'dark'`).
+  - Dark variants: `loading dark.gif` (URL-encoded `loading%20dark.gif`), `tasks dark.gif` (`tasks%20dark.gif`), `clock dark.gif` (`clock%20dark.gif`), `tea dark.gif` (`tea%20dark.gif`), `moon.gif`.
+  - **Dark GIF Blending (Screen Blend Mode):** Dark-theme animation variants apply `mix-blend-mode: screen;` directly in `TempoAnimation.tsx`. This causes the backgrounds of `clock dark.gif`, `loading dark.gif`, `tasks dark.gif`, `tea dark.gif`, `moon.gif`, and dark `sun` to blend seamlessly into Tempo's `#181818` background, while preserving crisp white illustration lines without modifying the original GIF files. Light-theme GIFs remain completely untouched.
+  - **Contrast Inversion:** Dedicated dark assets have pure white strokes on transparent backgrounds; only daytime `sun.gif` (which lacks a dedicated dark asset) receives `filter: invert(1)` in dark mode so its illustration strokes shine white.
+- **Theme-Aware Selection:** `TempoAnimation` automatically selects dark variant assets and screen blending when dark theme is active (`useTheme().resolvedTheme === 'dark'`).
 - **Platform Agnostic & Prominent Sizing:** Aspect ratio preserved (~309x309 square) with `object-contain`. Sizes increased for visual prominence:
   - `loading`: Website bootstrap initial loading screen (`size={160}`, standalone, visually central, no surrounding text/logo clutter).
   - `sun` / `moon`: Greeting header (`size={68}` desktop, `size={52}` mobile). Context (day vs night) tracks local time via `useTheme().isDaytime` (06:00-18:00 = daytime `sun`, 18:00-06:00 = nighttime `moon`), while asset stroke rendering adapts to the active theme.
