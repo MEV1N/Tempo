@@ -64,12 +64,10 @@ export const TempoAnimation = memo(function TempoAnimation({
 
   const src = isDark ? DARK_ANIMATION_URLS[name] : LIGHT_ANIMATION_URLS[name];
 
-  // Contrast adaptation: tea and sun were authored with dark strokes (invisible on dark surfaces),
-  // while moon was authored with white strokes (invisible on light surfaces).
-  // CSS invert(1) safely adapts the stroke color while preserving transparent alpha.
-  const shouldInvert =
-    (isDark && (name === 'tea' || name === 'sun')) ||
-    (!isDark && name === 'moon');
+  // In dark theme, tea and sun were authored with dark strokes on light background;
+  // inverting them yields white strokes on black, which mix-blend-mode: screen blends seamlessly
+  // against Tempo's #181818 dark surface. Light-theme GIFs remain completely untouched.
+  const shouldInvert = isDark && (name === 'tea' || name === 'sun');
 
   return (
     <img
@@ -87,6 +85,7 @@ export const TempoAnimation = memo(function TempoAnimation({
         maxWidth: `${size}px`,
         maxHeight: `${size}px`,
         filter: shouldInvert ? 'invert(1)' : undefined,
+        mixBlendMode: isDark ? 'screen' : undefined,
       }}
     />
   );

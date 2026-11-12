@@ -163,7 +163,7 @@ interface AuthContextType {
 - **Shared Assets:** `apps/web/public/animations/`:
   - Light variants: `clock.gif`, `loading.gif`, `moon.gif`, `sun.gif`, `tasks.gif`, `tea.gif`.
   - Dark variants: `loading dark.gif` (URL-encoded `loading%20dark.gif`), `tasks dark.gif` (`tasks%20dark.gif`), `clock dark.gif` (`clock%20dark.gif`).
-  - **Contrast Adaptation:** `tea.gif` and `sun.gif` (authored with black strokes on transparent backgrounds) invert cleanly to white strokes via `filter: invert(1)` in dark mode (`#181818`); `moon.gif` (authored with white strokes on transparent background) inverts to dark strokes in light mode (`#FAFAFA`). Alpha transparency is fully preserved without pixel artifacts.
+  - **Dark GIF Blending (Screen Blend Mode):** Dark-theme animation variants apply `mix-blend-mode: screen;` directly in `TempoAnimation.tsx`. This causes the dark backgrounds of `clock dark.gif`, `loading dark.gif`, `tasks dark.gif`, `moon.gif`, `tea`, and `sun` to blend seamlessly into Tempo's `#181818` background, while preserving the crisp white illustration lines without modifying the original GIF files. Light-theme GIFs remain completely untouched.
 - **Theme-Aware Selection:** `TempoAnimation` automatically selects dark variant assets and contrast inversion when dark theme is active (`useTheme().resolvedTheme === 'dark'`).
 - **Platform Agnostic & Prominent Sizing:** Aspect ratio preserved (~309x309 square) with `object-contain`. Sizes increased for visual prominence:
   - `loading`: Website bootstrap initial loading screen (`size={160}`, standalone, visually central, no surrounding text/logo clutter).
