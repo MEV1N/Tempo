@@ -56,14 +56,14 @@ export function TasksMobile(props: UseTasksReturn) {
         {/* 1. Header: Simple Title + Secondary Action Icons */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-[#080808]">Tasks</h1>
-            <p className="text-xs text-[#777777]">Organize and track your daily priorities.</p>
+            <h1 className="text-xl font-bold tracking-tight text-[#080808] dark:text-[#F5F5F5]">Tasks</h1>
+            <p className="text-xs text-[#777777] dark:text-[#929292]">Organize and track your daily priorities.</p>
           </div>
 
           <div className="flex items-center space-x-1.5">
             <button
               onClick={() => setCategoryModalOpen(true)}
-              className="p-2 rounded-xl bg-[#FFFFFF] border border-[#D9D9D9] text-[#404040] hover:text-[#080808] transition min-w-[40px] min-h-[40px] flex items-center justify-center"
+              className="p-2 rounded-xl bg-[#FFFFFF] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#404040] dark:text-[#BDBDBD] hover:text-[#080808] hover:dark:text-[#F5F5F5] hover:dark:bg-[#282828] transition min-w-[40px] min-h-[40px] flex items-center justify-center"
               title="Categories"
               aria-label="Manage Categories"
             >
@@ -71,7 +71,7 @@ export function TasksMobile(props: UseTasksReturn) {
             </button>
             <button
               onClick={() => setRecurringModalOpen(true)}
-              className="p-2 rounded-xl bg-[#FFFFFF] border border-[#D9D9D9] text-[#404040] hover:text-[#080808] transition min-w-[40px] min-h-[40px] flex items-center justify-center"
+              className="p-2 rounded-xl bg-[#FFFFFF] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#404040] dark:text-[#BDBDBD] hover:text-[#080808] hover:dark:text-[#F5F5F5] hover:dark:bg-[#282828] transition min-w-[40px] min-h-[40px] flex items-center justify-center"
               title="Recurring Series"
               aria-label="Recurring Series"
             >
@@ -80,11 +80,11 @@ export function TasksMobile(props: UseTasksReturn) {
           </div>
         </div>
 
-        {/* 2. Separate Full-Width New Task Action Row (Never Clipped!) */}
+        {/* 2. Separate Full-Width New Task Action Row */}
         <div>
           <button
             onClick={openNewTaskModal}
-            className="w-full flex items-center justify-center space-x-2 py-2.5 px-4 bg-[#080808] hover:bg-[#171717] text-[#FFFFFF] rounded-xl text-xs font-semibold shadow-xs transition min-h-[44px]"
+            className="w-full flex items-center justify-center space-x-2 py-2.5 px-4 bg-[#080808] dark:bg-[#F5F5F5] hover:bg-[#171717] dark:hover:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#181818] border border-[#080808] dark:border-[#F5F5F5] rounded-xl text-xs font-semibold shadow-xs transition min-h-[44px]"
           >
             <Plus className="w-4 h-4" />
             <span>New Task</span>
@@ -92,28 +92,28 @@ export function TasksMobile(props: UseTasksReturn) {
         </div>
 
         {/* 3. Compact Single-Line Summary */}
-        <div className="flex items-center justify-between text-xs text-[#777777] font-medium px-1">
+        <div className="flex items-center justify-between text-xs text-[#777777] dark:text-[#929292] font-medium px-1">
           <span>
-            <strong className="text-[#080808] font-mono">{overview.totalActive}</strong> active ·{' '}
-            <strong className="text-[#080808] font-mono">{overview.completed}</strong> completed
+            <strong className="text-[#080808] dark:text-[#F5F5F5] font-mono">{overview.totalActive}</strong> active ·{' '}
+            <strong className="text-[#080808] dark:text-[#F5F5F5] font-mono">{overview.completed}</strong> completed
             {overview.overdue > 0 && (
-              <span className="text-[#080808] font-bold"> · {overview.overdue} overdue</span>
+              <span className="text-[#080808] dark:text-[#F5F5F5] font-bold"> · {overview.overdue} overdue</span>
             )}
           </span>
           <span className="text-[11px] font-mono">{filteredTasks.length} listed</span>
         </div>
 
         {/* 4. Search and Filter Bar */}
-        <div className="bg-[#FFFFFF] border border-[#D9D9D9] rounded-xl p-3 space-y-2.5 shadow-2xs">
+        <div className="bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-xl p-3 space-y-2.5 shadow-2xs">
           <div className="flex items-center gap-2">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 text-[#777777] absolute left-3 top-2.5" />
+              <Search className="w-4 h-4 text-[#777777] dark:text-[#929292] absolute left-3 top-2.5" />
               <input
                 type="text"
                 placeholder="Search tasks..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-[#FAFAFA] border border-[#D9D9D9] text-xs text-[#080808] placeholder-[#777777] focus:outline-none focus:border-[#080808] min-h-[38px]"
+                className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-xs text-[#080808] dark:text-[#F5F5F5] placeholder-[#777777] dark:placeholder-[#929292] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] min-h-[38px]"
               />
             </div>
 
@@ -124,8 +124,8 @@ export function TasksMobile(props: UseTasksReturn) {
                 categoryFilter !== 'ALL' ||
                 priorityFilter !== 'ALL' ||
                 sortBy !== 'dueDate'
-                  ? 'bg-[#080808] text-white border-[#080808]'
-                  : 'bg-[#FAFAFA] text-[#404040] border-[#D9D9D9] hover:bg-[#F5F5F5]'
+                  ? 'bg-[#080808] dark:bg-[#F5F5F5] text-white dark:text-[#181818] border-[#080808] dark:border-[#F5F5F5]'
+                  : 'bg-[#FAFAFA] dark:bg-[#202020] text-[#404040] dark:text-[#BDBDBD] border-[#D9D9D9] dark:border-[#383838] hover:bg-[#F5F5F5] hover:dark:bg-[#282828]'
               }`}
               title="Filters"
               aria-label="Filter options"
@@ -135,7 +135,7 @@ export function TasksMobile(props: UseTasksReturn) {
               {(categoryFilter !== 'ALL' ||
                 priorityFilter !== 'ALL' ||
                 sortBy !== 'dueDate') && (
-                <span className="w-1.5 h-1.5 rounded-full bg-white ml-0.5" />
+                <span className="w-1.5 h-1.5 rounded-full bg-white dark:bg-[#181818] ml-0.5" />
               )}
             </button>
           </div>
@@ -148,8 +148,8 @@ export function TasksMobile(props: UseTasksReturn) {
                 onClick={() => setStatusFilter(st)}
                 className={`px-3 py-1 rounded-lg text-xs font-medium transition shrink-0 min-h-[32px] ${
                   statusFilter === st
-                    ? 'bg-[#080808] text-[#FFFFFF] font-semibold'
-                    : 'bg-[#FAFAFA] text-[#777777] border border-[#D9D9D9] hover:text-[#080808]'
+                    ? 'bg-[#080808] dark:bg-[#F5F5F5] text-[#FFFFFF] dark:text-[#181818] font-semibold border border-[#080808] dark:border-[#F5F5F5]'
+                    : 'bg-[#FAFAFA] dark:bg-[#202020] text-[#777777] dark:text-[#929292] border border-[#D9D9D9] dark:border-[#383838] hover:text-[#080808] hover:dark:text-[#F5F5F5] hover:dark:bg-[#282828]'
                 }`}
               >
                 {st === 'ALL' ? 'All' : st.replace('_', ' ')}
@@ -159,16 +159,16 @@ export function TasksMobile(props: UseTasksReturn) {
 
           {/* Expandable Advanced Filters Drawer */}
           {showFilters && (
-            <div className="pt-2 border-t border-[#EFEFEF] space-y-2 text-xs">
+            <div className="pt-2 border-t border-[#EFEFEF] dark:border-[#303030] space-y-2 text-xs">
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-[10px] uppercase font-bold text-[#777777] block mb-1">
+                  <label className="text-[10px] uppercase font-bold text-[#777777] dark:text-[#929292] block mb-1">
                     Category
                   </label>
                   <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="w-full px-2 py-1.5 rounded-lg bg-[#FAFAFA] border border-[#D9D9D9] text-xs text-[#080808] focus:outline-none focus:border-[#080808] min-h-[36px]"
+                    className="w-full px-2 py-1.5 rounded-lg bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-xs text-[#080808] dark:text-[#F5F5F5] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] min-h-[36px]"
                   >
                     <option value="ALL">All Categories</option>
                     {categories.map((c) => (
@@ -180,13 +180,13 @@ export function TasksMobile(props: UseTasksReturn) {
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase font-bold text-[#777777] block mb-1">
+                  <label className="text-[10px] uppercase font-bold text-[#777777] dark:text-[#929292] block mb-1">
                     Priority
                   </label>
                   <select
                     value={priorityFilter}
                     onChange={(e) => setPriorityFilter(e.target.value)}
-                    className="w-full px-2 py-1.5 rounded-lg bg-[#FAFAFA] border border-[#D9D9D9] text-xs text-[#080808] focus:outline-none focus:border-[#080808] min-h-[36px]"
+                    className="w-full px-2 py-1.5 rounded-lg bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-xs text-[#080808] dark:text-[#F5F5F5] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] min-h-[36px]"
                   >
                     <option value="ALL">All Priorities</option>
                     <option value="URGENT">Urgent</option>
@@ -198,14 +198,14 @@ export function TasksMobile(props: UseTasksReturn) {
               </div>
 
               <div>
-                <label className="text-[10px] uppercase font-bold text-[#777777] block mb-1">
+                <label className="text-[10px] uppercase font-bold text-[#777777] dark:text-[#929292] block mb-1">
                   Sort By
                 </label>
                 <div className="flex gap-2">
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
-                    className="flex-1 px-2 py-1.5 rounded-lg bg-[#FAFAFA] border border-[#D9D9D9] text-xs text-[#080808] focus:outline-none focus:border-[#080808] min-h-[36px]"
+                    className="flex-1 px-2 py-1.5 rounded-lg bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-xs text-[#080808] dark:text-[#F5F5F5] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] min-h-[36px]"
                   >
                     <option value="dueDate">Due Date</option>
                     <option value="priority">Priority</option>
@@ -214,7 +214,7 @@ export function TasksMobile(props: UseTasksReturn) {
                   </select>
                   <button
                     onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                    className="px-3 py-1.5 rounded-lg bg-[#FAFAFA] border border-[#D9D9D9] text-[#777777] hover:text-[#080808] min-h-[36px] flex items-center justify-center"
+                    className="px-3 py-1.5 rounded-lg bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#777777] dark:text-[#929292] hover:text-[#080808] hover:dark:text-[#F5F5F5] hover:dark:bg-[#282828] min-h-[36px] flex items-center justify-center"
                     title="Toggle direction"
                   >
                     <ArrowUpDown className="w-3.5 h-3.5" />
@@ -227,7 +227,7 @@ export function TasksMobile(props: UseTasksReturn) {
 
         {/* Error notification */}
         {error && (
-          <div className="p-3 rounded-xl bg-[#F5F5F5] border border-[#080808] text-[#080808] text-xs">
+          <div className="p-3 rounded-xl bg-[#F5F5F5] dark:bg-[#202020] border border-[#080808] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-xs">
             {error}
           </div>
         )}
@@ -270,18 +270,24 @@ export function TasksMobile(props: UseTasksReturn) {
             </div>
           </div>
         ) : (
-          <div className="bg-[#FFFFFF] border border-[#D9D9D9] rounded-2xl divide-y divide-[#EFEFEF] overflow-hidden shadow-2xs">
+          <div className="bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl divide-y divide-[#EFEFEF] dark:divide-[#303030] overflow-hidden shadow-2xs">
             {filteredTasks.map((t) => {
+              const isCompleted = t.status === 'COMPLETED';
+              const isSkipped = t.status === 'SKIPPED';
+              const isInProgress = t.status === 'IN_PROGRESS';
               const overdue = isOverdue(t.dueDate, t.status);
+
               return (
                 <div
                   key={t.id}
-                  className={`p-3.5 flex items-start justify-between gap-2.5 transition ${
-                    t.status === 'COMPLETED'
-                      ? 'bg-[#FAFAFA] opacity-70'
+                  className={`p-3.5 flex items-start justify-between gap-2.5 transition border-l-[3px] ${
+                    isCompleted || isSkipped
+                      ? 'bg-[#FAFAFA] dark:bg-[#181818] opacity-65 border-l-transparent hover:dark:bg-[#202020]'
                       : overdue
-                        ? 'bg-[#FFFDFD]'
-                        : 'bg-white'
+                        ? 'bg-[#FFFDFD] dark:bg-[#181818] border-l-[#080808] dark:border-l-[#929292] hover:dark:bg-[#202020]'
+                        : isInProgress
+                          ? 'bg-white dark:bg-[#181818] border-l-[#404040] dark:border-l-[#BDBDBD] hover:dark:bg-[#202020]'
+                          : 'bg-white dark:bg-[#181818] border-l-transparent hover:dark:bg-[#202020]'
                   }`}
                 >
                   {/* Left: 44px Checkbox tap envelope + Task info */}
@@ -290,45 +296,74 @@ export function TasksMobile(props: UseTasksReturn) {
                       <button
                         onClick={() => handleToggleComplete(t)}
                         className={`w-5 h-5 rounded-md border flex items-center justify-center transition ${
-                          t.status === 'COMPLETED'
-                            ? 'bg-[#080808] border-[#080808] text-[#FFFFFF]'
+                          isCompleted
+                            ? 'bg-[#080808] dark:bg-[#F5F5F5] border-[#080808] dark:border-[#F5F5F5] text-[#FFFFFF] dark:text-[#181818]'
                             : overdue
-                              ? 'border-[#080808] bg-white'
-                              : 'border-[#777777] hover:border-[#080808] bg-white'
+                              ? 'border-[#080808] dark:border-[#929292] bg-white dark:bg-[#202020] hover:border-[#080808] dark:hover:border-[#F5F5F5]'
+                              : 'border-[#777777] dark:border-[#383838] hover:border-[#080808] dark:hover:border-[#F5F5F5] bg-white dark:bg-[#202020]'
                         }`}
-                        title={t.status === 'COMPLETED' ? 'Mark uncompleted' : 'Mark completed'}
-                        aria-label={t.status === 'COMPLETED' ? 'Mark uncompleted' : 'Mark completed'}
+                        title={isCompleted ? 'Mark uncompleted' : 'Mark completed'}
+                        aria-label={isCompleted ? 'Mark uncompleted' : 'Mark completed'}
                       >
-                        {t.status === 'COMPLETED' && <CheckCircle2 className="w-3.5 h-3.5" />}
+                        {isCompleted && <CheckCircle2 className="w-3.5 h-3.5" />}
                       </button>
                     </div>
 
-                    <div className="min-w-0 flex-1 space-y-0.5">
+                    <div className="min-w-0 flex-1 space-y-1">
                       <div className="flex items-baseline gap-1.5 flex-wrap">
                         {/* Title wraps naturally */}
                         <span
                           className={`text-xs font-semibold leading-snug break-words ${
-                            t.status === 'COMPLETED'
-                              ? 'line-through text-[#777777]'
-                              : 'text-[#080808]'
+                            isCompleted
+                              ? 'line-through text-[#777777] dark:text-[#929292]'
+                              : 'text-[#080808] dark:text-[#F5F5F5]'
                           }`}
                         >
                           {t.title}
                         </span>
 
+                        {/* Priority Indicators */}
                         {t.priority === 'URGENT' && (
-                          <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-[#080808] text-white">
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#080808] dark:bg-[#F5F5F5] text-white dark:text-[#181818] border border-[#080808] dark:border-[#F5F5F5]">
                             Urgent
                           </span>
                         )}
                         {t.priority === 'HIGH' && (
-                          <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-[#F5F5F5] text-[#080808] border border-[#080808]">
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#F5F5F5] dark:bg-[#282828] text-[#080808] dark:text-[#F5F5F5] border border-[#080808] dark:border-[#383838]">
                             High
                           </span>
                         )}
+                        {t.priority === 'MEDIUM' && (
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-medium uppercase tracking-wider bg-[#FAFAFA] dark:bg-[#202020] text-[#404040] dark:text-[#BDBDBD] border border-[#D9D9D9] dark:border-[#383838]">
+                            Med
+                          </span>
+                        )}
+                        {t.priority === 'LOW' && (
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-medium uppercase tracking-wider bg-[#FAFAFA] dark:bg-[#202020] text-[#777777] dark:text-[#929292] border border-[#D9D9D9] dark:border-[#383838]">
+                            Low
+                          </span>
+                        )}
+
+                        {/* Status Indicators */}
+                        {isInProgress && (
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider bg-[#F5F5F5] dark:bg-[#202020] text-[#080808] dark:text-[#F5F5F5] border border-[#D9D9D9] dark:border-[#383838]">
+                            In Progress
+                          </span>
+                        )}
+                        {isSkipped && (
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider bg-[#F5F5F5] dark:bg-[#202020] text-[#777777] dark:text-[#929292] border border-[#D9D9D9] dark:border-[#383838]">
+                            Skipped
+                          </span>
+                        )}
+                        {overdue && !isCompleted && !isSkipped && (
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#080808] dark:bg-[#282828] text-white dark:text-[#F5F5F5] border border-[#080808] dark:border-[#929292]">
+                            Overdue
+                          </span>
+                        )}
+
                         {t.recurringSeriesId && (
-                          <span className="text-[10px] text-[#777777]" title="Recurring">
-                            <Repeat className="w-2.5 h-2.5 inline" />
+                          <span className="text-[10px] text-[#777777] dark:text-[#929292]" title="Recurring Series">
+                            <Repeat className="w-2.5 h-2.5 inline mr-0.5" />
                           </span>
                         )}
                       </div>
@@ -337,10 +372,12 @@ export function TasksMobile(props: UseTasksReturn) {
                       {t.dueDate && (
                         <div
                           className={`flex items-center text-[10px] font-mono ${
-                            overdue ? 'text-[#080808] font-bold' : 'text-[#777777]'
+                            overdue && !isCompleted
+                              ? 'text-[#080808] dark:text-[#F5F5F5] font-semibold px-1.5 py-0.5 rounded bg-[#F5F5F5] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838]'
+                              : 'text-[#777777] dark:text-[#929292]'
                           }`}
                         >
-                          <Calendar className="w-2.5 h-2.5 mr-1" />
+                          <Calendar className="w-2.5 h-2.5 mr-1 text-[#777777] dark:text-[#929292]" />
                           <span>
                             {new Date(t.dueDate).toLocaleDateString(undefined, {
                               month: 'short',
@@ -350,7 +387,7 @@ export function TasksMobile(props: UseTasksReturn) {
                               hour12: true,
                             })}
                           </span>
-                          {overdue && <span className="ml-1 text-[#080808] font-bold">(Overdue)</span>}
+                          {overdue && !isCompleted && <span className="ml-1 text-[#080808] dark:text-[#F5F5F5] font-bold">(Overdue)</span>}
                         </div>
                       )}
                     </div>
@@ -360,7 +397,7 @@ export function TasksMobile(props: UseTasksReturn) {
                   <div className="flex items-center space-x-1 shrink-0 -mr-1">
                     <button
                       onClick={() => handlePostpone(t, 1)}
-                      className="px-2 py-1 rounded-md text-[10px] text-[#777777] hover:text-[#080808] border border-[#D9D9D9] transition min-h-[36px] min-w-[36px] flex items-center justify-center font-mono"
+                      className="px-2 py-1 rounded-md text-[10px] text-[#777777] dark:text-[#BDBDBD] hover:text-[#080808] hover:dark:text-[#F5F5F5] bg-[#FFFFFF] dark:bg-[#202020] hover:bg-[#F5F5F5] hover:dark:bg-[#282828] border border-[#D9D9D9] dark:border-[#383838] transition min-h-[36px] min-w-[36px] flex items-center justify-center font-mono"
                       title="Postpone +1d"
                       aria-label="Postpone deadline 1 day"
                     >
@@ -368,7 +405,7 @@ export function TasksMobile(props: UseTasksReturn) {
                     </button>
                     <button
                       onClick={() => openEditModal(t)}
-                      className="p-1.5 rounded-md text-[#777777] hover:text-[#080808] transition min-h-[36px] min-w-[36px] flex items-center justify-center"
+                      className="p-1.5 rounded-md text-[#777777] dark:text-[#BDBDBD] hover:text-[#080808] hover:dark:text-[#F5F5F5] bg-[#FFFFFF] dark:bg-[#202020] hover:bg-[#F5F5F5] hover:dark:bg-[#282828] border border-transparent dark:border-[#383838] transition min-h-[36px] min-w-[36px] flex items-center justify-center"
                       title="Edit task"
                       aria-label="Edit task"
                     >
@@ -376,7 +413,7 @@ export function TasksMobile(props: UseTasksReturn) {
                     </button>
                     <button
                       onClick={() => handleDeleteTask(t.id)}
-                      className="p-1.5 rounded-md text-[#777777] hover:text-[#080808] transition min-h-[36px] min-w-[36px] flex items-center justify-center"
+                      className="p-1.5 rounded-md text-[#777777] dark:text-[#BDBDBD] hover:text-[#080808] hover:dark:text-[#F5F5F5] bg-[#FFFFFF] dark:bg-[#202020] hover:bg-[#F5F5F5] hover:dark:bg-[#282828] border border-transparent dark:border-[#383838] transition min-h-[36px] min-w-[36px] flex items-center justify-center"
                       title="Delete task"
                       aria-label="Delete task"
                     >

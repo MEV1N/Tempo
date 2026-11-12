@@ -46,15 +46,15 @@ export function TasksModals(props: UseTasksReturn) {
       {/* Task Creation / Edit Modal */}
       {taskModalOpen && (
         <div className="fixed inset-0 z-50 bg-[#080808]/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto">
-          <div className="bg-[#FFFFFF] border-t sm:border border-[#D9D9D9] rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 max-w-lg w-full space-y-4 sm:space-y-5 shadow-xl text-[#080808] max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-[#EFEFEF]">
-              <h3 className="text-base font-bold text-[#080808] flex items-center gap-2">
-                <CheckSquare className="w-5 h-5 text-[#080808]" />
+          <div className="bg-[#FFFFFF] dark:bg-[#181818] border-t sm:border border-[#D9D9D9] dark:border-[#383838] rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 max-w-lg w-full space-y-4 sm:space-y-5 shadow-xl text-[#080808] dark:text-[#F5F5F5] max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-[#EFEFEF] dark:border-[#303030]">
+              <h3 className="text-base font-bold text-[#080808] dark:text-[#F5F5F5] flex items-center gap-2">
+                <CheckSquare className="w-5 h-5 text-[#080808] dark:text-[#F5F5F5]" />
                 <span>{editingTask ? 'Edit Task' : 'Create New Task'}</span>
               </h3>
               <button
                 onClick={() => setTaskModalOpen(false)}
-                className="p-1.5 rounded-lg text-[#777777] hover:text-[#080808] hover:bg-[#F5F5F5]"
+                className="p-1.5 rounded-lg text-[#777777] dark:text-[#929292] hover:text-[#080808] hover:dark:text-[#F5F5F5] hover:bg-[#F5F5F5] hover:dark:bg-[#282828]"
                 aria-label="Close"
               >
                 <X className="w-4 h-4" />
@@ -63,35 +63,35 @@ export function TasksModals(props: UseTasksReturn) {
 
             <form onSubmit={handleSaveTask} className="space-y-4 text-xs">
               <div>
-                <label className="block font-medium text-[#404040] mb-1">Title *</label>
+                <label className="block font-medium text-[#404040] dark:text-[#BDBDBD] mb-1">Title *</label>
                 <input
                   type="text"
                   required
                   value={taskForm.title}
                   onChange={(e) => setTaskForm({ ...taskForm, title: e.target.value })}
                   placeholder="e.g. Finish Algorithm Homework"
-                  className="w-full px-3.5 py-2 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] placeholder-[#777777] focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF] text-xs"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] placeholder-[#777777] dark:placeholder-[#929292] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020] text-xs"
                 />
               </div>
 
               <div>
-                <label className="block font-medium text-[#404040] mb-1">Description</label>
+                <label className="block font-medium text-[#404040] dark:text-[#BDBDBD] mb-1">Description</label>
                 <textarea
                   rows={2}
                   value={taskForm.description}
                   onChange={(e) => setTaskForm({ ...taskForm, description: e.target.value })}
                   placeholder="Add details, links, or notes..."
-                  className="w-full px-3.5 py-2 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] placeholder-[#777777] focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF] text-xs"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] placeholder-[#777777] dark:placeholder-[#929292] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020] text-xs"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-[#404040] mb-1">Category</label>
+                  <label className="block font-medium text-[#404040] dark:text-[#BDBDBD] mb-1">Category</label>
                   <select
                     value={taskForm.categoryId}
                     onChange={(e) => setTaskForm({ ...taskForm, categoryId: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] focus:outline-none focus:border-[#080808]"
+                    className="w-full px-3 py-2 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292]"
                   >
                     <option value="">No Category</option>
                     {categories.map((c) => (
@@ -103,13 +103,13 @@ export function TasksModals(props: UseTasksReturn) {
                 </div>
 
                 <div>
-                  <label className="block font-medium text-[#404040] mb-1">Priority</label>
+                  <label className="block font-medium text-[#404040] dark:text-[#BDBDBD] mb-1">Priority</label>
                   <select
                     value={taskForm.priority}
                     onChange={(e) =>
                       setTaskForm({ ...taskForm, priority: e.target.value as Priority })
                     }
-                    className="w-full px-3 py-2 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] focus:outline-none focus:border-[#080808]"
+                    className="w-full px-3 py-2 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292]"
                   >
                     <option value="LOW">Low</option>
                     <option value="MEDIUM">Medium</option>
@@ -121,7 +121,7 @@ export function TasksModals(props: UseTasksReturn) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-[#404040] mb-1">
+                  <label className="block font-medium text-[#404040] dark:text-[#BDBDBD] mb-1">
                     Estimated Minutes
                   </label>
                   <input
@@ -133,26 +133,26 @@ export function TasksModals(props: UseTasksReturn) {
                     onChange={(e) =>
                       setTaskForm({ ...taskForm, estimatedMinutes: Number(e.target.value) })
                     }
-                    className="w-full px-3.5 py-2 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] focus:outline-none focus:border-[#080808]"
+                    className="w-full px-3.5 py-2 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292]"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-[#404040] mb-1">
+                  <label className="block font-medium text-[#404040] dark:text-[#BDBDBD] mb-1">
                     Deadline / Due Date
                   </label>
                   <input
                     type="datetime-local"
                     value={taskForm.dueDate}
                     onChange={(e) => setTaskForm({ ...taskForm, dueDate: e.target.value })}
-                    className="w-full px-3.5 py-2 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] focus:outline-none focus:border-[#080808]"
+                    className="w-full px-3.5 py-2 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-[#404040] mb-1">
+                  <label className="block font-medium text-[#404040] dark:text-[#BDBDBD] mb-1">
                     Preferred Time of Day
                   </label>
                   <select
@@ -160,7 +160,7 @@ export function TasksModals(props: UseTasksReturn) {
                     onChange={(e) =>
                       setTaskForm({ ...taskForm, preferredTime: e.target.value as TimeOfDay })
                     }
-                    className="w-full px-3 py-2 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] focus:outline-none focus:border-[#080808]"
+                    className="w-full px-3 py-2 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292]"
                   >
                     <option value="ANYTIME">Anytime</option>
                     <option value="MORNING">Morning</option>
@@ -171,7 +171,7 @@ export function TasksModals(props: UseTasksReturn) {
                 </div>
 
                 <div>
-                  <label className="block font-medium text-[#404040] mb-1">
+                  <label className="block font-medium text-[#404040] dark:text-[#BDBDBD] mb-1">
                     Energy Requirement
                   </label>
                   <select
@@ -182,7 +182,7 @@ export function TasksModals(props: UseTasksReturn) {
                         energyRequirement: e.target.value as EnergyLevel,
                       })
                     }
-                    className="w-full px-3 py-2 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] focus:outline-none focus:border-[#080808]"
+                    className="w-full px-3 py-2 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292]"
                   >
                     <option value="LOW">Low (Casual / Routine)</option>
                     <option value="MEDIUM">Medium (Normal Focus)</option>
@@ -198,19 +198,19 @@ export function TasksModals(props: UseTasksReturn) {
                   id="canSplitCheck"
                   checked={taskForm.canSplit}
                   onChange={(e) => setTaskForm({ ...taskForm, canSplit: e.target.checked })}
-                  className="rounded border-[#D9D9D9] text-[#080808] focus:ring-0"
+                  className="rounded border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] focus:ring-0"
                 />
-                <label htmlFor="canSplitCheck" className="text-[#404040] cursor-pointer">
+                <label htmlFor="canSplitCheck" className="text-[#404040] dark:text-[#BDBDBD] cursor-pointer">
                   Can be split into multiple work sessions
                 </label>
               </div>
 
               {/* Recurrence config (only for new tasks) */}
               {!editingTask && (
-                <div className="p-3.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] space-y-3">
+                <div className="p-3.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-[#080808] flex items-center gap-1.5">
-                      <Repeat className="w-3.5 h-3.5 text-[#080808]" />
+                    <span className="font-semibold text-[#080808] dark:text-[#F5F5F5] flex items-center gap-1.5">
+                      <Repeat className="w-3.5 h-3.5 text-[#080808] dark:text-[#F5F5F5]" />
                       <span>Recurring Task</span>
                     </span>
                     <input
@@ -219,15 +219,15 @@ export function TasksModals(props: UseTasksReturn) {
                       onChange={(e) =>
                         setTaskForm({ ...taskForm, isRecurring: e.target.checked })
                       }
-                      className="rounded border-[#D9D9D9] text-[#080808] focus:ring-0"
+                      className="rounded border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] focus:ring-0"
                     />
                   </div>
 
                   {taskForm.isRecurring && (
-                    <div className="space-y-3 pt-2 border-t border-[#EFEFEF]">
+                    <div className="space-y-3 pt-2 border-t border-[#EFEFEF] dark:border-[#303030]">
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="block text-[#777777] mb-1">Frequency</label>
+                          <label className="block text-[#777777] dark:text-[#929292] mb-1">Frequency</label>
                           <select
                             value={taskForm.frequency}
                             onChange={(e) =>
@@ -236,7 +236,7 @@ export function TasksModals(props: UseTasksReturn) {
                                 frequency: e.target.value as RecurrenceFrequency,
                               })
                             }
-                            className="w-full px-2.5 py-1.5 rounded-lg bg-[#FFFFFF] border border-[#D9D9D9] text-[#080808]"
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5]"
                           >
                             <option value="DAILY">Daily</option>
                             <option value="WEEKLY">Weekly</option>
@@ -245,7 +245,7 @@ export function TasksModals(props: UseTasksReturn) {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-[#777777] mb-1">
+                          <label className="block text-[#777777] dark:text-[#929292] mb-1">
                             Repeat Every (Interval)
                           </label>
                           <input
@@ -256,14 +256,14 @@ export function TasksModals(props: UseTasksReturn) {
                             onChange={(e) =>
                               setTaskForm({ ...taskForm, interval: Number(e.target.value) })
                             }
-                            className="w-full px-2.5 py-1.5 rounded-lg bg-[#FFFFFF] border border-[#D9D9D9] text-[#080808]"
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5]"
                           />
                         </div>
                       </div>
 
                       {taskForm.frequency === 'WEEKLY' && (
                         <div>
-                          <label className="block text-[#777777] mb-1">Active Weekdays</label>
+                          <label className="block text-[#777777] dark:text-[#929292] mb-1">Active Weekdays</label>
                           <div className="flex gap-1.5">
                             {[
                               { day: 1, label: 'M' },
@@ -287,8 +287,8 @@ export function TasksModals(props: UseTasksReturn) {
                                   }}
                                   className={`w-7 h-7 rounded-lg text-xs font-bold transition ${
                                     active
-                                      ? 'bg-[#080808] text-[#FFFFFF]'
-                                      : 'bg-[#FFFFFF] border border-[#D9D9D9] text-[#777777] hover:text-[#080808]'
+                                      ? 'bg-[#080808] dark:bg-[#F5F5F5] text-[#FFFFFF] dark:text-[#181818]'
+                                      : 'bg-[#FFFFFF] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#777777] dark:text-[#929292] hover:text-[#080808] hover:dark:text-[#F5F5F5]'
                                   }`}
                                 >
                                   {label}
@@ -307,13 +307,13 @@ export function TasksModals(props: UseTasksReturn) {
                 <button
                   type="button"
                   onClick={() => setTaskModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-[#FFFFFF] hover:bg-[#F5F5F5] border border-[#D9D9D9] text-[#080808] font-medium"
+                  className="px-4 py-2 rounded-xl bg-[#FFFFFF] dark:bg-[#202020] hover:bg-[#F5F5F5] hover:dark:bg-[#282828] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-[#080808] hover:bg-[#171717] text-[#FFFFFF] font-semibold transition"
+                  className="px-5 py-2 rounded-xl bg-[#080808] dark:bg-[#F5F5F5] hover:bg-[#171717] dark:hover:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#181818] font-semibold transition"
                 >
                   {editingTask ? 'Save Changes' : 'Create Task'}
                 </button>
@@ -326,15 +326,15 @@ export function TasksModals(props: UseTasksReturn) {
       {/* Category Management Modal */}
       {categoryModalOpen && (
         <div className="fixed inset-0 z-50 bg-[#080808]/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-          <div className="bg-[#FFFFFF] border-t sm:border border-[#D9D9D9] rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 max-w-md w-full space-y-4 shadow-xl text-[#080808] max-h-[85vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-[#EFEFEF]">
-              <h3 className="text-base font-bold text-[#080808] flex items-center gap-2">
-                <Tag className="w-5 h-5 text-[#080808]" />
+          <div className="bg-[#FFFFFF] dark:bg-[#181818] border-t sm:border border-[#D9D9D9] dark:border-[#383838] rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 max-w-md w-full space-y-4 shadow-xl text-[#080808] dark:text-[#F5F5F5] max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-[#EFEFEF] dark:border-[#303030]">
+              <h3 className="text-base font-bold text-[#080808] dark:text-[#F5F5F5] flex items-center gap-2">
+                <Tag className="w-5 h-5 text-[#080808] dark:text-[#F5F5F5]" />
                 <span>Manage Task Categories</span>
               </h3>
               <button
                 onClick={() => setCategoryModalOpen(false)}
-                className="p-1.5 rounded-lg text-[#777777] hover:text-[#080808] hover:bg-[#F5F5F5]"
+                className="p-1.5 rounded-lg text-[#777777] dark:text-[#929292] hover:text-[#080808] hover:dark:text-[#F5F5F5] hover:bg-[#F5F5F5] hover:dark:bg-[#282828]"
                 aria-label="Close"
               >
                 <X className="w-4 h-4" />
@@ -349,18 +349,18 @@ export function TasksModals(props: UseTasksReturn) {
                   placeholder="Category name (e.g. Work, College, Projects)..."
                   value={catForm.name}
                   onChange={(e) => setCatForm({ ...catForm, name: e.target.value })}
-                  className="flex-1 px-3.5 py-2 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-xs text-[#080808] placeholder-[#777777] focus:outline-none focus:border-[#080808]"
+                  className="flex-1 px-3.5 py-2 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-xs text-[#080808] dark:text-[#F5F5F5] placeholder-[#777777] dark:placeholder-[#929292] focus:outline-none focus:border-[#080808] dark:focus:border-[#929292]"
                 />
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-[#080808] hover:bg-[#171717] text-[#FFFFFF] font-semibold text-xs"
+                  className="px-4 py-2 rounded-xl bg-[#080808] dark:bg-[#F5F5F5] hover:bg-[#171717] dark:hover:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#181818] font-semibold text-xs"
                 >
                   {editingCatId ? 'Update' : 'Add'}
                 </button>
               </div>
 
               <div className="flex items-center gap-1.5 pt-1">
-                <span className="text-[11px] text-[#777777] mr-1">Shade:</span>
+                <span className="text-[11px] text-[#777777] dark:text-[#929292] mr-1">Shade:</span>
                 {PRESET_COLORS.map((c) => (
                   <button
                     type="button"
@@ -368,7 +368,7 @@ export function TasksModals(props: UseTasksReturn) {
                     onClick={() => setCatForm({ ...catForm, color: c })}
                     className={`w-5 h-5 rounded-full transition ${
                       catForm.color === c
-                        ? 'ring-2 ring-[#080808] ring-offset-2 ring-offset-[#FFFFFF] scale-110'
+                        ? 'ring-2 ring-[#080808] dark:ring-[#F5F5F5] ring-offset-2 ring-offset-[#FFFFFF] dark:ring-offset-[#181818] scale-110'
                         : ''
                     }`}
                     style={{ backgroundColor: c }}
@@ -377,24 +377,24 @@ export function TasksModals(props: UseTasksReturn) {
               </div>
             </form>
 
-            <div className="space-y-2 pt-2 border-t border-[#EFEFEF] max-h-60 overflow-y-auto">
+            <div className="space-y-2 pt-2 border-t border-[#EFEFEF] dark:border-[#303030] max-h-60 overflow-y-auto">
               {categories.length === 0 ? (
-                <p className="text-xs text-[#777777] text-center py-4">
+                <p className="text-xs text-[#777777] dark:text-[#929292] text-center py-4">
                   No categories created yet.
                 </p>
               ) : (
                 categories.map((c) => (
                   <div
                     key={c.id}
-                    className="flex items-center justify-between p-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-xs"
+                    className="flex items-center justify-between p-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-xs"
                   >
                     <div className="flex items-center space-x-2.5">
                       <span
                         className="w-3 h-3 rounded-full"
                         style={{ backgroundColor: c.color }}
                       />
-                      <span className="font-medium text-[#080808]">{c.name}</span>
-                      <span className="text-[10px] text-[#777777]">
+                      <span className="font-medium text-[#080808] dark:text-[#F5F5F5]">{c.name}</span>
+                      <span className="text-[10px] text-[#777777] dark:text-[#929292]">
                         ({c.taskCount || 0} tasks)
                       </span>
                     </div>
@@ -404,14 +404,14 @@ export function TasksModals(props: UseTasksReturn) {
                           setEditingCatId(c.id);
                           setCatForm({ name: c.name, color: c.color });
                         }}
-                        className="p-1 rounded text-[#777777] hover:text-[#080808]"
+                        className="p-1 rounded text-[#777777] dark:text-[#929292] hover:text-[#080808] hover:dark:text-[#F5F5F5]"
                         aria-label="Edit"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDeleteCategory(c.id)}
-                        className="p-1 rounded text-[#777777] hover:text-[#080808]"
+                        className="p-1 rounded text-[#777777] dark:text-[#929292] hover:text-[#080808] hover:dark:text-[#F5F5F5]"
                         aria-label="Delete"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -428,15 +428,15 @@ export function TasksModals(props: UseTasksReturn) {
       {/* Recurring Series Management Modal */}
       {recurringModalOpen && (
         <div className="fixed inset-0 z-50 bg-[#080808]/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-          <div className="bg-[#FFFFFF] border-t sm:border border-[#D9D9D9] rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 max-w-lg w-full space-y-4 shadow-xl text-[#080808] max-h-[85vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-[#EFEFEF]">
-              <h3 className="text-base font-bold text-[#080808] flex items-center gap-2">
-                <Repeat className="w-5 h-5 text-[#080808]" />
+          <div className="bg-[#FFFFFF] dark:bg-[#181818] border-t sm:border border-[#D9D9D9] dark:border-[#383838] rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 max-w-lg w-full space-y-4 shadow-xl text-[#080808] dark:text-[#F5F5F5] max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-[#EFEFEF] dark:border-[#303030]">
+              <h3 className="text-base font-bold text-[#080808] dark:text-[#F5F5F5] flex items-center gap-2">
+                <Repeat className="w-5 h-5 text-[#080808] dark:text-[#F5F5F5]" />
                 <span>Recurring Task Series</span>
               </h3>
               <button
                 onClick={() => setRecurringModalOpen(false)}
-                className="p-1.5 rounded-lg text-[#777777] hover:text-[#080808] hover:bg-[#F5F5F5]"
+                className="p-1.5 rounded-lg text-[#777777] dark:text-[#929292] hover:text-[#080808] hover:dark:text-[#F5F5F5] hover:bg-[#F5F5F5] hover:dark:bg-[#282828]"
                 aria-label="Close"
               >
                 <X className="w-4 h-4" />
@@ -445,7 +445,7 @@ export function TasksModals(props: UseTasksReturn) {
 
             <div className="space-y-3 max-h-80 overflow-y-auto">
               {recurringSeries.length === 0 ? (
-                <p className="text-xs text-[#777777] text-center py-6">
+                <p className="text-xs text-[#777777] dark:text-[#929292] text-center py-6">
                   No recurring task series active. You can enable recurrence when creating a new
                   task.
                 </p>
@@ -453,24 +453,24 @@ export function TasksModals(props: UseTasksReturn) {
                 recurringSeries.map((s) => (
                   <div
                     key={s.id}
-                    className="p-3.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-xs space-y-2"
+                    className="p-3.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-xs space-y-2"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-[#080808]">{s.title}</span>
+                      <span className="font-semibold text-[#080808] dark:text-[#F5F5F5]">{s.title}</span>
                       <div className="flex items-center space-x-2">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#080808] text-[#FFFFFF]">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#080808] dark:bg-[#F5F5F5] text-[#FFFFFF] dark:text-[#181818] border border-[#080808] dark:border-[#F5F5F5]">
                           {s.frequency}
                         </span>
                         <button
                           onClick={() => handleDeleteSeries(s.id)}
-                          className="p-1 rounded text-[#777777] hover:text-[#080808]"
+                          className="p-1 rounded text-[#777777] dark:text-[#929292] hover:text-[#080808] hover:dark:text-[#F5F5F5]"
                           title="Delete recurring series"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </div>
-                    <div className="flex flex-wrap items-center gap-3 text-[11px] text-[#777777]">
+                    <div className="flex flex-wrap items-center gap-3 text-[11px] text-[#777777] dark:text-[#929292]">
                       <span>Duration: {s.estimatedMinutes}m</span>
                       <span>Priority: {s.priority}</span>
                       {s.category && <span>Category: {s.category.name}</span>}
