@@ -49,7 +49,7 @@ export function TasksDesktop(props: UseTasksReturn) {
   } = props;
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] font-interface transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#181818] text-[#080808] dark:text-[#F5F5F5] font-interface transition-colors">
       <Navbar />
 
       <div className="md:pl-64 flex flex-col min-h-screen">
@@ -248,41 +248,41 @@ export function TasksDesktop(props: UseTasksReturn) {
 
           {/* Desktop Task List */}
           {loading ? (
-            <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2A2A2A] rounded-2xl flex flex-col items-center justify-center space-y-3 shadow-xs">
+            <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl flex flex-col items-center justify-center space-y-3 shadow-xs">
               <TempoAnimation
                 name="tasks"
                 alt="Tasks notebook animation"
                 size={64}
                 eager
-                fallback={<Clock className="w-6 h-6 mx-auto animate-spin text-[#080808] dark:text-[#F3F3F3]" />}
+                fallback={<Clock className="w-6 h-6 mx-auto animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
               />
-              <p className="text-xs font-semibold text-[#080808] dark:text-[#F3F3F3]">Loading tasks...</p>
+              <p className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">Loading tasks...</p>
             </div>
           ) : filteredTasks.length === 0 ? (
-            <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2A2A2A] rounded-2xl space-y-3 shadow-xs">
+            <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl space-y-3 shadow-xs">
               {tasks.length === 0 && !search && statusFilter === 'ALL' && priorityFilter === 'ALL' && categoryFilter === 'ALL' ? (
                 <div className="flex justify-center mb-1">
                   <TempoAnimation
                     name="tasks"
                     alt="Notebook drawing checkmarks animation"
                     size={72}
-                    fallback={<CheckCircle2 className="w-8 h-8 text-[#080808] dark:text-[#F3F3F3] mx-auto opacity-40" />}
+                    fallback={<CheckCircle2 className="w-8 h-8 text-[#080808] dark:text-[#F5F5F5] mx-auto opacity-40" />}
                   />
                 </div>
               ) : (
-                <CheckCircle2 className="w-8 h-8 text-[#080808] dark:text-[#F3F3F3] mx-auto opacity-40" />
+                <CheckCircle2 className="w-8 h-8 text-[#080808] dark:text-[#F5F5F5] mx-auto opacity-40" />
               )}
-              <h3 className="text-sm font-semibold text-[#080808] dark:text-[#F3F3F3]">
+              <h3 className="text-sm font-semibold text-[#080808] dark:text-[#F5F5F5]">
                 {tasks.length === 0 && !search ? 'No tasks yet' : 'No tasks found'}
               </h3>
-              <p className="text-xs text-[#777777] dark:text-[#A3A3A3] max-w-sm mx-auto">
+              <p className="text-xs text-[#777777] dark:text-[#BDBDBD] max-w-sm mx-auto">
                 {search || statusFilter !== 'ALL' || priorityFilter !== 'ALL' || categoryFilter !== 'ALL'
                   ? 'No tasks match your current filter criteria.'
                   : 'Start by creating your first task or recurring series to begin planning your rhythm.'}
               </p>
               <button
                 onClick={openNewTaskModal}
-                className="mt-2 px-4 py-2 bg-[#080808] dark:bg-[#F3F3F3] hover:bg-[#171717] dark:hover:bg-[#E5E5E5] text-[#FFFFFF] dark:text-[#080808] text-xs font-semibold rounded-xl shadow-xs transition"
+                className="mt-2 px-4 py-2 bg-[#080808] dark:bg-[#F5F5F5] hover:bg-[#171717] dark:hover:bg-[#E5E5E5] text-[#FFFFFF] dark:text-[#181818] text-xs font-semibold rounded-xl shadow-xs transition"
               >
                 Create First Task
               </button>

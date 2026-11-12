@@ -31,16 +31,16 @@ export function TempoLogo({
     <div className={`inline-flex flex-col select-none ${className}`}>
       <div className="flex items-baseline space-x-1">
         <span
-          className={`font-brand font-bold tracking-tight text-[#080808] dark:text-[#F2F2F2] leading-none ${fontSizes[size]}`}
+          className={`font-brand font-bold tracking-tight text-[#080808] dark:text-[#F5F5F5] leading-none ${fontSizes[size]}`}
           style={{ letterSpacing: '-0.02em' }}
         >
           tempo
         </span>
-        <span className="w-1.5 h-1.5 rounded-full bg-[#080808] dark:bg-[#F2F2F2] mb-1 transform translate-y-[-2px]" />
+        <span className="w-1.5 h-1.5 rounded-full bg-[#080808] dark:bg-[#F5F5F5] mb-1 transform translate-y-[-2px]" />
       </div>
       {showTagline && (
         <span
-          className={`font-interface tracking-wide text-[#777777] dark:text-[#858585] font-normal leading-tight mt-0.5 ${taglineSizes[size]}`}
+          className={`font-interface tracking-wide text-[#777777] dark:text-[#929292] font-normal leading-tight mt-0.5 ${taglineSizes[size]}`}
         >
           Find your rhythm.
         </span>
@@ -50,11 +50,7 @@ export function TempoLogo({
 
   if (to) {
     return (
-      <Link
-        to={to}
-        className="inline-flex hover:opacity-80 transition-opacity focus:outline-none"
-        title="Tempo — Find your rhythm."
-      >
+      <Link to={to} className="focus:outline-none focus-visible:opacity-80">
         {content}
       </Link>
     );

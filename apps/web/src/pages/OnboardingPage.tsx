@@ -108,23 +108,23 @@ export function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#181818] text-[#080808] dark:text-[#F5F5F5] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center space-y-2">
           <TempoLogo size="lg" showTagline={false} className="items-center" />
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#080808] dark:text-[#F2F2F2] flex items-baseline justify-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#080808] dark:text-[#F5F5F5] flex items-baseline justify-center gap-2">
             <span>Set up your daily</span>
-            <span className="font-handwritten text-3xl font-normal text-[#777777] dark:text-[#858585]">rhythm</span>
+            <span className="font-handwritten text-3xl font-normal text-[#777777] dark:text-[#929292]">rhythm</span>
           </h1>
-          <p className="text-[#777777] dark:text-[#858585] text-xs sm:text-sm max-w-md mx-auto">
+          <p className="text-[#777777] dark:text-[#929292] text-xs sm:text-sm max-w-md mx-auto">
             Tempo adapts around your natural routine. Configure your baseline sleep, working hours,
             and meal intervals. You can adjust these anytime in settings.
           </p>
         </div>
 
         {error && (
-          <div className="p-4 rounded-xl bg-[#F5F5F5] dark:bg-[#252525] border border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F2F2F2] text-xs flex items-center space-x-3">
+          <div className="p-4 rounded-xl bg-[#F5F5F5] dark:bg-[#282828] border border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F5F5F5] text-xs flex items-center space-x-3">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -132,15 +132,15 @@ export function OnboardingPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* 1. Identity & Timezone */}
-          <div className="bg-[#FFFFFF] dark:bg-[#1D1D1D] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-6 space-y-4 shadow-sm">
-            <div className="flex items-center space-x-2 text-[#080808] dark:text-[#F2F2F2] text-sm font-semibold">
+          <div className="bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl p-6 space-y-4 shadow-sm">
+            <div className="flex items-center space-x-2 text-[#080808] dark:text-[#F5F5F5] text-sm font-semibold">
               <Clock className="w-4 h-4" />
               <span>General Profile & Timezone</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">
+                <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD] mb-1.5">
                   Your Preferred Name
                 </label>
                 <input
@@ -148,16 +148,16 @@ export function OnboardingPage() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">Timezone</label>
+                <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD] mb-1.5">Timezone</label>
                 <select
                   value={timezone}
                   onChange={(e) => setTimezone(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020]"
                 >
                   {TIMEZONES.map((tz) => (
                     <option key={tz} value={tz}>
@@ -170,8 +170,8 @@ export function OnboardingPage() {
           </div>
 
           {/* 2. Sleep & Awakening Cycle */}
-          <div className="bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2A2A2A] rounded-2xl p-6 space-y-4 shadow-sm">
-            <div className="flex items-center space-x-2 text-[#080808] dark:text-[#F3F3F3] text-sm font-semibold">
+          <div className="bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl p-6 space-y-4 shadow-sm">
+            <div className="flex items-center space-x-2 text-[#080808] dark:text-[#F5F5F5] text-sm font-semibold">
               <Sun className="w-4 h-4" />
               <span>Sleep & Awakening Cycle</span>
             </div>
@@ -179,10 +179,10 @@ export function OnboardingPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4]">
+                  <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD]">
                     Typical Wake-up Time
                   </label>
-                  <span className="text-[11px] font-mono font-bold text-[#080808] dark:text-[#F3F3F3]">
+                  <span className="text-[11px] font-mono font-bold text-[#080808] dark:text-[#F5F5F5]">
                     {formatTimeTo12Hour(wakeTime)}
                   </span>
                 </div>
@@ -191,16 +191,16 @@ export function OnboardingPage() {
                   required
                   value={wakeTime}
                   onChange={(e) => setWakeTime(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020]"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4]">
+                  <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD]">
                     Target Sleep Time
                   </label>
-                  <span className="text-[11px] font-mono font-bold text-[#080808] dark:text-[#F3F3F3]">
+                  <span className="text-[11px] font-mono font-bold text-[#080808] dark:text-[#F5F5F5]">
                     {formatTimeTo12Hour(sleepTime)}
                   </span>
                 </div>
@@ -209,15 +209,15 @@ export function OnboardingPage() {
                   required
                   value={sleepTime}
                   onChange={(e) => setSleepTime(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020]"
                 />
               </div>
             </div>
           </div>
 
           {/* 3. Work & Study Habits */}
-          <div className="bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2A2A2A] rounded-2xl p-6 space-y-4 shadow-sm">
-            <div className="flex items-center space-x-2 text-[#080808] dark:text-[#F3F3F3] text-sm font-semibold">
+          <div className="bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl p-6 space-y-4 shadow-sm">
+            <div className="flex items-center space-x-2 text-[#080808] dark:text-[#F5F5F5] text-sm font-semibold">
               <Briefcase className="w-4 h-4" />
               <span>Work & Study Habits</span>
             </div>
@@ -225,10 +225,10 @@ export function OnboardingPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4]">
+                  <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD]">
                     Work Start Time
                   </label>
-                  <span className="text-[11px] font-mono font-bold text-[#080808] dark:text-[#F3F3F3]">
+                  <span className="text-[11px] font-mono font-bold text-[#080808] dark:text-[#F5F5F5]">
                     {formatTimeTo12Hour(preferredWorkStart)}
                   </span>
                 </div>
@@ -237,16 +237,16 @@ export function OnboardingPage() {
                   required
                   value={preferredWorkStart}
                   onChange={(e) => setPreferredWorkStart(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020]"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4]">
+                  <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD]">
                     Work End Time
                   </label>
-                  <span className="text-[11px] font-mono font-bold text-[#080808] dark:text-[#F3F3F3]">
+                  <span className="text-[11px] font-mono font-bold text-[#080808] dark:text-[#F5F5F5]">
                     {formatTimeTo12Hour(preferredWorkEnd)}
                   </span>
                 </div>
@@ -255,12 +255,12 @@ export function OnboardingPage() {
                   required
                   value={preferredWorkEnd}
                   onChange={(e) => setPreferredWorkEnd(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">
+                <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD] mb-1.5">
                   Preferred Break Duration (minutes)
                 </label>
                 <input
@@ -270,12 +270,12 @@ export function OnboardingPage() {
                   required
                   value={preferredBreakDuration}
                   onChange={(e) => setPreferredBreakDuration(parseInt(e.target.value, 10))}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">
+                <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD] mb-1.5">
                   Max Continuous Work Duration (minutes)
                 </label>
                 <input
@@ -285,22 +285,22 @@ export function OnboardingPage() {
                   required
                   value={maxContinuousWorkDuration}
                   onChange={(e) => setMaxContinuousWorkDuration(parseInt(e.target.value, 10))}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020]"
                 />
               </div>
             </div>
           </div>
 
           {/* 4. Meals & Leisure */}
-          <div className="bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2A2A2A] rounded-2xl p-6 space-y-4 shadow-sm">
-            <div className="flex items-center space-x-2 text-[#080808] dark:text-[#F3F3F3] text-sm font-semibold">
+          <div className="bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl p-6 space-y-4 shadow-sm">
+            <div className="flex items-center space-x-2 text-[#080808] dark:text-[#F5F5F5] text-sm font-semibold">
               <Coffee className="w-4 h-4" />
               <span>Meal Timings & Downtime</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">
+                <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD] mb-1.5">
                   Breakfast Time
                 </label>
                 <input
@@ -308,12 +308,12 @@ export function OnboardingPage() {
                   required
                   value={breakfastTime}
                   onChange={(e) => setBreakfastTime(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">
+                <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD] mb-1.5">
                   Lunch Time
                 </label>
                 <input
@@ -321,12 +321,12 @@ export function OnboardingPage() {
                   required
                   value={lunchTime}
                   onChange={(e) => setLunchTime(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">
+                <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD] mb-1.5">
                   Dinner Time
                 </label>
                 <input
@@ -334,13 +334,13 @@ export function OnboardingPage() {
                   required
                   value={dinnerTime}
                   onChange={(e) => setDinnerTime(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020]"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">
+              <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD] mb-1.5">
                 Daily Leisure / Personal Downtime Target (minutes)
               </label>
               <input
@@ -350,9 +350,9 @@ export function OnboardingPage() {
                 required
                 value={dailyLeisureTarget}
                 onChange={(e) => setDailyLeisureTarget(parseInt(e.target.value, 10))}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818]"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020]"
               />
-              <p className="text-[11px] text-[#777777] dark:text-[#A3A3A3] mt-1">
+              <p className="text-[11px] text-[#777777] dark:text-[#BDBDBD] mt-1">
                 E.g. 120 minutes = 2 hours reserved for exercise, hobbies, reading, or downtime.
               </p>
             </div>
@@ -362,7 +362,7 @@ export function OnboardingPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="px-6 py-3 rounded-xl bg-[#080808] hover:bg-[#171717] dark:bg-[#F3F3F3] dark:hover:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#080808] font-medium text-sm transition flex items-center space-x-2 disabled:opacity-50 active:scale-[0.99]"
+              className="px-6 py-3 rounded-xl bg-[#080808] hover:bg-[#171717] dark:bg-[#F5F5F5] dark:hover:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#181818] font-medium text-sm transition flex items-center space-x-2 disabled:opacity-50 active:scale-[0.99]"
             >
               {submitting ? (
                 <>

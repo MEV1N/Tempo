@@ -13,14 +13,14 @@ export function AppLoadingScreen({
   onRetry?: () => void;
 }) {
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] flex items-center justify-center p-6 select-none transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#181818] text-[#080808] dark:text-[#F5F5F5] flex items-center justify-center p-6 select-none transition-colors">
       {error ? (
         <div className="flex flex-col items-center text-center space-y-3 max-w-sm">
-          <p className="text-xs text-[#777777] dark:text-[#858585]">{error}</p>
+          <p className="text-xs text-[#777777] dark:text-[#929292]">{error}</p>
           {onRetry && (
             <button
               onClick={onRetry}
-              className="px-4 py-2 bg-[#080808] dark:bg-[#252525] hover:bg-[#171717] dark:hover:bg-[#303030] text-[#FFFFFF] dark:text-[#F2F2F2] border border-transparent dark:border-[#353535] text-xs font-semibold rounded-xl transition shadow-xs"
+              className="px-4 py-2 bg-[#080808] dark:bg-[#282828] hover:bg-[#171717] dark:hover:bg-[#303030] text-[#FFFFFF] dark:text-[#F5F5F5] border border-transparent dark:border-[#383838] text-xs font-semibold rounded-xl transition shadow-xs"
             >
               Retry Connection
             </button>
@@ -33,7 +33,7 @@ export function AppLoadingScreen({
             alt="Tempo loading animation"
             size={76}
             eager
-            fallback={<Clock className="w-8 h-8 animate-spin text-[#080808] dark:text-[#F2F2F2]" />}
+            fallback={<Clock className="w-8 h-8 animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
           />
         </div>
       )}

@@ -88,10 +88,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const root = document.documentElement;
     if (resolved === 'dark') {
       root.classList.add('dark');
-      root.style.backgroundColor = '#101010';
-      root.style.color = '#F2F2F2';
+      root.style.backgroundColor = '#181818';
+      root.style.color = '#F5F5F5';
       if (document.body) {
         document.body.classList.add('dark');
+        document.body.style.backgroundColor = '#181818';
+        document.body.style.color = '#F5F5F5';
       }
     } else {
       root.classList.remove('dark');
@@ -99,6 +101,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       root.style.color = '#080808';
       if (document.body) {
         document.body.classList.remove('dark');
+        document.body.style.backgroundColor = '#FAFAFA';
+        document.body.style.color = '#080808';
       }
     }
   }, []);

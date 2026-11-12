@@ -146,7 +146,7 @@ export function ScheduleDesktop(props: UseScheduleReturn) {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] font-interface transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#181818] text-[#080808] dark:text-[#F5F5F5] font-interface transition-colors">
       <Navbar />
 
       <div className="md:pl-64 flex flex-col min-h-screen">
@@ -392,32 +392,32 @@ export function ScheduleDesktop(props: UseScheduleReturn) {
               </div>
 
               {loading || generating ? (
-                <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2A2A2A] rounded-2xl flex flex-col items-center justify-center space-y-3 shadow-xs">
+                <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl flex flex-col items-center justify-center space-y-3 shadow-xs">
                   <TempoAnimation
                     name="clock"
                     alt="Schedule clock animation"
                     size={64}
                     eager
-                    fallback={<Clock className="w-8 h-8 mx-auto animate-spin text-[#080808] dark:text-[#F3F3F3]" />}
+                    fallback={<Clock className="w-8 h-8 mx-auto animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
                   />
-                  <p className="text-xs font-semibold text-[#080808] dark:text-[#F3F3F3]">
+                  <p className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">
                     {generating ? 'Calculating optimized schedule...' : `Loading schedule for ${targetDate}...`}
                   </p>
                 </div>
               ) : !schedule || schedule.blocks.length === 0 ? (
-                <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2A2A2A] rounded-2xl space-y-3">
-                  <Sparkles className="w-8 h-8 text-[#080808] dark:text-[#F3F3F3] mx-auto opacity-40" />
-                  <h3 className="text-sm font-semibold text-[#080808] dark:text-[#F3F3F3]">
+                <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl space-y-3">
+                  <Sparkles className="w-8 h-8 text-[#080808] dark:text-[#F5F5F5] mx-auto opacity-40" />
+                  <h3 className="text-sm font-semibold text-[#080808] dark:text-[#F5F5F5]">
                     No schedule generated yet
                   </h3>
-                  <p className="text-xs text-[#777777] dark:text-[#A3A3A3] max-w-md mx-auto">
+                  <p className="text-xs text-[#777777] dark:text-[#BDBDBD] max-w-md mx-auto">
                     Tempo uses your college timetable, fixed events, personal routines, and task
                     deadlines to construct a balanced plan.
                   </p>
                   <button
                     onClick={() => handleGenerate(false)}
                     disabled={generating}
-                    className="mt-2 px-4 py-2 bg-[#080808] dark:bg-[#F3F3F3] hover:bg-[#171717] dark:hover:bg-[#E5E5E5] text-[#FFFFFF] dark:text-[#080808] text-xs font-semibold rounded-xl shadow-xs transition"
+                    className="mt-2 px-4 py-2 bg-[#080808] dark:bg-[#F5F5F5] hover:bg-[#171717] dark:hover:bg-[#E5E5E5] text-[#FFFFFF] dark:text-[#181818] text-xs font-semibold rounded-xl shadow-xs transition"
                   >
                     {generating ? 'Calculating...' : "Generate Today's Schedule"}
                   </button>
@@ -440,16 +440,16 @@ export function ScheduleDesktop(props: UseScheduleReturn) {
                         key={block.id}
                         className={`p-3.5 rounded-xl border ${
                           isNow
-                            ? 'border-[#080808] dark:border-[#F3F3F3] ring-2 ring-[#080808]/20 dark:ring-[#F3F3F3]/20 shadow-xs bg-[#FAFAFA] dark:bg-[#202020]'
+                            ? 'border-[#080808] dark:border-[#F5F5F5] ring-2 ring-[#080808]/20 dark:ring-[#F5F5F5]/20 shadow-xs bg-[#FAFAFA] dark:bg-[#202020]'
                             : `${style.border} ${style.bg}`
                         } transition hover:shadow-xs group`}
                       >
                         <div className="flex items-start gap-3">
                           <div className="w-24 text-right flex-shrink-0 pt-0.5">
-                            <p className="text-xs font-mono font-semibold text-[#080808] dark:text-[#F3F3F3]">
+                            <p className="text-xs font-mono font-semibold text-[#080808] dark:text-[#F5F5F5]">
                               {formatTimeRange(block.startTime, block.endTime)}
                             </p>
-                            <p className="text-[10px] text-[#777777] dark:text-[#888888]">
+                            <p className="text-[10px] text-[#777777] dark:text-[#929292]">
                               {formatMinutes(block.durationMinutes)}
                             </p>
                           </div>
@@ -460,7 +460,7 @@ export function ScheduleDesktop(props: UseScheduleReturn) {
                                 name="tea"
                                 alt="Tea break relaxation animation"
                                 size={20}
-                                fallback={<Coffee className="w-4 h-4 text-[#777777] dark:text-[#A3A3A3]" />}
+                                fallback={<Coffee className="w-4 h-4 text-[#777777] dark:text-[#BDBDBD]" />}
                               />
                             ) : (
                               style.icon

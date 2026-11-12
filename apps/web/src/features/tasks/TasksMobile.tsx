@@ -49,7 +49,7 @@ export function TasksMobile(props: UseTasksReturn) {
   } = props;
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] font-interface pb-28 transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#181818] text-[#080808] dark:text-[#F5F5F5] font-interface pb-28 transition-colors">
       <Navbar />
 
       <main className="max-w-xl mx-auto px-5 py-5 space-y-3.5">
@@ -234,15 +234,15 @@ export function TasksMobile(props: UseTasksReturn) {
 
         {/* 5. Clean Unified Task List */}
         {loading ? (
-          <div className="py-6 px-4 bg-[#FFFFFF] dark:bg-[#181818] border border-[#EAEAEA] dark:border-[#2A2A2A] rounded-2xl flex flex-col items-center justify-center space-y-2 text-center shadow-xs">
+          <div className="py-6 px-4 bg-[#FFFFFF] dark:bg-[#181818] border border-[#EAEAEA] dark:border-[#383838] rounded-2xl flex flex-col items-center justify-center space-y-2 text-center shadow-xs">
             <MobileAnimation
               name="tasks"
               alt="Tasks notebook animation"
               size={56}
               eager
-              fallback={<Clock className="w-5 h-5 animate-spin text-[#080808] dark:text-[#F3F3F3]" />}
+              fallback={<Clock className="w-5 h-5 animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
             />
-            <p className="text-xs font-semibold text-[#080808] dark:text-[#F3F3F3]">Loading your tasks...</p>
+            <p className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">Loading your tasks...</p>
           </div>
         ) : filteredTasks.length === 0 ? (
           <div className="py-8 text-center bg-[#FFFFFF] border border-[#D9D9D9] rounded-2xl space-y-3 px-4 shadow-2xs">

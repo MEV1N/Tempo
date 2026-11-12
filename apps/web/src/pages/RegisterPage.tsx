@@ -51,19 +51,19 @@ export function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 max-w-full overflow-x-hidden">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#181818] text-[#080808] dark:text-[#F5F5F5] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 max-w-full overflow-x-hidden">
       <div className="w-full max-w-md mx-auto text-center">
         <TempoLogo size="xl" showTagline={true} className="items-center" />
-        <h2 className="mt-6 text-xl font-semibold tracking-tight text-[#080808] dark:text-[#F2F2F2]">
+        <h2 className="mt-6 text-xl font-semibold tracking-tight text-[#080808] dark:text-[#F5F5F5]">
           Begin your journey
         </h2>
-        <p className="mt-1 font-handwritten text-xl text-[#777777] dark:text-[#858585]">find your daily rhythm</p>
+        <p className="mt-1 font-handwritten text-xl text-[#777777] dark:text-[#929292]">find your daily rhythm</p>
       </div>
 
       <div className="mt-8 w-full max-w-md mx-auto">
-        <div className="bg-[#FFFFFF] dark:bg-[#1D1D1D] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+        <div className="bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
           {error && (
-            <div className="p-3.5 rounded-xl bg-[#F5F5F5] dark:bg-[#252525] border border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F2F2F2] text-xs flex items-start space-x-2.5">
+            <div className="p-3.5 rounded-xl bg-[#F5F5F5] dark:bg-[#282828] border border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F5F5F5] text-xs flex items-start space-x-2.5">
               <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
               <span className="leading-relaxed">{error}</span>
             </div>
@@ -73,7 +73,7 @@ export function RegisterPage() {
           <div>
             <a
               href="/api/auth/google"
-              className="w-full py-2.5 px-4 rounded-xl bg-[#FFFFFF] dark:bg-[#252525] hover:bg-[#F5F5F5] dark:hover:bg-[#292929] text-[#080808] dark:text-[#F2F2F2] font-medium text-xs sm:text-sm border border-[#D9D9D9] dark:border-[#353535] transition flex items-center justify-center space-x-2.5 active:scale-[0.99]"
+              className="w-full py-2.5 px-4 rounded-xl bg-[#FFFFFF] dark:bg-[#282828] hover:bg-[#F5F5F5] dark:hover:bg-[#282828] text-[#080808] dark:text-[#F5F5F5] font-medium text-xs sm:text-sm border border-[#D9D9D9] dark:border-[#383838] transition flex items-center justify-center space-x-2.5 active:scale-[0.99]"
             >
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                 <path
@@ -98,28 +98,28 @@ export function RegisterPage() {
           </div>
 
           <div className="relative flex items-center py-0.5">
-            <div className="flex-1 border-t border-[#D9D9D9] dark:border-[#2A2A2A]" />
-            <span className="shrink-0 bg-[#FFFFFF] dark:bg-[#181818] px-3 text-[11px] font-medium tracking-wider text-[#777777] dark:text-[#A3A3A3] uppercase">
+            <div className="flex-1 border-t border-[#D9D9D9] dark:border-[#383838]" />
+            <span className="shrink-0 bg-[#FFFFFF] dark:bg-[#181818] px-3 text-[11px] font-medium tracking-wider text-[#777777] dark:text-[#BDBDBD] uppercase">
               Or with email
             </span>
-            <div className="flex-1 border-t border-[#D9D9D9] dark:border-[#2A2A2A]" />
+            <div className="flex-1 border-t border-[#D9D9D9] dark:border-[#383838]" />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">Full Name</label>
+              <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD] mb-1.5">Full Name</label>
               <input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Alex Morgan"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] placeholder-[#777777] dark:placeholder-[#666666] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818] transition"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] placeholder-[#777777] dark:placeholder-[#929292] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020] transition"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">
+              <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD] mb-1.5">
                 Email Address
               </label>
               <input
@@ -128,24 +128,24 @@ export function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="alex@example.com"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] placeholder-[#777777] dark:placeholder-[#666666] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818] transition"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] placeholder-[#777777] dark:placeholder-[#929292] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020] transition"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">Password</label>
+              <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD] mb-1.5">Password</label>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 8 characters"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] placeholder-[#777777] dark:placeholder-[#666666] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818] transition"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] placeholder-[#777777] dark:placeholder-[#929292] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020] transition"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">
+              <label className="block text-xs font-medium text-[#404040] dark:text-[#BDBDBD] mb-1.5">
                 Confirm Password
               </label>
               <input
@@ -154,14 +154,14 @@ export function RegisterPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Repeat password"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] placeholder-[#777777] dark:placeholder-[#666666] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818] transition"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5] placeholder-[#777777] dark:placeholder-[#929292] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#929292] focus:bg-[#FFFFFF] dark:focus:bg-[#202020] transition"
               />
             </div>
 
             <button
               type="submit"
               disabled={submitting}
-              className="w-full mt-2 py-2.5 px-4 rounded-xl bg-[#080808] hover:bg-[#171717] dark:bg-[#F3F3F3] dark:hover:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#080808] font-medium text-sm transition flex items-center justify-center space-x-2 disabled:opacity-50 active:scale-[0.99]"
+              className="w-full mt-2 py-2.5 px-4 rounded-xl bg-[#080808] hover:bg-[#171717] dark:bg-[#F5F5F5] dark:hover:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#181818] font-medium text-sm transition flex items-center justify-center space-x-2 disabled:opacity-50 active:scale-[0.99]"
             >
               {submitting ? (
                 <>
@@ -177,11 +177,11 @@ export function RegisterPage() {
             </button>
           </form>
 
-          <div className="pt-4 border-t border-[#EFEFEF] dark:border-[#2A2A2A] text-center text-xs text-[#777777] dark:text-[#A3A3A3]">
+          <div className="pt-4 border-t border-[#EFEFEF] dark:border-[#383838] text-center text-xs text-[#777777] dark:text-[#BDBDBD]">
             Already have an account?{' '}
             <Link
               to="/login"
-              className="text-[#080808] dark:text-[#F3F3F3] font-semibold underline hover:opacity-80 transition"
+              className="text-[#080808] dark:text-[#F5F5F5] font-semibold underline hover:opacity-80 transition"
             >
               Sign in
             </Link>

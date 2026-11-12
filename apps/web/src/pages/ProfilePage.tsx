@@ -58,17 +58,17 @@ export function ProfilePage() {
   const timezone = preference?.timezone || 'Asia/Kolkata';
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] font-sans pb-28 md:pb-12 transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#181818] text-[#080808] dark:text-[#F5F5F5] font-sans pb-28 md:pb-12 transition-colors">
       <Navbar />
 
       <div className="md:pl-64 flex flex-col min-h-screen">
         <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
           {/* Personal Information & Header Card */}
-          <div className="bg-white dark:bg-[#1D1D1D] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#EFEFEF] dark:border-[#353535]">
+          <div className="bg-white dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#EFEFEF] dark:border-[#383838]">
               {/* Avatar & User Details */}
               <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#080808] dark:bg-[#252525] text-white dark:text-[#F2F2F2] flex items-center justify-center font-black text-2xl sm:text-3xl overflow-hidden border-2 border-[#D9D9D9] dark:border-[#353535] shrink-0">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#080808] dark:bg-[#282828] text-white dark:text-[#F5F5F5] flex items-center justify-center font-black text-2xl sm:text-3xl overflow-hidden border-2 border-[#D9D9D9] dark:border-[#383838] shrink-0">
                   {user?.avatarUrl ? (
                     <img
                       src={user.avatarUrl}
@@ -82,21 +82,21 @@ export function ProfilePage() {
 
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h1 className="text-xl sm:text-2xl font-black text-[#080808] dark:text-[#F2F2F2] tracking-tight">
+                    <h1 className="text-xl sm:text-2xl font-black text-[#080808] dark:text-[#F5F5F5] tracking-tight">
                       {user?.name || 'Tempo User'}
                     </h1>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-[#777777] dark:text-[#858585] font-medium">{user?.email}</p>
+                  <p className="text-xs sm:text-sm text-[#777777] dark:text-[#929292] font-medium">{user?.email}</p>
 
-                  <div className="flex items-center space-x-3 text-xs text-[#777777] dark:text-[#858585] pt-0.5">
+                  <div className="flex items-center space-x-3 text-xs text-[#777777] dark:text-[#929292] pt-0.5">
                     <span className="flex items-center gap-1">
-                      <Globe className="w-3.5 h-3.5 text-[#080808] dark:text-[#F2F2F2]" />
+                      <Globe className="w-3.5 h-3.5 text-[#080808] dark:text-[#F5F5F5]" />
                       <span>{timezone}</span>
                     </span>
                     <span>•</span>
                     <span className="flex items-center gap-1 font-mono">
-                      <Clock className="w-3.5 h-3.5 text-[#080808] dark:text-[#F2F2F2]" />
+                      <Clock className="w-3.5 h-3.5 text-[#080808] dark:text-[#F5F5F5]" />
                       <span>12-Hour Active</span>
                     </span>
                   </div>
@@ -107,7 +107,7 @@ export function ProfilePage() {
               <div className="flex items-center space-x-2 self-start sm:self-auto">
                 <button
                   onClick={handleOpenEdit}
-                  className="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl border border-[#D9D9D9] dark:border-[#353535] bg-[#FAFAFA] dark:bg-[#252525] hover:bg-white dark:hover:bg-[#292929] text-xs font-semibold text-[#080808] dark:text-[#F2F2F2] transition shadow-2xs min-h-[44px]"
+                  className="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl border border-[#D9D9D9] dark:border-[#383838] bg-[#FAFAFA] dark:bg-[#282828] hover:bg-white dark:hover:bg-[#282828] text-xs font-semibold text-[#080808] dark:text-[#F5F5F5] transition shadow-2xs min-h-[44px]"
                   aria-label="Edit Profile"
                 >
                   <Edit3 className="w-3.5 h-3.5" />
@@ -116,7 +116,7 @@ export function ProfilePage() {
 
                 <Link
                   to="/settings"
-                  className="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#080808] dark:bg-[#F5F5F5] hover:bg-[#222222] dark:hover:bg-[#E5E5E5] text-xs font-semibold text-white dark:text-[#101010] transition shadow-2xs min-h-[44px]"
+                  className="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#080808] dark:bg-[#F5F5F5] hover:bg-[#222222] dark:hover:bg-[#E5E5E5] text-xs font-semibold text-white dark:text-[#181818] transition shadow-2xs min-h-[44px]"
                   aria-label="Open Settings"
                   title="Configure Tempo Settings"
                 >
@@ -131,14 +131,14 @@ export function ProfilePage() {
           <div className="space-y-3">
             <div className="flex items-center justify-between px-1">
               <div>
-                <h2 className="text-base font-bold text-[#080808] dark:text-[#F2F2F2]">Personal Activity Snapshot</h2>
-                <p className="text-xs text-[#777777] dark:text-[#858585]">
+                <h2 className="text-base font-bold text-[#080808] dark:text-[#F5F5F5]">Personal Activity Snapshot</h2>
+                <p className="text-xs text-[#777777] dark:text-[#929292]">
                   Your 365-day productivity heatmap and focus consistency.
                 </p>
               </div>
               <Link
                 to="/analytics"
-                className="text-xs font-semibold text-[#080808] dark:text-[#F2F2F2] hover:underline inline-flex items-center gap-1"
+                className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5] hover:underline inline-flex items-center gap-1"
               >
                 <span>Full Analytics</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -155,9 +155,9 @@ export function ProfilePage() {
               alt="Tea cup with rising steam"
               size={54}
               className="opacity-90"
-              fallback={<Coffee className="w-7 h-7 text-[#777777] dark:text-[#858585]" />}
+              fallback={<Coffee className="w-7 h-7 text-[#777777] dark:text-[#929292]" />}
             />
-            <p className="font-handwritten text-lg text-[#777777] dark:text-[#858585]">
+            <p className="font-handwritten text-lg text-[#777777] dark:text-[#929292]">
               find your rhythm
             </p>
           </div>
@@ -165,15 +165,15 @@ export function ProfilePage() {
           {/* Compact Edit Profile Modal */}
           {isEditModalOpen && (
             <div className="fixed inset-0 z-50 bg-[#000000]/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-              <div className="bg-white dark:bg-[#1D1D1D] border-t sm:border border-[#D9D9D9] dark:border-[#353535] rounded-t-3xl sm:rounded-2xl max-w-md w-full p-5 sm:p-6 space-y-4 shadow-xl max-h-[85vh] overflow-y-auto">
-                <div className="flex items-center justify-between pb-3 border-b border-[#EFEFEF] dark:border-[#353535]">
-                  <h3 className="text-sm font-bold text-[#080808] dark:text-[#F2F2F2] flex items-center gap-2">
-                    <Edit3 className="w-4 h-4 text-[#080808] dark:text-[#F2F2F2]" />
+              <div className="bg-white dark:bg-[#181818] border-t sm:border border-[#D9D9D9] dark:border-[#383838] rounded-t-3xl sm:rounded-2xl max-w-md w-full p-5 sm:p-6 space-y-4 shadow-xl max-h-[85vh] overflow-y-auto">
+                <div className="flex items-center justify-between pb-3 border-b border-[#EFEFEF] dark:border-[#383838]">
+                  <h3 className="text-sm font-bold text-[#080808] dark:text-[#F5F5F5] flex items-center gap-2">
+                    <Edit3 className="w-4 h-4 text-[#080808] dark:text-[#F5F5F5]" />
                     <span>Edit Profile Details</span>
                   </h3>
                   <button
                     onClick={() => setIsEditModalOpen(false)}
-                    className="p-1.5 text-[#777777] dark:text-[#858585] hover:text-[#080808] dark:hover:text-[#F5F5F5] rounded-lg transition"
+                    className="p-1.5 text-[#777777] dark:text-[#929292] hover:text-[#080808] dark:hover:text-[#F5F5F5] rounded-lg transition"
                     aria-label="Close"
                   >
                     <X className="w-4 h-4" />
@@ -199,38 +199,38 @@ export function ProfilePage() {
 
                 <form onSubmit={handleSaveProfile} className="space-y-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-[#080808] dark:text-[#F2F2F2]">Full Name</label>
+                    <label className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">Full Name</label>
                     <input
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Your full name"
                       required
-                      className="w-full px-3 py-2 text-xs rounded-xl border border-[#D9D9D9] dark:border-[#353535] bg-[#FAFAFA] dark:bg-[#191919] text-[#080808] dark:text-[#F2F2F2] focus:bg-white dark:focus:bg-[#191919] focus:outline-hidden min-h-[44px]"
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-[#D9D9D9] dark:border-[#383838] bg-[#FAFAFA] dark:bg-[#202020] text-[#080808] dark:text-[#F5F5F5] focus:bg-white dark:focus:bg-[#202020] focus:outline-hidden min-h-[44px]"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-[#080808] dark:text-[#F2F2F2]">Email Address</label>
+                    <label className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">Email Address</label>
                     <input
                       type="email"
                       value={user?.email || ''}
                       disabled
-                      className="w-full px-3 py-2 text-xs rounded-xl border border-[#D9D9D9] dark:border-[#353535] bg-[#F5F5F5] dark:bg-[#252525] text-[#777777] dark:text-[#666666] cursor-not-allowed min-h-[44px]"
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-[#D9D9D9] dark:border-[#383838] bg-[#F5F5F5] dark:bg-[#282828] text-[#777777] dark:text-[#929292] cursor-not-allowed min-h-[44px]"
                     />
-                    <p className="text-[10px] text-[#777777] dark:text-[#858585]">
+                    <p className="text-[10px] text-[#777777] dark:text-[#929292]">
                       Email address cannot be changed directly.
                     </p>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-[#080808] dark:text-[#F2F2F2]">Avatar Image URL</label>
+                    <label className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">Avatar Image URL</label>
                     <input
                       type="url"
                       value={avatarUrl}
                       onChange={(e) => setAvatarUrl(e.target.value)}
                       placeholder="https://example.com/avatar.jpg"
-                      className="w-full px-3 py-2 text-xs rounded-xl border border-[#D9D9D9] dark:border-[#353535] bg-[#FAFAFA] dark:bg-[#191919] text-[#080808] dark:text-[#F2F2F2] focus:bg-white dark:focus:bg-[#191919] focus:outline-hidden min-h-[44px]"
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-[#D9D9D9] dark:border-[#383838] bg-[#FAFAFA] dark:bg-[#202020] text-[#080808] dark:text-[#F5F5F5] focus:bg-white dark:focus:bg-[#202020] focus:outline-hidden min-h-[44px]"
                     />
                   </div>
 
@@ -238,14 +238,14 @@ export function ProfilePage() {
                     <button
                       type="button"
                       onClick={() => setIsEditModalOpen(false)}
-                      className="px-4 py-2 rounded-xl border border-[#D9D9D9] dark:border-[#353535] text-xs font-semibold text-[#777777] dark:text-[#858585] hover:bg-[#F5F5F5] dark:hover:bg-[#262626] min-h-[44px]"
+                      className="px-4 py-2 rounded-xl border border-[#D9D9D9] dark:border-[#383838] text-xs font-semibold text-[#777777] dark:text-[#929292] hover:bg-[#F5F5F5] dark:hover:bg-[#282828] min-h-[44px]"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={saving}
-                      className="px-4 py-2 rounded-xl bg-[#080808] dark:bg-[#F5F5F5] text-white dark:text-[#101010] text-xs font-semibold hover:bg-[#222222] dark:hover:bg-[#E5E5E5] transition min-h-[44px]"
+                      className="px-4 py-2 rounded-xl bg-[#080808] dark:bg-[#F5F5F5] text-white dark:text-[#181818] text-xs font-semibold hover:bg-[#222222] dark:hover:bg-[#E5E5E5] transition min-h-[44px]"
                     >
                       {saving ? (
                         <div className="flex items-center space-x-1.5">

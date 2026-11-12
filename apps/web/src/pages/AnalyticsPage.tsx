@@ -174,30 +174,30 @@ export function AnalyticsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] font-interface transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#181818] text-[#080808] dark:text-[#F5F5F5] font-interface transition-colors">
       <Navbar />
 
       <div className="md:pl-64 flex flex-col min-h-screen">
         <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-28 md:pb-12 space-y-6">
           {/* Page Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#D9D9D9] dark:border-[#353535] pb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#D9D9D9] dark:border-[#383838] pb-6">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#080808] dark:text-[#F2F2F2] tracking-tight flex items-baseline gap-2">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#080808] dark:text-[#F5F5F5] tracking-tight flex items-baseline gap-2">
                 <span>Activity & Productivity</span>
-                <span className="font-handwritten text-2xl sm:text-3xl font-normal text-[#777777] dark:text-[#858585]">
+                <span className="font-handwritten text-2xl sm:text-3xl font-normal text-[#777777] dark:text-[#929292]">
                   insights
                 </span>
               </h1>
-              <p className="text-[#777777] dark:text-[#858585] text-xs sm:text-sm mt-1">
+              <p className="text-[#777777] dark:text-[#929292] text-xs sm:text-sm mt-1">
                 Log focused sessions, inspect planned vs. actual schedule execution, and review productivity trends.
               </p>
             </div>
 
             <div className="flex items-center gap-3">
-              {loading && <span className="text-xs text-[#777777] dark:text-[#858585] animate-pulse">Syncing...</span>}
+              {loading && <span className="text-xs text-[#777777] dark:text-[#929292] animate-pulse">Syncing...</span>}
               <button
                 onClick={handleOpenAddModal}
-                className="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#080808] dark:bg-[#F5F5F5] hover:bg-[#171717] dark:hover:bg-[#E5E5E5] text-white dark:text-[#101010] text-xs font-medium shadow-sm transition"
+                className="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#080808] dark:bg-[#F5F5F5] hover:bg-[#171717] dark:hover:bg-[#E5E5E5] text-white dark:text-[#181818] text-xs font-medium shadow-sm transition"
               >
                 <Plus className="w-4 h-4" />
                 <span>Log Activity</span>
@@ -206,13 +206,13 @@ export function AnalyticsPage() {
           </div>
 
           {/* Tab Navigation */}
-          <div className="flex border-b border-[#D9D9D9] dark:border-[#353535] space-x-6">
+          <div className="flex border-b border-[#D9D9D9] dark:border-[#383838] space-x-6">
             <button
               onClick={() => setActiveTab('log')}
               className={`pb-3 text-xs sm:text-sm font-medium flex items-center space-x-2 border-b-2 transition ${
                 activeTab === 'log'
-                  ? 'border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F2F2F2] font-bold'
-                  : 'border-transparent text-[#777777] dark:text-[#858585] hover:text-[#080808] dark:hover:text-[#F5F5F5]'
+                  ? 'border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F5F5F5] font-bold'
+                  : 'border-transparent text-[#777777] dark:text-[#929292] hover:text-[#080808] dark:hover:text-[#F5F5F5]'
               }`}
             >
               <Clock className="w-4 h-4" />
@@ -223,8 +223,8 @@ export function AnalyticsPage() {
               onClick={() => setActiveTab('trends')}
               className={`pb-3 text-xs sm:text-sm font-medium flex items-center space-x-2 border-b-2 transition ${
                 activeTab === 'trends'
-                  ? 'border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F2F2F2] font-bold'
-                  : 'border-transparent text-[#777777] dark:text-[#858585] hover:text-[#080808] dark:hover:text-[#F5F5F5]'
+                  ? 'border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F5F5F5] font-bold'
+                  : 'border-transparent text-[#777777] dark:text-[#929292] hover:text-[#080808] dark:hover:text-[#F5F5F5]'
               }`}
             >
               <BarChart3 className="w-4 h-4" />

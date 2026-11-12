@@ -41,7 +41,7 @@ export function CalendarMobile(props: UseCalendarReturn) {
   } = props;
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] font-interface pb-28 transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#181818] text-[#080808] dark:text-[#F5F5F5] font-interface pb-28 transition-colors">
       <Navbar />
 
       <main className="max-w-xl mx-auto px-5 py-5 space-y-3.5">

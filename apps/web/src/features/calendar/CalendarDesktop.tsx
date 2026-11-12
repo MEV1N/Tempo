@@ -39,7 +39,7 @@ export function CalendarDesktop(props: UseCalendarReturn) {
   } = props;
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] font-interface transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#181818] text-[#080808] dark:text-[#F5F5F5] font-interface transition-colors">
       <Navbar />
 
       <div className="md:pl-64 flex flex-col min-h-screen">

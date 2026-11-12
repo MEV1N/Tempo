@@ -545,7 +545,7 @@ export function SettingsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] font-sans pb-28 md:pb-12 transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#181818] text-[#080808] dark:text-[#F5F5F5] font-sans pb-28 md:pb-12 transition-colors">
       <Navbar />
 
       <div className="md:pl-64 flex flex-col min-h-screen">
@@ -1048,15 +1048,15 @@ export function SettingsPage() {
           {activeSection === 'preferences' && (
             <div className="space-y-6">
               {/* Appearance & Theme Mode Card */}
-              <div className="bg-white dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2A2A2A] rounded-2xl p-5 sm:p-6 space-y-5 shadow-xs transition-colors">
-                <div className="flex items-center justify-between pb-3 border-b border-[#EFEFEF] dark:border-[#262626]">
+              <div className="bg-white dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl p-5 sm:p-6 space-y-5 shadow-xs transition-colors">
+                <div className="flex items-center justify-between pb-3 border-b border-[#EFEFEF] dark:border-[#383838]">
                   <div className="flex items-center space-x-2">
-                    <Sun className="w-4 h-4 text-[#080808] dark:text-[#F3F3F3]" />
-                    <h3 className="text-sm font-bold text-[#080808] dark:text-[#F3F3F3]">
+                    <Sun className="w-4 h-4 text-[#080808] dark:text-[#F5F5F5]" />
+                    <h3 className="text-sm font-bold text-[#080808] dark:text-[#F5F5F5]">
                       Appearance & Theme
                     </h3>
                   </div>
-                  <span className="text-[11px] font-mono font-semibold px-2.5 py-1 rounded-full bg-[#FAFAFA] dark:bg-[#222222] border border-[#EAEAEA] dark:border-[#333333] text-[#080808] dark:text-[#F3F3F3]">
+                  <span className="text-[11px] font-mono font-semibold px-2.5 py-1 rounded-full bg-[#FAFAFA] dark:bg-[#202020] border border-[#EAEAEA] dark:border-[#383838] text-[#080808] dark:text-[#F5F5F5]">
                     Active: {resolvedTheme === 'dark' ? 'Dark Mode' : 'Light Mode'}
                   </span>
                 </div>
@@ -1069,28 +1069,28 @@ export function SettingsPage() {
                       onClick={() => setThemeMode('AUTO')}
                       className={`p-4 rounded-xl border text-left transition relative flex flex-col justify-between ${
                         themeMode === 'AUTO'
-                          ? 'border-[#080808] dark:border-[#F3F3F3] bg-[#FAFAFA] dark:bg-[#222222] ring-1 ring-[#080808] dark:ring-[#F3F3F3]'
-                          : 'border-[#D9D9D9] dark:border-[#2E2E2E] bg-white dark:bg-[#181818] hover:border-[#080808] dark:hover:border-[#555555]'
+                          ? 'border-[#080808] dark:border-[#F5F5F5] bg-[#FAFAFA] dark:bg-[#202020] ring-1 ring-[#080808] dark:ring-[#F5F5F5]'
+                          : 'border-[#D9D9D9] dark:border-[#383838] bg-white dark:bg-[#181818] hover:border-[#080808] dark:hover:border-[#555555]'
                       }`}
                     >
                       <div>
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center space-x-1.5">
-                            <Sun className="w-3.5 h-3.5 text-[#080808] dark:text-[#F3F3F3]" />
-                            <span className="text-xs text-[#777777] dark:text-[#888888]">/</span>
-                            <Moon className="w-3.5 h-3.5 text-[#080808] dark:text-[#F3F3F3]" />
+                            <Sun className="w-3.5 h-3.5 text-[#080808] dark:text-[#F5F5F5]" />
+                            <span className="text-xs text-[#777777] dark:text-[#929292]">/</span>
+                            <Moon className="w-3.5 h-3.5 text-[#080808] dark:text-[#F5F5F5]" />
                           </div>
                           {themeMode === 'AUTO' && (
-                            <span className="w-2 h-2 rounded-full bg-[#080808] dark:bg-[#F3F3F3]" />
+                            <span className="w-2 h-2 rounded-full bg-[#080808] dark:bg-[#F5F5F5]" />
                           )}
                         </div>
-                        <p className="text-sm font-bold text-[#080808] dark:text-[#F3F3F3]">Auto</p>
-                        <p className="text-[11px] text-[#777777] dark:text-[#A3A3A3] mt-1 leading-relaxed">
+                        <p className="text-sm font-bold text-[#080808] dark:text-[#F5F5F5]">Auto</p>
+                        <p className="text-[11px] text-[#777777] dark:text-[#BDBDBD] mt-1 leading-relaxed">
                           Follows local rhythm. Light at 6:00 AM, Dark at 6:00 PM.
                         </p>
                       </div>
-                      <div className="mt-3 pt-2 border-t border-[#EAEAEA] dark:border-[#333333]">
-                        <span className="text-[10px] font-mono text-[#080808] dark:text-[#F3F3F3] font-medium">
+                      <div className="mt-3 pt-2 border-t border-[#EAEAEA] dark:border-[#383838]">
+                        <span className="text-[10px] font-mono text-[#080808] dark:text-[#F5F5F5] font-medium">
                           {themeMode === 'AUTO'
                             ? `Currently ${resolvedTheme}`
                             : 'Automatic schedule'}
@@ -1104,24 +1104,24 @@ export function SettingsPage() {
                       onClick={() => setThemeMode('LIGHT')}
                       className={`p-4 rounded-xl border text-left transition relative flex flex-col justify-between ${
                         themeMode === 'LIGHT'
-                          ? 'border-[#080808] dark:border-[#F3F3F3] bg-[#FAFAFA] dark:bg-[#222222] ring-1 ring-[#080808] dark:ring-[#F3F3F3]'
-                          : 'border-[#D9D9D9] dark:border-[#2E2E2E] bg-white dark:bg-[#181818] hover:border-[#080808] dark:hover:border-[#555555]'
+                          ? 'border-[#080808] dark:border-[#F5F5F5] bg-[#FAFAFA] dark:bg-[#202020] ring-1 ring-[#080808] dark:ring-[#F5F5F5]'
+                          : 'border-[#D9D9D9] dark:border-[#383838] bg-white dark:bg-[#181818] hover:border-[#080808] dark:hover:border-[#555555]'
                       }`}
                     >
                       <div>
                         <div className="flex items-center justify-between mb-2">
-                          <Sun className="w-4 h-4 text-[#080808] dark:text-[#F3F3F3]" />
+                          <Sun className="w-4 h-4 text-[#080808] dark:text-[#F5F5F5]" />
                           {themeMode === 'LIGHT' && (
-                            <span className="w-2 h-2 rounded-full bg-[#080808] dark:bg-[#F3F3F3]" />
+                            <span className="w-2 h-2 rounded-full bg-[#080808] dark:bg-[#F5F5F5]" />
                           )}
                         </div>
-                        <p className="text-sm font-bold text-[#080808] dark:text-[#F3F3F3]">Light</p>
-                        <p className="text-[11px] text-[#777777] dark:text-[#A3A3A3] mt-1 leading-relaxed">
+                        <p className="text-sm font-bold text-[#080808] dark:text-[#F5F5F5]">Light</p>
+                        <p className="text-[11px] text-[#777777] dark:text-[#BDBDBD] mt-1 leading-relaxed">
                           Crisp off-white surfaces with high contrast ink typography.
                         </p>
                       </div>
-                      <div className="mt-3 pt-2 border-t border-[#EAEAEA] dark:border-[#333333]">
-                        <span className="text-[10px] font-mono text-[#080808] dark:text-[#F3F3F3] font-medium">
+                      <div className="mt-3 pt-2 border-t border-[#EAEAEA] dark:border-[#383838]">
+                        <span className="text-[10px] font-mono text-[#080808] dark:text-[#F5F5F5] font-medium">
                           Always daytime
                         </span>
                       </div>
@@ -1133,24 +1133,24 @@ export function SettingsPage() {
                       onClick={() => setThemeMode('DARK')}
                       className={`p-4 rounded-xl border text-left transition relative flex flex-col justify-between ${
                         themeMode === 'DARK'
-                          ? 'border-[#080808] dark:border-[#F3F3F3] bg-[#FAFAFA] dark:bg-[#222222] ring-1 ring-[#080808] dark:ring-[#F3F3F3]'
-                          : 'border-[#D9D9D9] dark:border-[#2E2E2E] bg-white dark:bg-[#181818] hover:border-[#080808] dark:hover:border-[#555555]'
+                          ? 'border-[#080808] dark:border-[#F5F5F5] bg-[#FAFAFA] dark:bg-[#202020] ring-1 ring-[#080808] dark:ring-[#F5F5F5]'
+                          : 'border-[#D9D9D9] dark:border-[#383838] bg-white dark:bg-[#181818] hover:border-[#080808] dark:hover:border-[#555555]'
                       }`}
                     >
                       <div>
                         <div className="flex items-center justify-between mb-2">
-                          <Moon className="w-4 h-4 text-[#080808] dark:text-[#F3F3F3]" />
+                          <Moon className="w-4 h-4 text-[#080808] dark:text-[#F5F5F5]" />
                           {themeMode === 'DARK' && (
-                            <span className="w-2 h-2 rounded-full bg-[#080808] dark:bg-[#F3F3F3]" />
+                            <span className="w-2 h-2 rounded-full bg-[#080808] dark:bg-[#F5F5F5]" />
                           )}
                         </div>
-                        <p className="text-sm font-bold text-[#080808] dark:text-[#F3F3F3]">Dark</p>
-                        <p className="text-[11px] text-[#777777] dark:text-[#A3A3A3] mt-1 leading-relaxed">
+                        <p className="text-sm font-bold text-[#080808] dark:text-[#F5F5F5]">Dark</p>
+                        <p className="text-[11px] text-[#777777] dark:text-[#BDBDBD] mt-1 leading-relaxed">
                           Layered charcoal & deep grey tones to reduce eye fatigue.
                         </p>
                       </div>
-                      <div className="mt-3 pt-2 border-t border-[#EAEAEA] dark:border-[#333333]">
-                        <span className="text-[10px] font-mono text-[#080808] dark:text-[#F3F3F3] font-medium">
+                      <div className="mt-3 pt-2 border-t border-[#EAEAEA] dark:border-[#383838]">
+                        <span className="text-[10px] font-mono text-[#080808] dark:text-[#F5F5F5] font-medium">
                           Always nighttime
                         </span>
                       </div>
@@ -1158,7 +1158,7 @@ export function SettingsPage() {
                   </div>
 
                   {/* Informational description */}
-                  <p className="text-[11px] text-[#777777] dark:text-[#888888] pt-1">
+                  <p className="text-[11px] text-[#777777] dark:text-[#929292] pt-1">
                     {themeMode === 'AUTO'
                       ? `Auto switches based on your configured timezone (${timezone}): 6:00 AM – 6:00 PM uses Light mode, 6:00 PM – 6:00 AM uses Dark mode.`
                       : `Fixed appearance locked to ${themeMode.toLowerCase()} mode across all devices.`}
