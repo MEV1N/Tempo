@@ -37,7 +37,7 @@ export function DashboardDesktop(props: UseDashboardReturn) {
   const isDaytime = resolvedTheme === 'light';
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F5F5F5] font-interface transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] font-interface transition-colors">
       <Navbar />
 
       <div className="md:pl-64 flex flex-col min-h-screen">
@@ -48,13 +48,13 @@ export function DashboardDesktop(props: UseDashboardReturn) {
               <p className="text-[11px] font-semibold text-[#777777] dark:text-[#858585] uppercase tracking-wider">
                 {todayFormatted}
               </p>
-              <h1 className="font-brand text-4xl font-bold text-[#080808] dark:text-[#F5F5F5] tracking-tight">
+              <h1 className="font-brand text-4xl font-bold text-[#080808] dark:text-[#F2F2F2] tracking-tight">
                 Hello, {user?.name ? user.name.split(' ')[0] : 'there'}.
               </h1>
             </div>
 
             <div
-              className="shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#EAEAEA] dark:border-[#353535] p-1.5 shadow-xs"
+              className="shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl bg-[#FFFFFF] dark:bg-[#1D1D1D] border border-[#EAEAEA] dark:border-[#353535] p-1.5 shadow-xs"
               title={isDaytime ? 'Daytime rhythm' : 'Nighttime rhythm'}
             >
               <TempoAnimation
@@ -63,9 +63,9 @@ export function DashboardDesktop(props: UseDashboardReturn) {
                 size={40}
                 fallback={
                   isDaytime ? (
-                    <Sun className="w-6 h-6 text-[#080808] dark:text-[#F5F5F5]" />
+                    <Sun className="w-6 h-6 text-[#080808] dark:text-[#F2F2F2]" />
                   ) : (
-                    <Moon className="w-6 h-6 text-[#080808] dark:text-[#F5F5F5]" />
+                    <Moon className="w-6 h-6 text-[#080808] dark:text-[#F2F2F2]" />
                   )
                 }
               />
@@ -74,15 +74,15 @@ export function DashboardDesktop(props: UseDashboardReturn) {
 
           {/* Tomorrow's Plan Banner */}
           {planningStatus?.tomorrowPlanStatus === 'READY' && (
-            <div className="bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#080808] dark:border-[#353535] rounded-2xl p-4 flex items-center justify-between gap-3 shadow-xs">
+            <div className="bg-[#FFFFFF] dark:bg-[#1D1D1D] border border-[#080808] dark:border-[#353535] rounded-2xl p-4 flex items-center justify-between gap-3 shadow-xs">
               <div className="flex items-center space-x-3">
-                <div className="w-9 h-9 rounded-xl bg-[#080808] dark:bg-[#F5F5F5] text-[#FFFFFF] dark:text-[#101010] flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-[#080808] dark:bg-[#252525] text-[#FFFFFF] dark:text-[#F2F2F2] border border-transparent dark:border-[#353535] flex items-center justify-center shrink-0">
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#080808] dark:text-[#F5F5F5] flex items-center gap-1.5">
+                  <p className="text-xs font-bold text-[#080808] dark:text-[#F2F2F2] flex items-center gap-1.5">
                     <span>Tomorrow's Plan Ready ({planningStatus.tomorrowDate})</span>
-                    <span className="px-1.5 py-0.2 rounded text-[9px] bg-[#F5F5F5] dark:bg-[#262626] text-[#080808] dark:text-[#F5F5F5] font-semibold border border-[#D9D9D9] dark:border-[#353535]">
+                    <span className="px-1.5 py-0.2 rounded text-[9px] bg-[#F5F5F5] dark:bg-[#252525] text-[#080808] dark:text-[#F2F2F2] font-semibold border border-[#D9D9D9] dark:border-[#353535]">
                       PROPOSED
                     </span>
                   </p>
@@ -94,7 +94,7 @@ export function DashboardDesktop(props: UseDashboardReturn) {
 
               <Link
                 to="/schedule"
-                className="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#080808] dark:bg-[#F5F5F5] hover:bg-[#171717] dark:hover:bg-[#E5E5E5] text-[#FFFFFF] dark:text-[#101010] text-xs font-semibold shrink-0 transition"
+                className="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#080808] dark:bg-[#252525] hover:bg-[#171717] dark:hover:bg-[#303030] text-[#FFFFFF] dark:text-[#F2F2F2] border border-transparent dark:border-[#353535] text-xs font-semibold shrink-0 transition"
               >
                 <span>Review Schedule</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -103,7 +103,7 @@ export function DashboardDesktop(props: UseDashboardReturn) {
           )}
 
           {/* Primary Anchor Card: Next Upcoming Activity */}
-          <div className="bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#080808] dark:border-[#353535] rounded-2xl p-5 shadow-xs">
+          <div className="bg-[#FFFFFF] dark:bg-[#1D1D1D] border border-[#080808] dark:border-[#353535] rounded-2xl p-5 shadow-xs">
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-1.5 flex-1 min-w-0">
                 <span className="text-[10px] uppercase tracking-wider font-bold text-[#777777] dark:text-[#858585] block">
@@ -111,12 +111,12 @@ export function DashboardDesktop(props: UseDashboardReturn) {
                 </span>
                 {nextActivity ? (
                   <>
-                    <h2 className="text-xl font-bold text-[#080808] dark:text-[#F5F5F5] truncate">
+                    <h2 className="text-xl font-bold text-[#080808] dark:text-[#F2F2F2] truncate">
                       {nextActivity.title}
                     </h2>
-                    <div className="flex items-center space-x-3 text-xs text-[#404040] dark:text-[#B0B0B0]">
+                    <div className="flex items-center space-x-3 text-xs text-[#404040] dark:text-[#B3B3B3]">
                       <span className="flex items-center gap-1 font-mono font-medium">
-                        <Clock className="w-3.5 h-3.5 text-[#080808] dark:text-[#F5F5F5]" />
+                        <Clock className="w-3.5 h-3.5 text-[#080808] dark:text-[#F2F2F2]" />
                         {nextActivity.timeDisplay ||
                           formatTimeRange(nextActivity.startTime, nextActivity.endTime)}
                       </span>
@@ -130,7 +130,7 @@ export function DashboardDesktop(props: UseDashboardReturn) {
                   </>
                 ) : (
                   <>
-                    <h2 className="text-lg font-bold text-[#080808] dark:text-[#F5F5F5]">No upcoming activities</h2>
+                    <h2 className="text-lg font-bold text-[#080808] dark:text-[#F2F2F2]">No upcoming activities</h2>
                     <p className="text-xs text-[#777777] dark:text-[#858585]">
                       Your schedule is clear for the rest of today.
                     </p>
@@ -140,7 +140,7 @@ export function DashboardDesktop(props: UseDashboardReturn) {
 
               <Link
                 to="/schedule"
-                className="inline-flex items-center space-x-1.5 px-4 py-2.5 rounded-xl bg-[#080808] dark:bg-[#F5F5F5] hover:bg-[#171717] dark:hover:bg-[#E5E5E5] text-[#FFFFFF] dark:text-[#101010] text-xs font-semibold shrink-0 transition shadow-xs"
+                className="inline-flex items-center space-x-1.5 px-4 py-2.5 rounded-xl bg-[#080808] dark:bg-[#252525] hover:bg-[#171717] dark:hover:bg-[#303030] text-[#FFFFFF] dark:text-[#F2F2F2] border border-transparent dark:border-[#353535] text-xs font-semibold shrink-0 transition shadow-xs"
               >
                 <span>Open Daily Schedule</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -149,11 +149,11 @@ export function DashboardDesktop(props: UseDashboardReturn) {
           </div>
 
           {/* Progress & Focus Section */}
-          <div className="bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-5 shadow-xs space-y-4">
+          <div className="bg-[#FFFFFF] dark:bg-[#1D1D1D] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-[#080808] dark:text-[#F5F5F5] flex items-center gap-2">
-                  <CheckSquare className="w-4 h-4 text-[#080808] dark:text-[#F5F5F5]" />
+                <h3 className="text-sm font-bold text-[#080808] dark:text-[#F2F2F2] flex items-center gap-2">
+                  <CheckSquare className="w-4 h-4 text-[#080808] dark:text-[#F2F2F2]" />
                   <span>Today's Task Focus</span>
                 </h3>
                 <p className="text-[11px] text-[#777777] dark:text-[#858585] mt-0.5">
@@ -163,16 +163,16 @@ export function DashboardDesktop(props: UseDashboardReturn) {
 
               <Link
                 to="/tasks"
-                className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5] hover:underline inline-flex items-center gap-1"
+                className="text-xs font-semibold text-[#080808] dark:text-[#F2F2F2] hover:underline inline-flex items-center gap-1"
               >
                 <span>All Tasks</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
-            <div className="w-full bg-[#EFEFEF] dark:bg-[#262626] h-2 rounded-full overflow-hidden">
+            <div className="w-full bg-[#EFEFEF] dark:bg-[#252525] h-2 rounded-full overflow-hidden border border-transparent dark:border-[#353535]">
               <div
-                className="h-full bg-[#080808] dark:bg-[#F5F5F5] rounded-full transition-all duration-500"
+                className="h-full bg-[#080808] dark:bg-[#F2F2F2] rounded-full transition-all duration-500"
                 style={{ width: `${taskProgressPercent}%` }}
               />
             </div>
@@ -189,17 +189,17 @@ export function DashboardDesktop(props: UseDashboardReturn) {
                     className="py-3 flex items-center justify-between gap-3 first:pt-1 last:pb-1"
                   >
                     <div className="flex items-center space-x-2.5 min-w-0 flex-1">
-                      <div className="w-2 h-2 rounded-full bg-[#080808] dark:bg-[#F5F5F5] shrink-0" />
-                      <span className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5] truncate">
+                      <div className="w-2 h-2 rounded-full bg-[#080808] dark:bg-[#F2F2F2] shrink-0" />
+                      <span className="text-xs font-semibold text-[#080808] dark:text-[#F2F2F2] truncate">
                         {task.title}
                       </span>
                       {task.priority === 'URGENT' && (
-                        <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-[#080808] dark:bg-[#F5F5F5] text-white dark:text-[#101010] shrink-0">
+                        <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-[#080808] dark:bg-[#252525] text-white dark:text-[#F2F2F2] border border-transparent dark:border-[#353535] shrink-0">
                           Urgent
                         </span>
                       )}
                       {task.priority === 'HIGH' && (
-                        <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-[#F5F5F5] dark:bg-[#262626] text-[#080808] dark:text-[#F5F5F5] border border-[#080808] dark:border-[#353535] shrink-0">
+                        <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-[#F5F5F5] dark:bg-[#252525] text-[#080808] dark:text-[#F2F2F2] border border-[#080808] dark:border-[#353535] shrink-0">
                           High
                         </span>
                       )}
@@ -222,13 +222,13 @@ export function DashboardDesktop(props: UseDashboardReturn) {
 
           {/* Desktop Two-Column: Upcoming Day Flow & Rhythm Snapshot */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-5 shadow-xs space-y-3">
+            <div className="bg-[#FFFFFF] dark:bg-[#1D1D1D] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-5 shadow-xs space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#080808] dark:text-[#F5F5F5] uppercase tracking-wider flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-[#080808] dark:text-[#F5F5F5]" />
+                <span className="text-xs font-bold text-[#080808] dark:text-[#F2F2F2] uppercase tracking-wider flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-[#080808] dark:text-[#F2F2F2]" />
                   <span>Upcoming Day Flow</span>
                 </span>
-                <Link to="/calendar" className="text-xs text-[#777777] dark:text-[#858585] hover:text-[#080808] dark:hover:text-[#F5F5F5] font-medium">
+                <Link to="/calendar" className="text-xs text-[#777777] dark:text-[#858585] hover:text-[#080808] dark:hover:text-[#F2F2F2] font-medium">
                   Full Calendar →
                 </Link>
               </div>
@@ -242,15 +242,15 @@ export function DashboardDesktop(props: UseDashboardReturn) {
                   upcomingSchedulePreview.map((item) => (
                     <div
                       key={item.id}
-                      className="p-3 rounded-xl bg-[#FAFAFA] dark:bg-[#262626] border border-[#D9D9D9] dark:border-[#353535] text-xs flex items-center justify-between gap-2"
+                      className="p-3 rounded-xl bg-[#FAFAFA] dark:bg-[#252525] border border-[#D9D9D9] dark:border-[#353535] text-xs flex items-center justify-between gap-2"
                     >
                       <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-[#080808] dark:text-[#F5F5F5] truncate">{item.title}</p>
+                        <p className="font-semibold text-[#080808] dark:text-[#F2F2F2] truncate">{item.title}</p>
                         {item.location && (
                           <p className="text-[10px] text-[#777777] dark:text-[#858585] truncate">📍 {item.location}</p>
                         )}
                       </div>
-                      <span className="font-mono text-[11px] text-[#404040] dark:text-[#B0B0B0] shrink-0 font-medium">
+                      <span className="font-mono text-[11px] text-[#404040] dark:text-[#B3B3B3] shrink-0 font-medium">
                         {item.timeDisplay || formatTimeRange(item.startTime, item.endTime)}
                       </span>
                     </div>
@@ -259,27 +259,27 @@ export function DashboardDesktop(props: UseDashboardReturn) {
               </div>
             </div>
 
-            <div className="bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-5 shadow-xs space-y-3">
+            <div className="bg-[#FFFFFF] dark:bg-[#1D1D1D] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-5 shadow-xs space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#080808] dark:text-[#F5F5F5] uppercase tracking-wider flex items-center gap-1.5">
-                  <Flame className="w-3.5 h-3.5 text-[#080808] dark:text-[#F5F5F5]" />
+                <span className="text-xs font-bold text-[#080808] dark:text-[#F2F2F2] uppercase tracking-wider flex items-center gap-1.5">
+                  <Flame className="w-3.5 h-3.5 text-[#080808] dark:text-[#F2F2F2]" />
                   <span>Productivity Streak</span>
                 </span>
-                <span className="text-xs font-mono font-bold text-[#080808] dark:text-[#F5F5F5]">
+                <span className="text-xs font-mono font-bold text-[#080808] dark:text-[#F2F2F2]">
                   {heatmapStats?.currentStreakDays || 0} days
                 </span>
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="p-3 bg-[#FAFAFA] dark:bg-[#262626] rounded-xl border border-[#D9D9D9] dark:border-[#353535]">
+                <div className="p-3 bg-[#FAFAFA] dark:bg-[#252525] rounded-xl border border-[#D9D9D9] dark:border-[#353535]">
                   <span className="text-[10px] text-[#777777] dark:text-[#858585] block">Wake Time</span>
-                  <span className="font-bold text-[#080808] dark:text-[#F5F5F5] font-mono mt-0.5 block">
+                  <span className="font-bold text-[#080808] dark:text-[#F2F2F2] font-mono mt-0.5 block">
                     {preference?.wakeTime || '07:00'}
                   </span>
                 </div>
-                <div className="p-3 bg-[#FAFAFA] dark:bg-[#262626] rounded-xl border border-[#D9D9D9] dark:border-[#353535]">
+                <div className="p-3 bg-[#FAFAFA] dark:bg-[#252525] rounded-xl border border-[#D9D9D9] dark:border-[#353535]">
                   <span className="text-[10px] text-[#777777] dark:text-[#858585] block">Sleep Target</span>
-                  <span className="font-bold text-[#080808] dark:text-[#F5F5F5] font-mono mt-0.5 block">
+                  <span className="font-bold text-[#080808] dark:text-[#F2F2F2] font-mono mt-0.5 block">
                     {preference?.sleepTime || '23:00'}
                   </span>
                 </div>

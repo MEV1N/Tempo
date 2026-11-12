@@ -82,14 +82,24 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     calculateResolvedTheme(themeMode)
   );
 
-  // Apply class to document.documentElement
+  // Apply class to document.documentElement and document.body
   const applyThemeToDOM = useCallback((resolved: ResolvedTheme) => {
     if (typeof document === 'undefined') return;
     const root = document.documentElement;
     if (resolved === 'dark') {
       root.classList.add('dark');
+      root.style.backgroundColor = '#101010';
+      root.style.color = '#F2F2F2';
+      if (document.body) {
+        document.body.classList.add('dark');
+      }
     } else {
       root.classList.remove('dark');
+      root.style.backgroundColor = '#FAFAFA';
+      root.style.color = '#080808';
+      if (document.body) {
+        document.body.classList.remove('dark');
+      }
     }
   }, []);
 

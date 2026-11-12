@@ -174,7 +174,7 @@ export function AnalyticsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F5F5F5] font-interface transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] font-interface transition-colors">
       <Navbar />
 
       <div className="md:pl-64 flex flex-col min-h-screen">
@@ -182,7 +182,7 @@ export function AnalyticsPage() {
           {/* Page Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#D9D9D9] dark:border-[#353535] pb-6">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#080808] dark:text-[#F5F5F5] tracking-tight flex items-baseline gap-2">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#080808] dark:text-[#F2F2F2] tracking-tight flex items-baseline gap-2">
                 <span>Activity & Productivity</span>
                 <span className="font-handwritten text-2xl sm:text-3xl font-normal text-[#777777] dark:text-[#858585]">
                   insights
@@ -211,7 +211,7 @@ export function AnalyticsPage() {
               onClick={() => setActiveTab('log')}
               className={`pb-3 text-xs sm:text-sm font-medium flex items-center space-x-2 border-b-2 transition ${
                 activeTab === 'log'
-                  ? 'border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F5F5F5] font-bold'
+                  ? 'border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F2F2F2] font-bold'
                   : 'border-transparent text-[#777777] dark:text-[#858585] hover:text-[#080808] dark:hover:text-[#F5F5F5]'
               }`}
             >
@@ -223,7 +223,7 @@ export function AnalyticsPage() {
               onClick={() => setActiveTab('trends')}
               className={`pb-3 text-xs sm:text-sm font-medium flex items-center space-x-2 border-b-2 transition ${
                 activeTab === 'trends'
-                  ? 'border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F5F5F5] font-bold'
+                  ? 'border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F2F2F2] font-bold'
                   : 'border-transparent text-[#777777] dark:text-[#858585] hover:text-[#080808] dark:hover:text-[#F5F5F5]'
               }`}
             >

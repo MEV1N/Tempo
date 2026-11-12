@@ -30,7 +30,7 @@ const DARK_ANIMATION_URLS: Record<AnimationAssetName, string> = {
   sun: '/animations/sun.gif',
   moon: '/animations/moon.gif',
   tasks: '/animations/tasks dark.gif',
-  clock: '/animations/clock.gif',
+  clock: '/animations/clock dark.gif',
 };
 
 /**

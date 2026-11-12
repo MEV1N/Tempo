@@ -16,18 +16,18 @@
   }
 
   .dark {
-    --tempo-black: #F5F5F5;
-    --tempo-secondary: #B0B0B0;
+    --tempo-black: #F2F2F2;
+    --tempo-secondary: #B3B3B3;
     --tempo-charcoal: #A3A3A3;
     --tempo-muted: #858585;
     --tempo-border: #353535;
-    --tempo-light: #262626;
-    --tempo-surface: #1E1E1E;
+    --tempo-light: #252525;
+    --tempo-surface: #1D1D1D;
     --tempo-offwhite: #101010;
-    --tempo-white: #171717;
+    --tempo-white: #141414;
   }
 
-  html, body {
+  html, body, #root {
     background-color: var(--tempo-offwhite);
     color: var(--tempo-black);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -35,37 +35,37 @@
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    min-height: 100vh;
   }
 
-  html.dark, body.dark {
-    background-color: #101010;
-    color: #F5F5F5;
+  html.dark, html.dark body, html.dark #root {
+    background-color: #101010 !important;
+    color: #F2F2F2 !important;
   }
 
   /* Universal Dark Theme Form & Input Adaptations */
   .dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
   .dark textarea,
   .dark select {
-    background-color: #191919;
-    color: #F5F5F5;
-    border-color: #353535;
+    background-color: #191919 !important;
+    color: #F2F2F2 !important;
+    border-color: #353535 !important;
   }
 
   .dark input::placeholder,
   .dark textarea::placeholder {
-    color: #858585;
+    color: #858585 !important;
   }
 
   .dark input:focus,
   .dark textarea:focus,
   .dark select:focus {
-    border-color: #858585;
+    border-color: #858585 !important;
   }
 
   .dark select option {
-    background-color: #191919;
-    color: #F5F5F5;
+    background-color: #191919 !important;
+    color: #F2F2F2 !important;
   }
 
   .dark button:disabled,
@@ -74,55 +74,77 @@
     opacity: 0.6;
   }
 
-  /* Universal Dark Theme Adaptations for Unscoped Light Utilities */
-  .dark .bg-white:not([class*="dark:bg-"]) {
-    background-color: #1E1E1E;
-  }
-  .dark .bg-\[\#FFFFFF\]:not([class*="dark:bg-"]) {
-    background-color: #1E1E1E;
-  }
-  .dark .bg-\[\#FAFAFA\]:not([class*="dark:bg-"]) {
-    background-color: #1E1E1E;
-  }
-  .dark .bg-\[\#F5F5F5\]:not([class*="dark:bg-"]) {
-    background-color: #262626;
-  }
-  .dark .border-\[\#D9D9D9\]:not([class*="dark:border-"]) {
-    border-color: #353535;
-  }
-  .dark .border-\[\#EAEAEA\]:not([class*="dark:border-"]) {
-    border-color: #353535;
-  }
-  .dark .border-\[\#EFEFEF\]:not([class*="dark:border-"]) {
-    border-color: #353535;
-  }
-  .dark .divide-\[\#EFEFEF\] > :not([hidden]) ~ :not([hidden]):not([class*="dark:divide-"]) {
-    border-color: #353535;
-  }
-  .dark .divide-\[\#EAEAEA\] > :not([hidden]) ~ :not([hidden]):not([class*="dark:divide-"]) {
-    border-color: #353535;
-  }
-  .dark .text-\[\#080808\]:not([class*="dark:text-"]) {
-    color: #F5F5F5;
-  }
-  .dark .text-\[\#171717\]:not([class*="dark:text-"]) {
-    color: #F5F5F5;
-  }
-  .dark .text-\[\#404040\]:not([class*="dark:text-"]) {
-    color: #B0B0B0;
-  }
-  .dark .text-\[\#555555\]:not([class*="dark:text-"]) {
-    color: #B0B0B0;
-  }
-  .dark .text-\[\#777777\]:not([class*="dark:text-"]) {
-    color: #858585;
-  }
-
   /* Focus visible accessibility outline */
   *:focus-visible {
     outline: 2px solid var(--tempo-black);
     outline-offset: 2px;
   }
+}
+
+/* ========================================================================= */
+/* UNIVERSAL DARK THEME ADAPTATIONS (Guaranteed priority over base utilities)  */
+/* ========================================================================= */
+
+/* Dark Card & Surface backgrounds */
+.dark .bg-white:not([class*="dark:bg-"]),
+.dark .bg-\[\#FFFFFF\]:not([class*="dark:bg-"]),
+.dark .bg-\[\#ffffff\]:not([class*="dark:bg-"]) {
+  background-color: #1D1D1D !important;
+}
+
+.dark .bg-\[\#FAFAFA\]:not([class*="dark:bg-"]),
+.dark .bg-\[\#fafafa\]:not([class*="dark:bg-"]) {
+  background-color: #1D1D1D !important;
+}
+
+.dark .bg-\[\#F5F5F5\]:not([class*="dark:bg-"]),
+.dark .bg-\[\#f5f5f5\]:not([class*="dark:bg-"]),
+.dark .bg-\[\#EFEFEF\]:not([class*="dark:bg-"]),
+.dark .bg-\[\#efefef\]:not([class*="dark:bg-"]),
+.dark .bg-\[\#EAEAEA\]:not([class*="dark:bg-"]),
+.dark .bg-\[\#eaeaea\]:not([class*="dark:bg-"]) {
+  background-color: #252525 !important;
+}
+
+/* Dark Borders & Dividers */
+.dark .border-\[\#D9D9D9\]:not([class*="dark:border-"]),
+.dark .border-\[\#d9d9d9\]:not([class*="dark:border-"]),
+.dark .border-\[\#EAEAEA\]:not([class*="dark:border-"]),
+.dark .border-\[\#eaeaea\]:not([class*="dark:border-"]),
+.dark .border-\[\#EFEFEF\]:not([class*="dark:border-"]),
+.dark .border-\[\#efefef\]:not([class*="dark:border-"]) {
+  border-color: #353535 !important;
+}
+
+.dark .divide-\[\#EFEFEF\] > :not([hidden]) ~ :not([hidden]):not([class*="dark:divide-"]),
+.dark .divide-\[\#efefef\] > :not([hidden]) ~ :not([hidden]):not([class*="dark:divide-"]),
+.dark .divide-\[\#EAEAEA\] > :not([hidden]) ~ :not([hidden]):not([class*="dark:divide-"]),
+.dark .divide-\[\#eaeaea\] > :not([hidden]) ~ :not([hidden]):not([class*="dark:divide-"]),
+.dark .divide-\[\#D9D9D9\] > :not([hidden]) ~ :not([hidden]):not([class*="dark:divide-"]),
+.dark .divide-\[\#d9d9d9\] > :not([hidden]) ~ :not([hidden]):not([class*="dark:divide-"]) {
+  border-color: #353535 !important;
+}
+
+/* Dark Text colors */
+.dark .text-\[\#080808\]:not([class*="dark:text-"]),
+.dark .text-\[\#171717\]:not([class*="dark:text-"]) {
+  color: #F2F2F2 !important;
+}
+
+.dark .text-\[\#404040\]:not([class*="dark:text-"]),
+.dark .text-\[\#555555\]:not([class*="dark:text-"]) {
+  color: #B3B3B3 !important;
+}
+
+.dark .text-\[\#777777\]:not([class*="dark:text-"]),
+.dark .text-\[\#888888\]:not([class*="dark:text-"]) {
+  color: #858585 !important;
+}
+
+/* Hover background adaptations */
+.dark .hover\:bg-\[\#F5F5F5\]:hover:not([class*="dark:hover:bg-"]),
+.dark .hover\:bg-\[\#f5f5f5\]:hover:not([class*="dark:hover:bg-"]) {
+  background-color: #252525 !important;
 }
 
 /* Subtle clean scrollbars */

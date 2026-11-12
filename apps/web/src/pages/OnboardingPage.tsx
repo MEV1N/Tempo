@@ -108,12 +108,12 @@ export function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F5F5F5] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center space-y-2">
           <TempoLogo size="lg" showTagline={false} className="items-center" />
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#080808] dark:text-[#F5F5F5] flex items-baseline justify-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#080808] dark:text-[#F2F2F2] flex items-baseline justify-center gap-2">
             <span>Set up your daily</span>
             <span className="font-handwritten text-3xl font-normal text-[#777777] dark:text-[#858585]">rhythm</span>
           </h1>
@@ -124,7 +124,7 @@ export function OnboardingPage() {
         </div>
 
         {error && (
-          <div className="p-4 rounded-xl bg-[#F5F5F5] dark:bg-[#262626] border border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F5F5F5] text-xs flex items-center space-x-3">
+          <div className="p-4 rounded-xl bg-[#F5F5F5] dark:bg-[#252525] border border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F2F2F2] text-xs flex items-center space-x-3">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -132,8 +132,8 @@ export function OnboardingPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* 1. Identity & Timezone */}
-          <div className="bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-6 space-y-4 shadow-sm">
-            <div className="flex items-center space-x-2 text-[#080808] dark:text-[#F5F5F5] text-sm font-semibold">
+          <div className="bg-[#FFFFFF] dark:bg-[#1D1D1D] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-6 space-y-4 shadow-sm">
+            <div className="flex items-center space-x-2 text-[#080808] dark:text-[#F2F2F2] text-sm font-semibold">
               <Clock className="w-4 h-4" />
               <span>General Profile & Timezone</span>
             </div>

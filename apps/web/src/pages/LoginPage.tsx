@@ -57,19 +57,19 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F5F5F5] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 max-w-full overflow-x-hidden">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F2F2F2] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 max-w-full overflow-x-hidden">
       <div className="w-full max-w-md mx-auto text-center">
         <TempoLogo size="xl" showTagline={true} className="items-center" />
-        <h2 className="mt-6 text-xl font-semibold tracking-tight text-[#080808] dark:text-[#F5F5F5]">Welcome back</h2>
+        <h2 className="mt-6 text-xl font-semibold tracking-tight text-[#080808] dark:text-[#F2F2F2]">Welcome back</h2>
         <p className="mt-1 font-handwritten text-xl text-[#777777] dark:text-[#858585]">
           sign in to access your rhythm
         </p>
       </div>
 
       <div className="mt-8 w-full max-w-md mx-auto">
-        <div className="bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+        <div className="bg-[#FFFFFF] dark:bg-[#1D1D1D] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
           {error && (
-            <div className="p-3.5 rounded-xl bg-[#F5F5F5] dark:bg-[#262626] border border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F5F5F5] text-xs flex items-start space-x-2.5">
+            <div className="p-3.5 rounded-xl bg-[#F5F5F5] dark:bg-[#252525] border border-[#080808] dark:border-[#F5F5F5] text-[#080808] dark:text-[#F2F2F2] text-xs flex items-start space-x-2.5">
               <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
               <span className="leading-relaxed">{error}</span>
             </div>
@@ -79,7 +79,7 @@ export function LoginPage() {
           <div>
             <a
               href="/api/auth/google"
-              className="w-full py-2.5 px-4 rounded-xl bg-[#FFFFFF] dark:bg-[#262626] hover:bg-[#F5F5F5] dark:hover:bg-[#292929] text-[#080808] dark:text-[#F5F5F5] font-medium text-xs sm:text-sm border border-[#D9D9D9] dark:border-[#353535] transition flex items-center justify-center space-x-2.5 active:scale-[0.99]"
+              className="w-full py-2.5 px-4 rounded-xl bg-[#FFFFFF] dark:bg-[#252525] hover:bg-[#F5F5F5] dark:hover:bg-[#292929] text-[#080808] dark:text-[#F2F2F2] font-medium text-xs sm:text-sm border border-[#D9D9D9] dark:border-[#353535] transition flex items-center justify-center space-x-2.5 active:scale-[0.99]"
             >
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                 <path
