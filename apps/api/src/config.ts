@@ -32,9 +32,17 @@ export const VAPID_SUBJECT = process.env.VAPID_SUBJECT || 'mailto:admin@tempo.ap
 // Google OAuth & Calendar Configuration (Phase 7)
 export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'mock-google-client-id';
 export const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'mock-google-client-secret';
+
+const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : undefined;
+
 export const API_BASE_URL =
-  process.env.API_BASE_URL || `http://localhost:${process.env.PORT || 5000}`;
-export const FRONTEND_URL = process.env.CORS_ORIGIN || 'http://localhost:3000';
+  process.env.API_BASE_URL || vercelHost || `http://localhost:${process.env.PORT || 5000}`;
+export const FRONTEND_URL =
+  process.env.FRONTEND_URL || process.env.CORS_ORIGIN || vercelHost || 'http://localhost:3000';
 export const ENCRYPTION_KEY =
   process.env.ENCRYPTION_KEY ||
   process.env.JWT_SECRET ||

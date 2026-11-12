@@ -1,7 +1,7 @@
 import { memo, useState } from 'react';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
 
-export type AnimationAssetName = 'loading' | 'tea' | 'sun' | 'moon' | 'tasks';
+export type AnimationAssetName = 'loading' | 'tea' | 'sun' | 'moon' | 'tasks' | 'clock';
 
 export interface TempoAnimationProps {
   name: AnimationAssetName;
@@ -19,6 +19,7 @@ const ANIMATION_URLS: Record<AnimationAssetName, string> = {
   sun: '/animations/sun.gif',
   moon: '/animations/moon.gif',
   tasks: '/animations/tasks.gif',
+  clock: '/animations/clock.gif',
 };
 
 /**

@@ -217,3 +217,42 @@ flowchart TD
 3. **Database Client Singleton:** Never instantiate `new PrismaClient()` in controllers or routes. Always import the shared instance from `@tempo/database`.
 4. **Validation Separation:** API request payloads must be validated against `@tempo/shared` Zod schemas using `validateRequest` middleware before reaching service layers.
 
+---
+
+## 7. Multi-Service Deployment Topology (Vercel + Worker Host)
+
+Tempo supports unified deployment under Vercel's multi-service architecture while isolating continuous background daemons:
+
+```
+                            [ Unified Domain (e.g. tempo.app) ]
+                                             │
+               ┌─────────────────────────────┴─────────────────────────────┐
+               ▼                                                           ▼
+     Rewrite: /api/*, /health                                    Rewrite: /*
+     ┌───────────────────────┐                                   ┌───────────────────────┐
+     │   Service: "api"      │                                   │   Service: "web"      │
+     │   Vercel Serverless   │                                   │   Vercel Static Edge  │
+     │   Express REST API    │                                   │   Vite React SPA      │
+     └──────────┬────────────┘                                   └───────────────────────┘
+                │
+                ├───────────────────────────────────┐
+                ▼                                   ▼
+     ┌───────────────────────┐           ┌───────────────────────┐
+     │  PostgreSQL (Neon)    │           │     Redis Cloud       │
+     │  Database Connection  │           │   BullMQ Job Queue    │
+     └──────────▲────────────┘           └──────────▲────────────┘
+                │                                   │
+                └───────────────────┬───────────────┘
+                                    │
+                         ┌─────────────────────┐
+                         │   External Host     │
+                         │  (Railway/Render)   │
+                         │    "apps/worker"    │
+                         │  Persistent Daemon  │
+                         └─────────────────────┘
+```
+
+- **Vercel Project (`vercel.json`):** Hosts both `api` (Express serverless function) and `web` (Vite static SPA). Requests to `/health` and `/api/*` rewrite directly to the `api` service; all other paths rewrite to `web` with SPA fallback to `/index.html`.
+- **Worker Host (Railway/Render):** `apps/worker` requires a persistent TCP connection to Redis and runs continuous BullMQ listeners and a 60-second polling ticker. It is deployed as a long-running container separate from Vercel's ephemeral serverless infrastructure.
+
+

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "api": {
+      "root": "apps/api",
+      "framework": "express",
+      "entrypoint": "dist/index.js",
+      "buildCommand": "pnpm --filter @tempo/shared build && pnpm --filter @tempo/scheduler build && pnpm --filter @tempo/database build && pnpm --filter @tempo/api build"
+    },
+    "web": {
+      "root": "apps/web",
+      "framework": "vite",
+      "outputDirectory": "dist",
+      "buildCommand": "pnpm --filter @tempo/shared build && pnpm --filter @tempo/web build",
+      "rewrites": [
+        {
+          "source": "/(.*)",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/health",
+      "destination": {
+        "service": "api"
+      }
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "api"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "web"
+      }
+    }
+  ]
+}

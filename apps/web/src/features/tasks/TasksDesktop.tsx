@@ -250,9 +250,9 @@ export function TasksDesktop(props: UseTasksReturn) {
           {loading ? (
             <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2A2A2A] rounded-2xl flex flex-col items-center justify-center space-y-3 shadow-xs">
               <TempoAnimation
-                name="loading"
-                alt="Loading tasks animation"
-                size={44}
+                name="tasks"
+                alt="Tasks notebook animation"
+                size={64}
                 eager
                 fallback={<Clock className="w-6 h-6 mx-auto animate-spin text-[#080808] dark:text-[#F3F3F3]" />}
               />

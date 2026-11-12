@@ -358,16 +358,18 @@ export function ScheduleMobile(props: UseScheduleReturn) {
         )}
 
         {/* Compact Loading State */}
-        {loading ? (
-          <div className="py-6 px-4 bg-[#FFFFFF] border border-[#EAEAEA] rounded-2xl flex flex-col items-center justify-center space-y-2 text-center shadow-xs">
+        {loading || generating ? (
+          <div className="py-8 px-4 bg-[#FFFFFF] dark:bg-[#181818] border border-[#EAEAEA] dark:border-[#2A2A2A] rounded-2xl flex flex-col items-center justify-center space-y-2 text-center shadow-xs">
             <MobileAnimation
-              name="loading"
-              alt="Loading schedule animation"
-              size={44}
+              name="clock"
+              alt="Schedule clock animation"
+              size={56}
               eager
-              fallback={<Clock className="w-5 h-5 animate-spin text-[#080808]" />}
+              fallback={<Clock className="w-6 h-6 animate-spin text-[#080808] dark:text-[#F3F3F3]" />}
             />
-            <p className="text-xs font-semibold text-[#080808]">Loading your schedule...</p>
+            <p className="text-xs font-semibold text-[#080808] dark:text-[#F3F3F3]">
+              {generating ? 'Generating your schedule...' : 'Loading your schedule...'}
+            </p>
           </div>
         ) : !schedule || schedule.blocks.length === 0 ? (
           <div className="p-8 text-center bg-[#FFFFFF] border border-[#D9D9D9] rounded-2xl space-y-3">

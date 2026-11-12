@@ -391,17 +391,17 @@ export function ScheduleDesktop(props: UseScheduleReturn) {
                 )}
               </div>
 
-              {loading ? (
+              {loading || generating ? (
                 <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2A2A2A] rounded-2xl flex flex-col items-center justify-center space-y-3 shadow-xs">
                   <TempoAnimation
-                    name="loading"
-                    alt="Loading schedule animation"
-                    size={48}
+                    name="clock"
+                    alt="Schedule clock animation"
+                    size={64}
                     eager
-                    fallback={<Clock className="w-6 h-6 mx-auto animate-spin text-[#080808] dark:text-[#F3F3F3]" />}
+                    fallback={<Clock className="w-8 h-8 mx-auto animate-spin text-[#080808] dark:text-[#F3F3F3]" />}
                   />
                   <p className="text-xs font-semibold text-[#080808] dark:text-[#F3F3F3]">
-                    Loading schedule for {targetDate}...
+                    {generating ? 'Calculating optimized schedule...' : `Loading schedule for ${targetDate}...`}
                   </p>
                 </div>
               ) : !schedule || schedule.blocks.length === 0 ? (

@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar } from '../../components/Navbar';
+import { useTheme } from '../../context/ThemeContext';
 import {
   Clock,
   ArrowRight,
@@ -35,22 +35,9 @@ export function DashboardMobile(props: UseDashboardReturn) {
     setShowRhythmDetails,
   } = props;
 
-  // Determine daytime vs nighttime based on user's configured IANA timezone
-  const isDaytime = useMemo(() => {
-    try {
-      const tz = preference?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
-      const formatter = new Intl.DateTimeFormat('en-US', {
-        hour: 'numeric',
-        hour12: false,
-        timeZone: tz,
-      });
-      const hour = parseInt(formatter.format(new Date()), 10);
-      return hour >= 6 && hour < 18;
-    } catch {
-      const localHour = new Date().getHours();
-      return localHour >= 6 && localHour < 18;
-    }
-  }, [preference?.timezone]);
+  const { resolvedTheme } = useTheme();
+  // Connected directly to automatic day/night theme system
+  const isDaytime = resolvedTheme === 'light';
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#121212] text-[#080808] dark:text-[#F3F3F3] font-interface transition-colors">

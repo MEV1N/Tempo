@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Navbar } from '../components/Navbar';
 import { ActivityHeatmap } from '../components/ActivityHeatmap';
+import { TempoAnimation } from '../components/TempoAnimation';
 import {
   Settings,
   Edit3,
@@ -13,6 +14,7 @@ import {
   X,
   Loader2,
   ArrowRight,
+  Coffee,
 } from 'lucide-react';
 
 export function ProfilePage() {
@@ -144,6 +146,20 @@ export function ProfilePage() {
             </div>
 
             <ActivityHeatmap />
+          </div>
+
+          {/* Decorative Calm Break / Tea Cup Animation */}
+          <div className="pt-8 pb-4 flex flex-col items-center justify-center text-center space-y-1.5 select-none pointer-events-none">
+            <TempoAnimation
+              name="tea"
+              alt="Tea cup with rising steam"
+              size={54}
+              className="opacity-90"
+              fallback={<Coffee className="w-7 h-7 text-[#777777] dark:text-[#A3A3A3]" />}
+            />
+            <p className="font-handwritten text-lg text-[#777777] dark:text-[#A3A3A3]">
+              find your rhythm
+            </p>
           </div>
 
           {/* Compact Edit Profile Modal */}

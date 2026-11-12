@@ -23,11 +23,12 @@ This document details the frontend application architecture, layout systems, rou
 apps/web/
 ├── public/
 │   ├── animations/                # Monochromatic GIF animation assets
-│   │   ├── loading.gif            # Mobile schedule and tasks loading states
-│   │   ├── tea.gif                # Contextual break, meal, and leisure illustration
-│   │   ├── sun.gif                # Daytime celestial rhythm animation
-│   │   ├── moon.gif               # Nighttime celestial rhythm animation
-│   │   └── tasks.gif              # Empty tasks state notebook illustration
+│   │   ├── clock.gif              # Schedule page loading & generating animation
+│   │   ├── loading.gif            # Minimal initial website bootstrap loading animation
+│   │   ├── moon.gif               # Nighttime celestial rhythm animation (18:00 - 06:00)
+│   │   ├── sun.gif                # Daytime celestial rhythm animation (06:00 - 18:00)
+│   │   ├── tasks.gif              # Tasks tab loading visual and empty backlog illustration
+│   │   └── tea.gif                # Profile page footer accent and schedule relaxation blocks
 │   ├── icons/                     # PWA icons
 │   └── manifest.json              # Web app manifest
 ├── src/
@@ -159,14 +160,15 @@ interface AuthContextType {
 - **Monochrome Aesthetics:** Light mode uses `#FAFAFA`/`#FFFFFF` with `#080808` text. Dark mode uses layered charcoal `#121212`, `#181818`, `#222222` with `#F3F3F3`/`#D4D4D4` text and `#2A2A2A`/`#333333` borders.
 
 ### Universal Animation Integration (`apps/web/src/components/TempoAnimation.tsx`)
-- **Shared Assets:** `apps/web/public/animations/` (`loading.gif`, `tea.gif`, `sun.gif`, `moon.gif`, `tasks.gif`).
+- **Shared Assets:** `apps/web/public/animations/` (`clock.gif`, `loading.gif`, `moon.gif`, `sun.gif`, `tasks.gif`, `tea.gif`).
 - **Platform Agnostic:** Uniformly rendered across desktop and mobile presentation layers.
 - **Contextual Placements:**
-  - `loading`: App bootstrap screen and page loading states.
-  - `tea`: Break, leisure, and meal schedule blocks.
-  - `sun`: Daytime greetings and headers (06:00 - 18:00).
-  - `moon`: Nighttime greetings and headers (18:00 - 06:00).
-  - `tasks`: Empty task backlog illustration.
+  - `loading`: Website bootstrap initial loading screen (standalone centered loading animation without logos or text).
+  - `sun`: Daytime greetings (06:00 - 18:00) reactively bound to `useTheme()`.
+  - `moon`: Nighttime greetings (18:00 - 06:00) replacing sun when dark theme is active.
+  - `tea`: Bottom decorative accent on Profile page, and break/meal timeline blocks.
+  - `tasks`: Tasks tab transition/loading visual and empty task backlog notebook illustration.
+  - `clock`: Schedule page fetching and calculation loading visual.
 - **Accessibility & Error Resilience:** Automatically detects `prefers-reduced-motion` and provides contextual Lucide icon fallbacks; handles asset loading errors gracefully.
 
 ---

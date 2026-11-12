@@ -9,6 +9,8 @@
     "dev:web": "pnpm --filter @tempo/web dev",
     "dev:worker": "pnpm --filter @tempo/worker dev",
     "build:packages": "pnpm --filter @tempo/shared build && pnpm --filter @tempo/scheduler build && pnpm --filter @tempo/database build",
+    "build:api": "pnpm run build:packages && pnpm --filter @tempo/api build",
+    "build:web": "pnpm --filter @tempo/shared build && pnpm --filter @tempo/web build",
     "build": "pnpm run build:packages && pnpm --filter @tempo/api build && pnpm --filter @tempo/worker build && pnpm --filter @tempo/web build",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm --filter @tempo/api test",
