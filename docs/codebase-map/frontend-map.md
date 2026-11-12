@@ -162,16 +162,15 @@ interface AuthContextType {
 ### Universal Animation Integration (`apps/web/src/components/TempoAnimation.tsx`)
 - **Shared Assets:** `apps/web/public/animations/`:
   - Light variants: `clock.gif`, `loading.gif`, `moon.gif`, `sun.gif`, `tasks.gif`, `tea.gif`.
-  - Dark variants: `loading dark.gif` (for `loading`), `tasks dark.gif` (for `tasks`), `clock dark.gif` (for `clock`). Assets without dedicated dark variants (`tea`, `sun`, `moon`) cleanly reuse their monochromatic light gifs.
-- **Theme-Aware Selection:** `TempoAnimation` automatically selects dark variant assets when dark theme is active (`useTheme().effectiveTheme === 'DARK'`).
-- **Platform Agnostic:** Uniformly rendered across desktop and mobile presentation layers.
-- **Contextual Placements:**
-  - `loading`: Website bootstrap initial loading screen (standalone centered loading animation without logos or text).
-  - `sun`: Daytime greetings (06:00 - 18:00) reactively bound to `useTheme()`.
-  - `moon`: Nighttime greetings (18:00 - 06:00) replacing sun when dark theme is active.
-  - `tea`: Bottom decorative accent on Profile page, and break/meal timeline blocks.
-  - `tasks`: Tasks tab transition/loading visual and empty task backlog notebook illustration.
-  - `clock`: Schedule page fetching and calculation loading visual.
+  - Dark variants: `loading dark.gif` (URL-encoded `loading%20dark.gif`), `tasks dark.gif` (`tasks%20dark.gif`), `clock dark.gif` (`clock%20dark.gif`).
+  - **Contrast Adaptation:** `tea.gif` and `sun.gif` (authored with black strokes on transparent backgrounds) invert cleanly to white strokes via `filter: invert(1)` in dark mode (`#181818`); `moon.gif` (authored with white strokes on transparent background) inverts to dark strokes in light mode (`#FAFAFA`). Alpha transparency is fully preserved without pixel artifacts.
+- **Theme-Aware Selection:** `TempoAnimation` automatically selects dark variant assets and contrast inversion when dark theme is active (`useTheme().resolvedTheme === 'dark'`).
+- **Platform Agnostic & Prominent Sizing:** Aspect ratio preserved (~309x309 square) with `object-contain`. Sizes increased for visual prominence:
+  - `loading`: Website bootstrap initial loading screen (`size={160}`, standalone, visually central, no surrounding text/logo clutter).
+  - `sun` / `moon`: Greeting header (`size={68}` desktop, `size={52}` mobile). Context (day vs night) tracks local time via `useTheme().isDaytime` (06:00-18:00 = daytime `sun`, 18:00-06:00 = nighttime `moon`), while asset stroke rendering adapts to the active theme.
+  - `tea`: Bottom decorative calm break accent strictly on the Profile page (`size={110}` with "find your rhythm" tagline). Removed from Schedule timeline blocks.
+  - `tasks`: Tasks tab transition/loading visual (`size={110}` desktop, `size={90}` mobile) and empty backlog notebook illustration (`size={110}` desktop, `size={90}` mobile).
+  - `clock`: Schedule page fetching and calculation loading visual (`size={110}` desktop, `size={90}` mobile).
 - **Accessibility & Error Resilience:** Automatically detects `prefers-reduced-motion` and provides contextual Lucide icon fallbacks; handles asset loading errors gracefully.
 
 ---

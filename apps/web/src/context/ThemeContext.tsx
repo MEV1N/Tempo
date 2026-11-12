@@ -9,6 +9,7 @@ export interface ThemeContextType {
   resolvedTheme: ResolvedTheme;
   setThemeMode: (mode: ThemeMode) => Promise<void>;
   isAuto: boolean;
+  isDaytime: boolean;
 }
 
 const THEME_STORAGE_KEY = 'tempo_theme_preference';
@@ -81,6 +82,37 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() =>
     calculateResolvedTheme(themeMode)
   );
+
+  // Separate true day vs night astronomical context based on user's local timezone (06:00-18:00)
+  // Ensures greeting sun vs moon matches real day/night even if user selects Dark or Light mode manually
+  const [isDaytime, setIsDaytime] = useState<boolean>(
+    () => computeAutoTheme(preference?.timezone) === 'light'
+  );
+
+  // Heartbeat check for daytime context independent of themeMode
+  useEffect(() => {
+    const updateDaytime = () => {
+      const current = computeAutoTheme(preference?.timezone) === 'light';
+      setIsDaytime((prev) => (prev !== current ? current : prev));
+    };
+
+    updateDaytime();
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') updateDaytime();
+    };
+    const handleFocus = () => updateDaytime();
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
+    const interval = setInterval(updateDaytime, 30000);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+      clearInterval(interval);
+    };
+  }, [preference?.timezone]);
 
   // Apply class to document.documentElement and document.body
   const applyThemeToDOM = useCallback((resolved: ResolvedTheme) => {
@@ -181,6 +213,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         resolvedTheme,
         setThemeMode,
         isAuto: themeMode === 'AUTO',
+        isDaytime,
       }}
     >
       {children}

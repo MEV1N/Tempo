@@ -252,9 +252,9 @@ export function TasksDesktop(props: UseTasksReturn) {
               <TempoAnimation
                 name="tasks"
                 alt="Tasks notebook animation"
-                size={64}
+                size={110}
                 eager
-                fallback={<Clock className="w-6 h-6 mx-auto animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
+                fallback={<Clock className="w-8 h-8 mx-auto animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
               />
               <p className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">Loading tasks...</p>
             </div>
@@ -265,7 +265,7 @@ export function TasksDesktop(props: UseTasksReturn) {
                   <TempoAnimation
                     name="tasks"
                     alt="Notebook drawing checkmarks animation"
-                    size={72}
+                    size={110}
                     fallback={<CheckCircle2 className="w-8 h-8 text-[#080808] dark:text-[#F5F5F5] mx-auto opacity-40" />}
                   />
                 </div>

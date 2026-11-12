@@ -238,31 +238,31 @@ export function TasksMobile(props: UseTasksReturn) {
             <MobileAnimation
               name="tasks"
               alt="Tasks notebook animation"
-              size={56}
+              size={90}
               eager
-              fallback={<Clock className="w-5 h-5 animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
+              fallback={<Clock className="w-6 h-6 animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
             />
             <p className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">Loading your tasks...</p>
           </div>
         ) : filteredTasks.length === 0 ? (
-          <div className="py-8 text-center bg-[#FFFFFF] border border-[#D9D9D9] rounded-2xl space-y-3 px-4 shadow-2xs">
+          <div className="py-8 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl space-y-3 px-4 shadow-2xs">
             {tasks.length === 0 && !search && statusFilter === 'ALL' && priorityFilter === 'ALL' && categoryFilter === 'ALL' ? (
               <div className="flex justify-center mb-1">
                 <MobileAnimation
                   name="tasks"
                   alt="Notebook drawing checkmarks animation"
-                  size={56}
-                  fallback={<CheckCircle2 className="w-6 h-6 text-[#080808] mx-auto opacity-40" />}
+                  size={90}
+                  fallback={<CheckCircle2 className="w-8 h-8 text-[#080808] dark:text-[#F5F5F5] mx-auto opacity-40" />}
                 />
               </div>
             ) : (
-              <CheckCircle2 className="w-6 h-6 text-[#080808] mx-auto opacity-40" />
+              <CheckCircle2 className="w-8 h-8 text-[#080808] dark:text-[#F5F5F5] mx-auto opacity-40" />
             )}
             <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-[#080808]">
+              <h3 className="text-sm font-semibold text-[#080808] dark:text-[#F5F5F5]">
                 {tasks.length === 0 && !search ? 'No tasks yet' : 'No tasks found'}
               </h3>
-              <p className="text-xs text-[#777777] max-w-xs mx-auto">
+              <p className="text-xs text-[#777777] dark:text-[#BDBDBD] max-w-xs mx-auto">
                 {search || statusFilter !== 'ALL' || priorityFilter !== 'ALL' || categoryFilter !== 'ALL'
                   ? 'No tasks match current filter.'
                   : 'Your task list is clear. Tap New Task above to start organizing your day.'}

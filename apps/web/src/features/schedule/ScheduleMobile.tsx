@@ -363,9 +363,9 @@ export function ScheduleMobile(props: UseScheduleReturn) {
             <MobileAnimation
               name="clock"
               alt="Schedule clock animation"
-              size={56}
+              size={90}
               eager
-              fallback={<Clock className="w-6 h-6 animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
+              fallback={<Clock className="w-8 h-8 animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
             />
             <p className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">
               {generating ? 'Generating your schedule...' : 'Loading your schedule...'}
@@ -395,13 +395,6 @@ export function ScheduleMobile(props: UseScheduleReturn) {
               {schedule.blocks.map((block) => {
                 const style = getBlockStyle(block);
                 const isNow = isCurrentBlock(block);
-                const isRelaxationOrBreak =
-                  block.blockType === 'BREAK' ||
-                  block.blockType === 'LEISURE' ||
-                  block.blockType === 'MEAL' ||
-                  (block.blockType === 'ROUTINE' && block.metadata?.category === 'MEAL') ||
-                  block.title.toLowerCase().includes('break') ||
-                  block.title.toLowerCase().includes('tea');
 
                 return (
                   <div
@@ -415,16 +408,7 @@ export function ScheduleMobile(props: UseScheduleReturn) {
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-start space-x-2 flex-1 min-w-0">
                         <div className="pt-0.5 shrink-0 flex items-center justify-center w-4 h-4">
-                          {isRelaxationOrBreak ? (
-                            <MobileAnimation
-                              name="tea"
-                              alt="Tea break relaxation animation"
-                              size={18}
-                              fallback={<Coffee className="w-3.5 h-3.5 text-[#777777]" />}
-                            />
-                          ) : (
-                            style.icon
-                          )}
+                          {style.icon}
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-baseline gap-1.5 flex-wrap">

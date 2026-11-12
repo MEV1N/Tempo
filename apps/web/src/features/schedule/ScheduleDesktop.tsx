@@ -396,9 +396,9 @@ export function ScheduleDesktop(props: UseScheduleReturn) {
                   <TempoAnimation
                     name="clock"
                     alt="Schedule clock animation"
-                    size={64}
+                    size={110}
                     eager
-                    fallback={<Clock className="w-8 h-8 mx-auto animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
+                    fallback={<Clock className="w-10 h-10 mx-auto animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
                   />
                   <p className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">
                     {generating ? 'Calculating optimized schedule...' : `Loading schedule for ${targetDate}...`}
@@ -427,13 +427,6 @@ export function ScheduleDesktop(props: UseScheduleReturn) {
                   {schedule.blocks.map((block) => {
                     const style = getBlockStyle(block);
                     const isNow = isCurrentBlock(block);
-                    const isRelaxationOrBreak =
-                      block.blockType === 'BREAK' ||
-                      block.blockType === 'LEISURE' ||
-                      block.blockType === 'MEAL' ||
-                      (block.blockType === 'ROUTINE' && block.metadata?.category === 'MEAL') ||
-                      block.title.toLowerCase().includes('break') ||
-                      block.title.toLowerCase().includes('tea');
 
                     return (
                       <div
@@ -455,16 +448,7 @@ export function ScheduleDesktop(props: UseScheduleReturn) {
                           </div>
 
                           <div className="pt-0.5 flex-shrink-0 flex items-center justify-center w-5 h-5">
-                            {isRelaxationOrBreak ? (
-                              <TempoAnimation
-                                name="tea"
-                                alt="Tea break relaxation animation"
-                                size={20}
-                                fallback={<Coffee className="w-4 h-4 text-[#777777] dark:text-[#BDBDBD]" />}
-                              />
-                            ) : (
-                              style.icon
-                            )}
+                            {style.icon}
                           </div>
 
                           <div className="flex-1 min-w-0">

@@ -35,9 +35,7 @@ export function DashboardMobile(props: UseDashboardReturn) {
     setShowRhythmDetails,
   } = props;
 
-  const { resolvedTheme } = useTheme();
-  // Connected directly to automatic day/night theme system
-  const isDaytime = resolvedTheme === 'light';
+  const { isDaytime } = useTheme();
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#181818] text-[#080808] dark:text-[#F5F5F5] font-interface transition-colors">
@@ -55,18 +53,18 @@ export function DashboardMobile(props: UseDashboardReturn) {
             </h1>
           </div>
           <div
-            className="shrink-0 flex items-center justify-center w-11 h-11 rounded-2xl bg-[#FFFFFF] dark:bg-[#181818] border border-[#EAEAEA] dark:border-[#383838] p-1 shadow-2xs"
+            className="shrink-0 flex items-center justify-center w-14 h-14 rounded-2xl bg-[#FFFFFF] dark:bg-[#181818] border border-[#EAEAEA] dark:border-[#383838] p-1 shadow-2xs"
             title={isDaytime ? 'Daytime rhythm' : 'Nighttime rhythm'}
           >
             <TempoAnimation
               name={isDaytime ? 'sun' : 'moon'}
               alt={isDaytime ? 'Daytime sun animation' : 'Nighttime moon animation'}
-              size={36}
+              size={52}
               fallback={
                 isDaytime ? (
-                  <Sun className="w-5 h-5 text-[#080808] dark:text-[#F5F5F5]" />
+                  <Sun className="w-7 h-7 text-[#080808] dark:text-[#F5F5F5]" />
                 ) : (
-                  <Moon className="w-5 h-5 text-[#080808] dark:text-[#F5F5F5]" />
+                  <Moon className="w-7 h-7 text-[#080808] dark:text-[#F5F5F5]" />
                 )
               }
             />

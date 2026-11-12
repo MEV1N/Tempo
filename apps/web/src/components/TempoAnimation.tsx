@@ -25,12 +25,12 @@ const LIGHT_ANIMATION_URLS: Record<AnimationAssetName, string> = {
 
 // Dark-themed variants ending with dark; falls back to light asset if no dark asset exists
 const DARK_ANIMATION_URLS: Record<AnimationAssetName, string> = {
-  loading: '/animations/loading dark.gif',
+  loading: '/animations/loading%20dark.gif',
   tea: '/animations/tea.gif',
   sun: '/animations/sun.gif',
   moon: '/animations/moon.gif',
-  tasks: '/animations/tasks dark.gif',
-  clock: '/animations/clock dark.gif',
+  tasks: '/animations/tasks%20dark.gif',
+  clock: '/animations/clock%20dark.gif',
 };
 
 /**
@@ -64,6 +64,13 @@ export const TempoAnimation = memo(function TempoAnimation({
 
   const src = isDark ? DARK_ANIMATION_URLS[name] : LIGHT_ANIMATION_URLS[name];
 
+  // Contrast adaptation: tea and sun were authored with dark strokes (invisible on dark surfaces),
+  // while moon was authored with white strokes (invisible on light surfaces).
+  // CSS invert(1) safely adapts the stroke color while preserving transparent alpha.
+  const shouldInvert =
+    (isDark && (name === 'tea' || name === 'sun')) ||
+    (!isDark && name === 'moon');
+
   return (
     <img
       src={src}
@@ -79,6 +86,7 @@ export const TempoAnimation = memo(function TempoAnimation({
         height: `${size}px`,
         maxWidth: `${size}px`,
         maxHeight: `${size}px`,
+        filter: shouldInvert ? 'invert(1)' : undefined,
       }}
     />
   );

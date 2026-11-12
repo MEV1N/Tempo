@@ -31,9 +31,9 @@ export function AppLoadingScreen({
           <TempoAnimation
             name="loading"
             alt="Tempo loading animation"
-            size={76}
+            size={160}
             eager
-            fallback={<Clock className="w-8 h-8 animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
+            fallback={<Clock className="w-12 h-12 animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
           />
         </div>
       )}

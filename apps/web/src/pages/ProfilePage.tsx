@@ -149,15 +149,15 @@ export function ProfilePage() {
           </div>
 
           {/* Decorative Calm Break / Tea Cup Animation */}
-          <div className="pt-8 pb-4 flex flex-col items-center justify-center text-center space-y-1.5 select-none pointer-events-none">
+          <div className="pt-8 pb-4 flex flex-col items-center justify-center text-center space-y-2 select-none pointer-events-none">
             <TempoAnimation
               name="tea"
               alt="Tea cup with rising steam"
-              size={54}
+              size={110}
               className="opacity-90"
-              fallback={<Coffee className="w-7 h-7 text-[#777777] dark:text-[#929292]" />}
+              fallback={<Coffee className="w-10 h-10 text-[#777777] dark:text-[#929292]" />}
             />
-            <p className="font-handwritten text-lg text-[#777777] dark:text-[#929292]">
+            <p className="font-handwritten text-xl text-[#777777] dark:text-[#929292]">
               find your rhythm
             </p>
           </div>
