@@ -68,3 +68,4 @@ export const TempoAnimation = memo(function TempoAnimation({
 
 // Re-export as MobileAnimation for backwards compatibility
 export const MobileAnimation = TempoAnimation;
+

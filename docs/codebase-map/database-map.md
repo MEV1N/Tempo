@@ -27,7 +27,7 @@ Do **never** call `new PrismaClient()` inside services, controllers, or route ha
 | Model | Primary Key | Key Fields & Relations | Purpose |
 |---|---|---|---|
 | `User` | `id` (cuid) | `email` (unique), `passwordHash`, `name`, `avatarUrl`, `timezone`, `role`, relations to all user entities | Central user identity record |
-| `UserPreference` | `id` (cuid) | `userId` (unique), `defaultWakeTime`, `defaultSleepTime`, `defaultBreakDurationMinutes`, `weekdayWakeTimes`, `weekdaySleepTimes` | Sleep, wake, and scheduling constraint preferences |
+| `UserPreference` | `id` (cuid) | `userId` (unique), `timezone`, `wakeTime`, `sleepTime`, `themePreference` (AUTO/LIGHT/DARK), routines & notification preferences | Sleep, wake, theme, and scheduling constraint preferences |
 | `Session` | `id` (cuid) | `userId`, `token` (unique), `expiresAt`, `userAgent`, `ipAddress` | Cookie session tracking (`tempo_session`) |
 | `OAuthConnection` | `id` (cuid) | `userId`, `provider`, `providerUserId`, `accessToken`, `refreshToken`, `tokenExpiresAt` | External identity link (Google OAuth / Calendar) |
 | `PersonalRoutine` | `id` (cuid) | `userId`, `name`, `category`, `classification`, `startTime`, `endTime`, `daysOfWeek`, `isFixed` | Personal routines (meals, exercise, recurring habits) |
@@ -187,6 +187,7 @@ enum RoutineClassification {
 6. **`20261111220000_phase6_push_notifications_automation`:** Added `PushSubscription` and `Notification` models for Web Push and reminders.
 7. **`20261111240000_phase7_google_auth_and_calendar`:** Added `OAuthConnection` model for Google OAuth2 / Calendar sync.
 8. **`20261111260000_profile_and_personal_routines`:** Added `PersonalRoutine` model and day-of-week wake/sleep overrides to `UserPreference`.
+9. **`20261112000000_add_theme_preference`:** Added `themePreference` column to `user_preferences` table (defaults to `'AUTO'`).
 
 ---
 

@@ -35,15 +35,17 @@ apps/web/
 │   │   └── client.ts              # Fetch wrapper, ApiError class, resolveApiUrl, googleApi
 │   ├── components/
 │   │   ├── ActivityHeatmap.tsx    # 365-day activity heatmap grid, streak cards & daily breakdown
-│   │   ├── MobileAnimation.tsx    # Reusable mobile animation component with reduced-motion fallback
+│   │   ├── MobileAnimation.tsx    # Re-exports TempoAnimation for backward compatibility
+│   │   ├── TempoAnimation.tsx     # Universal animation component (desktop & mobile) with reduced-motion fallback
 │   │   ├── Navbar.tsx             # Responsive navigation (Desktop sidebar + Mobile bottom bar)
 │   │   ├── NotificationCenter.tsx # In-app notifications drawer/modal
 │   │   ├── OfflineIndicator.tsx   # Offline connectivity indicator
-│   │   ├── ProtectedRoute.tsx     # Route guards: ProtectedRoute & PublicOnlyRoute
+│   │   ├── ProtectedRoute.tsx     # Route guards: ProtectedRoute & PublicOnlyRoute, AppLoadingScreen
 │   │   ├── PWAInstallBanner.tsx   # Banner prompting PWA installation
 │   │   └── TempoLogo.tsx          # Monochrome logo with Caveat font
 │   ├── context/
-│   │   └── AuthContext.tsx        # Global user authentication state & session lifecycles
+│   │   ├── AuthContext.tsx        # Global user authentication state & session lifecycles
+│   │   └── ThemeContext.tsx       # Automatic day/night theme system (AUTO/LIGHT/DARK) with timezone calculation
 │   ├── features/                  # Separated Mobile & Desktop Feature Components
 │   │   ├── calendar/              # useCalendar hook, CalendarDesktop, CalendarMobile, CalendarModals
 │   │   ├── dashboard/             # useDashboard hook, DashboardDesktop, DashboardMobile
@@ -146,10 +148,34 @@ interface AuthContextType {
 
 ---
 
-## 7. Feature-to-File Lookup Table
+## 7. Day/Night Theme & Universal Animation System
+
+### Automatic Day/Night Theme (`apps/web/src/context/ThemeContext.tsx`)
+- **Theme Modes:** `AUTO` (default), `LIGHT`, `DARK`.
+- **Auto Switching:** Light mode from 06:00 to 18:00; dark mode from 18:00 to 06:00.
+- **Timezone Aware:** Evaluates local hours using the user's configured timezone (`preference.timezone`) via `Intl.DateTimeFormat`, with browser timezone fallback.
+- **Listeners & Recalculation:** Re-evaluates every 30 seconds and on window `visibilitychange` / `focus`.
+- **Zero-Flash Execution:** Inline bootstrap script in `apps/web/index.html` resolves the active theme from `localStorage` before DOM paint and attaches `.dark` to `<html>`.
+- **Monochrome Aesthetics:** Light mode uses `#FAFAFA`/`#FFFFFF` with `#080808` text. Dark mode uses layered charcoal `#121212`, `#181818`, `#222222` with `#F3F3F3`/`#D4D4D4` text and `#2A2A2A`/`#333333` borders.
+
+### Universal Animation Integration (`apps/web/src/components/TempoAnimation.tsx`)
+- **Shared Assets:** `apps/web/public/animations/` (`loading.gif`, `tea.gif`, `sun.gif`, `moon.gif`, `tasks.gif`).
+- **Platform Agnostic:** Uniformly rendered across desktop and mobile presentation layers.
+- **Contextual Placements:**
+  - `loading`: App bootstrap screen and page loading states.
+  - `tea`: Break, leisure, and meal schedule blocks.
+  - `sun`: Daytime greetings and headers (06:00 - 18:00).
+  - `moon`: Nighttime greetings and headers (18:00 - 06:00).
+  - `tasks`: Empty task backlog illustration.
+- **Accessibility & Error Resilience:** Automatically detects `prefers-reduced-motion` and provides contextual Lucide icon fallbacks; handles asset loading errors gracefully.
+
+---
+
+## 8. Feature-to-File Lookup Table
 
 | Feature Area | Page Component | Supporting Components & Context | API Calls Made |
 |---|---|---|---|
+| **Theme & Appearance** | `SettingsPage.tsx` | `ThemeContext.tsx`, `TempoAnimation.tsx` | `PUT /api/preferences` (`themePreference`) |
 | **Authentication** | `LoginPage.tsx`, `RegisterPage.tsx` | `AuthContext.tsx`, `TempoLogo.tsx` | `POST /api/auth/login`, `POST /api/auth/register`, `GET /api/auth/google` |
 | **Dashboard** | `DashboardPage.tsx` | `Navbar.tsx`, `NotificationCenter.tsx` | `GET /api/schedule/today`, `GET /api/tasks`, `POST /api/activities/start` |
 | **Tasks & Backlog** | `TasksPage.tsx` | `Navbar.tsx` | `GET/POST/PATCH/DELETE /api/tasks`, `GET /api/categories` |

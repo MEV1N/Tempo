@@ -57,19 +57,19 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#080808] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 max-w-full overflow-x-hidden">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#121212] text-[#080808] dark:text-[#F3F3F3] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 max-w-full overflow-x-hidden">
       <div className="w-full max-w-md mx-auto text-center">
         <TempoLogo size="xl" showTagline={true} className="items-center" />
-        <h2 className="mt-6 text-xl font-semibold tracking-tight text-[#080808]">Welcome back</h2>
-        <p className="mt-1 font-handwritten text-xl text-[#777777]">
+        <h2 className="mt-6 text-xl font-semibold tracking-tight text-[#080808] dark:text-[#F3F3F3]">Welcome back</h2>
+        <p className="mt-1 font-handwritten text-xl text-[#777777] dark:text-[#A3A3A3]">
           sign in to access your rhythm
         </p>
       </div>
 
       <div className="mt-8 w-full max-w-md mx-auto">
-        <div className="bg-[#FFFFFF] border border-[#D9D9D9] rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+        <div className="bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
           {error && (
-            <div className="p-3.5 rounded-xl bg-[#F5F5F5] border border-[#080808] text-[#080808] text-xs flex items-start space-x-2.5">
+            <div className="p-3.5 rounded-xl bg-[#F5F5F5] dark:bg-[#222222] border border-[#080808] dark:border-[#F3F3F3] text-[#080808] dark:text-[#F3F3F3] text-xs flex items-start space-x-2.5">
               <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
               <span className="leading-relaxed">{error}</span>
             </div>
@@ -79,7 +79,7 @@ export function LoginPage() {
           <div>
             <a
               href="/api/auth/google"
-              className="w-full py-2.5 px-4 rounded-xl bg-[#FFFFFF] hover:bg-[#F5F5F5] text-[#080808] font-medium text-xs sm:text-sm border border-[#D9D9D9] transition flex items-center justify-center space-x-2.5 active:scale-[0.99]"
+              className="w-full py-2.5 px-4 rounded-xl bg-[#FFFFFF] dark:bg-[#222222] hover:bg-[#F5F5F5] dark:hover:bg-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] font-medium text-xs sm:text-sm border border-[#D9D9D9] dark:border-[#333333] transition flex items-center justify-center space-x-2.5 active:scale-[0.99]"
             >
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                 <path
@@ -104,16 +104,16 @@ export function LoginPage() {
           </div>
 
           <div className="relative flex items-center py-0.5">
-            <div className="flex-1 border-t border-[#D9D9D9]" />
-            <span className="shrink-0 bg-[#FFFFFF] px-3 text-[11px] font-medium tracking-wider text-[#777777] uppercase">
+            <div className="flex-1 border-t border-[#D9D9D9] dark:border-[#2A2A2A]" />
+            <span className="shrink-0 bg-[#FFFFFF] dark:bg-[#181818] px-3 text-[11px] font-medium tracking-wider text-[#777777] dark:text-[#A3A3A3] uppercase">
               Or with email
             </span>
-            <div className="flex-1 border-t border-[#D9D9D9]" />
+            <div className="flex-1 border-t border-[#D9D9D9] dark:border-[#2A2A2A]" />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-[#404040] mb-1.5">
+              <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">
                 Email Address
               </label>
               <input
@@ -122,26 +122,26 @@ export function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="alex@example.com"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] placeholder-[#777777] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF] transition"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] placeholder-[#777777] dark:placeholder-[#666666] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818] transition"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-[#404040] mb-1.5">Password</label>
+              <label className="block text-xs font-medium text-[#404040] dark:text-[#D4D4D4] mb-1.5">Password</label>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] placeholder-[#777777] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF] transition"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] dark:bg-[#121212] border border-[#D9D9D9] dark:border-[#2A2A2A] text-[#080808] dark:text-[#F3F3F3] placeholder-[#777777] dark:placeholder-[#666666] text-sm focus:outline-none focus:border-[#080808] dark:focus:border-[#F3F3F3] focus:bg-[#FFFFFF] dark:focus:bg-[#181818] transition"
               />
             </div>
 
             <button
               type="submit"
               disabled={submitting}
-              className="w-full mt-2 py-2.5 px-4 rounded-xl bg-[#080808] hover:bg-[#171717] text-[#FFFFFF] font-medium text-sm transition flex items-center justify-center space-x-2 disabled:opacity-50 active:scale-[0.99]"
+              className="w-full mt-2 py-2.5 px-4 rounded-xl bg-[#080808] hover:bg-[#171717] dark:bg-[#F3F3F3] dark:hover:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#080808] font-medium text-sm transition flex items-center justify-center space-x-2 disabled:opacity-50 active:scale-[0.99]"
             >
               {submitting ? (
                 <>
@@ -157,12 +157,12 @@ export function LoginPage() {
             </button>
           </form>
 
-          <div className="pt-4 border-t border-[#EFEFEF] space-y-3">
-            <div className="p-3 rounded-xl bg-[#F5F5F5] border border-[#D9D9D9] text-xs text-[#777777] flex items-center justify-between gap-2">
+          <div className="pt-4 border-t border-[#EFEFEF] dark:border-[#2A2A2A] space-y-3">
+            <div className="p-3 rounded-xl bg-[#F5F5F5] dark:bg-[#222222] border border-[#D9D9D9] dark:border-[#2A2A2A] text-xs text-[#777777] dark:text-[#A3A3A3] flex items-center justify-between gap-2">
               <div className="min-w-0 flex-1">
-                <p className="font-semibold text-[#080808]">Demo Account</p>
-                <p className="text-[#404040] font-mono text-[11px] truncate">demo@tempo.app</p>
-                <p className="text-[#777777] font-mono text-[10px]">Password123!</p>
+                <p className="font-semibold text-[#080808] dark:text-[#F3F3F3]">Demo Account</p>
+                <p className="text-[#404040] dark:text-[#D4D4D4] font-mono text-[11px] truncate">demo@tempo.app</p>
+                <p className="text-[#777777] dark:text-[#A3A3A3] font-mono text-[10px]">Password123!</p>
               </div>
               <button
                 type="button"
@@ -170,17 +170,17 @@ export function LoginPage() {
                   setEmail('demo@tempo.app');
                   setPassword('Password123!');
                 }}
-                className="px-2.5 py-1.5 text-xs rounded-lg bg-[#FFFFFF] text-[#080808] hover:bg-[#EFEFEF] border border-[#D9D9D9] transition font-medium shrink-0"
+                className="px-2.5 py-1.5 text-xs rounded-lg bg-[#FFFFFF] dark:bg-[#181818] text-[#080808] dark:text-[#F3F3F3] hover:bg-[#EFEFEF] dark:hover:bg-[#2A2A2A] border border-[#D9D9D9] dark:border-[#333333] transition font-medium shrink-0"
               >
                 Auto-fill
               </button>
             </div>
 
-            <div className="text-center text-xs text-[#777777]">
+            <div className="text-center text-xs text-[#777777] dark:text-[#A3A3A3]">
               Don't have an account?{' '}
               <Link
                 to="/register"
-                className="text-[#080808] font-semibold underline hover:opacity-80 transition"
+                className="text-[#080808] dark:text-[#F3F3F3] font-semibold underline hover:opacity-80 transition"
               >
                 Create an account
               </Link>

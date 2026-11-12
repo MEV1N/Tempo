@@ -174,7 +174,7 @@ export function AnalyticsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#080808] font-interface">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#121212] text-[#080808] dark:text-[#F3F3F3] font-interface transition-colors">
       <Navbar />
 
       <div className="md:pl-64 flex flex-col min-h-screen">

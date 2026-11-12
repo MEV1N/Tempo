@@ -545,7 +545,7 @@ export function SettingsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#080808] font-sans pb-28 md:pb-12">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#121212] text-[#080808] dark:text-[#F3F3F3] font-sans pb-28 md:pb-12 transition-colors">
       <Navbar />
 
       <div className="md:pl-64 flex flex-col min-h-screen">
