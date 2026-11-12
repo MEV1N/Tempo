@@ -4,12 +4,27 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  envDir: path.resolve(__dirname, '../../'),
   resolve: {
     alias: {
       '@tempo/shared': path.resolve(__dirname, '../../packages/shared/src/index.ts'),
     },
   },
   server: {
+    port: 3000,
+    host: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
+      '/health': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
+    },
+  },
+  preview: {
     port: 3000,
     host: true,
     proxy: {

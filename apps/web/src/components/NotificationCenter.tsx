@@ -24,13 +24,10 @@ export function NotificationCenter() {
 
   useEffect(() => {
     fetchNotifications();
-
-    // Poll periodically for new notifications (every 30 seconds)
     const interval = setInterval(fetchNotifications, 30000);
     return () => clearInterval(interval);
   }, []);
 
-  // Close dropdown on click outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -62,15 +59,15 @@ export function NotificationCenter() {
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, readAt: new Date().toISOString() } : n))
       );
-      setUnreadCount((prev) => Math.max(0, prev - 1));
+      setUnreadCount((c) => Math.max(0, c - 1));
     } catch {
       // Ignore
     }
   };
 
   const handleMarkAllRead = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       await apiRequest('/api/notifications/read-all', { method: 'POST' });
       setNotifications((prev) => prev.map((n) => ({ ...n, readAt: new Date().toISOString() })));
       setUnreadCount(0);
@@ -110,15 +107,15 @@ export function NotificationCenter() {
   const getIcon = (type: string) => {
     switch (type) {
       case 'TOMORROW_PLAN_READY':
-        return <Sparkles className="w-4 h-4 text-sky-400" />;
+        return <Sparkles className="w-3.5 h-3.5 text-[#080808] dark:text-[#F3F3F3]" />;
       case 'SCHEDULE_REMINDER':
-        return <Clock className="w-4 h-4 text-indigo-400" />;
+        return <Clock className="w-3.5 h-3.5 text-[#080808] dark:text-[#F3F3F3]" />;
       case 'TASK_REMINDER':
-        return <CheckSquare className="w-4 h-4 text-emerald-400" />;
+        return <CheckSquare className="w-3.5 h-3.5 text-[#080808] dark:text-[#F3F3F3]" />;
       case 'SCHEDULE_CHANGE':
-        return <Calendar className="w-4 h-4 text-amber-400" />;
+        return <Calendar className="w-3.5 h-3.5 text-[#080808] dark:text-[#F3F3F3]" />;
       default:
-        return <AlertCircle className="w-4 h-4 text-slate-400" />;
+        return <AlertCircle className="w-3.5 h-3.5 text-[#777777] dark:text-[#A3A3A3]" />;
     }
   };
 
@@ -127,26 +124,28 @@ export function NotificationCenter() {
       {/* Bell Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition focus:outline-none"
+        className="relative p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-[#777777] dark:text-[#A3A3A3] hover:text-[#080808] dark:hover:text-[#F3F3F3] hover:bg-[#F5F5F5] dark:hover:bg-[#222222] border border-[#D9D9D9] dark:border-[#2E2E2E] transition focus:outline-none"
         title="Notifications"
         aria-label="Notifications"
       >
         <Bell className="w-4 h-4" />
         {unreadCount > 0 && (
-          <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-sky-500 rounded-full ring-2 ring-slate-950 animate-pulse" />
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#080808] dark:bg-[#F3F3F3] text-[#FFFFFF] dark:text-[#080808] text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
+            {unreadCount > 9 ? '9+' : unreadCount}
+          </span>
         )}
       </button>
 
       {/* Notification Dropdown Panel */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl z-50 overflow-hidden divide-y divide-slate-800">
+        <div className="absolute right-0 md:left-0 md:right-auto mt-2 w-80 sm:w-96 max-w-[calc(100vw-2rem)] bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2E2E2E] rounded-2xl shadow-xl z-50 overflow-hidden divide-y divide-[#EFEFEF] dark:divide-[#262626]">
           {/* Header */}
-          <div className="p-4 flex items-center justify-between">
+          <div className="p-3.5 flex items-center justify-between bg-[#FAFAFA] dark:bg-[#1E1E1E]">
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-bold text-white">Notifications</span>
+              <span className="text-xs font-semibold text-[#080808] dark:text-[#F3F3F3]">Notifications</span>
               {unreadCount > 0 && (
-                <span className="px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-400 text-[10px] font-bold">
-                  {unreadCount} new
+                <span className="px-1.5 py-0.5 rounded bg-[#080808] dark:bg-[#F3F3F3] text-[#FFFFFF] dark:text-[#080808] text-[10px] font-medium">
+                  {unreadCount} unread
                 </span>
               )}
             </div>
@@ -155,7 +154,7 @@ export function NotificationCenter() {
               <button
                 onClick={handleMarkAllRead}
                 disabled={loading}
-                className="text-[11px] text-slate-400 hover:text-sky-400 flex items-center space-x-1 font-medium transition"
+                className="text-[11px] text-[#777777] dark:text-[#A3A3A3] hover:text-[#080808] dark:hover:text-[#F3F3F3] flex items-center space-x-1 font-medium transition"
               >
                 <CheckCheck className="w-3.5 h-3.5" />
                 <span>Mark all as read</span>
@@ -164,9 +163,9 @@ export function NotificationCenter() {
           </div>
 
           {/* List */}
-          <div className="max-h-80 overflow-y-auto divide-y divide-slate-800/60">
+          <div className="max-h-80 overflow-y-auto divide-y divide-[#EFEFEF] dark:divide-[#262626]">
             {notifications.length === 0 ? (
-              <div className="py-8 text-center text-xs text-slate-500">
+              <div className="py-8 text-center text-xs text-[#777777] dark:text-[#888888]">
                 No notifications right now.
               </div>
             ) : (
@@ -175,31 +174,38 @@ export function NotificationCenter() {
                   key={notif.id}
                   onClick={() => handleNotificationClick(notif)}
                   className={`p-3.5 flex items-start justify-between gap-3 cursor-pointer transition ${
-                    !notif.readAt ? 'bg-sky-500/5 hover:bg-sky-500/10' : 'hover:bg-slate-800/40'
+                    !notif.readAt
+                      ? 'bg-[#F5F5F5]/60 dark:bg-[#222222]/60 hover:bg-[#EFEFEF]/80 dark:hover:bg-[#282828]'
+                      : 'hover:bg-[#F5F5F5] dark:hover:bg-[#222222]'
                   }`}
                 >
                   <div className="flex items-start space-x-3">
-                    <div className="p-2 rounded-xl bg-slate-950 border border-slate-800 mt-0.5">
+                    <div className="p-1.5 rounded-lg bg-[#FFFFFF] dark:bg-[#262626] border border-[#D9D9D9] dark:border-[#383838] mt-0.5 shadow-2xs">
                       {getIcon(notif.type)}
                     </div>
 
                     <div className="space-y-0.5">
                       <div className="flex items-center space-x-1.5">
-                        <p className="text-xs font-bold text-white leading-tight">{notif.title}</p>
-                        {!notif.readAt && <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />}
+                        <p className="text-xs font-semibold text-[#080808] dark:text-[#F3F3F3] leading-tight">
+                          {notif.title}
+                        </p>
+                        {!notif.readAt && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#080808] dark:bg-[#F3F3F3]" />
+                        )}
                       </div>
 
-                      <p className="text-[11px] text-slate-400 leading-snug">{notif.body}</p>
+                      <p className="text-[11px] text-[#404040] dark:text-[#A3A3A3] leading-snug">{notif.body}</p>
 
-                      <div className="flex items-center space-x-2 text-[10px] text-slate-500 pt-0.5">
+                      <div className="flex items-center space-x-2 text-[10px] text-[#777777] dark:text-[#888888] pt-0.5">
                         <span>
                           {new Date(notif.createdAt).toLocaleTimeString([], {
-                            hour: '2-digit',
+                            hour: 'numeric',
                             minute: '2-digit',
+                            hour12: true,
                           })}
                         </span>
                         {notif.data?.url && (
-                          <span className="text-sky-400 flex items-center space-x-0.5">
+                          <span className="text-[#080808] dark:text-[#F3F3F3] font-medium flex items-center space-x-0.5 underline">
                             <span>Open</span>
                             <ExternalLink className="w-2.5 h-2.5" />
                           </span>
@@ -210,7 +216,7 @@ export function NotificationCenter() {
 
                   <button
                     onClick={(e) => handleDelete(notif.id, e)}
-                    className="p-1 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition shrink-0"
+                    className="p-1 rounded-md text-[#777777] dark:text-[#888888] hover:text-[#080808] dark:hover:text-[#F3F3F3] hover:bg-[#EFEFEF] dark:hover:bg-[#2A2A2A] transition shrink-0"
                     title="Delete"
                   >
                     <Trash2 className="w-3.5 h-3.5" />

@@ -1,4 +1,4 @@
-import { SchedulerRequest, TimeInterval, ScheduledBlockOutput } from './types';
+import { SchedulerRequest, TimeInterval, ScheduledBlockOutput, SchedulerRoutine } from './types';
 import { timeToMinutes, minutesToTime, subtractIntervals, mergeIntervals } from './intervals';
 
 export interface AvailabilityResult {
@@ -7,8 +7,35 @@ export interface AvailabilityResult {
   wakingInterval: TimeInterval;
   fixedBlocks: ScheduledBlockOutput[];
   mealBlocks: ScheduledBlockOutput[];
+  routineBlocks: ScheduledBlockOutput[];
+  flexibleRoutines: SchedulerRoutine[];
   occupiedIntervals: TimeInterval[];
   availableIntervals: TimeInterval[];
+}
+
+export function getRoutineDefaultColor(category: string): string {
+  switch (category) {
+    case 'EXERCISE':
+      return '#10b981'; // emerald
+    case 'MEAL':
+      return '#f97316'; // orange
+    case 'MORNING_ROUTINE':
+      return '#06b6d4'; // cyan
+    case 'EVENING_ROUTINE':
+      return '#6366f1'; // indigo
+    case 'WORK':
+      return '#3b82f6'; // blue
+    case 'STUDY':
+      return '#8b5cf6'; // violet
+    case 'RELAXATION':
+      return '#ec4899'; // pink
+    case 'PERSONAL':
+      return '#14b8a6'; // teal
+    case 'SLEEP':
+      return '#475569'; // slate
+    default:
+      return '#a855f7'; // purple
+  }
 }
 
 /**
@@ -26,10 +53,23 @@ export function getDayOfWeekFromDate(dateStr: string): number {
  * Calculates availability for the specified date, user preferences, and calendar context.
  */
 export function calculateAvailability(request: SchedulerRequest): AvailabilityResult {
-  const { preferences, targetDate, calendarContext, fixedCommitments, options } = request;
+  const { preferences, targetDate, calendarContext, fixedCommitments, routines, options } = request;
+  const targetDayOfWeek = getDayOfWeekFromDate(targetDate);
 
-  const wakeMinute = timeToMinutes(preferences.wakeTime || '07:00');
+  // Filter active routines for target day of week
+  const activeRoutines = (routines || []).filter(
+    (r) => r.isEnabled !== false && r.daysOfWeek.includes(targetDayOfWeek)
+  );
+
+  // Check for active day-specific sleep routine
+  let wakeMinute = timeToMinutes(preferences.wakeTime || '07:00');
   let sleepMinute = timeToMinutes(preferences.sleepTime || '23:00');
+
+  const sleepRoutine = activeRoutines.find((r) => r.category === 'SLEEP');
+  if (sleepRoutine) {
+    if (sleepRoutine.startTime) sleepMinute = timeToMinutes(sleepRoutine.startTime);
+    if (sleepRoutine.endTime) wakeMinute = timeToMinutes(sleepRoutine.endTime);
+  }
 
   // Guard against invalid sleep time
   if (sleepMinute <= wakeMinute) {
@@ -42,10 +82,11 @@ export function calculateAvailability(request: SchedulerRequest): AvailabilityRe
   };
 
   const fixedBlocks: ScheduledBlockOutput[] = [];
+  const routineBlocks: ScheduledBlockOutput[] = [];
+  const flexibleRoutines: SchedulerRoutine[] = [];
   const occupiedIntervals: TimeInterval[] = [];
 
   // Check for full day holiday in calendar exceptions
-  const targetDayOfWeek = getDayOfWeekFromDate(targetDate);
   const exceptions = calendarContext?.exceptions || [];
   const fullDayHoliday = exceptions.find(
     (ex) => ex.date === targetDate && (ex.isFullDay || ex.exceptionType === 'HOLIDAY')
@@ -191,6 +232,49 @@ export function calculateAvailability(request: SchedulerRequest): AvailabilityRe
     }
   }
 
+  // 3b. Process Daily Personal Routines (Fixed and Flexible)
+  for (const routine of activeRoutines) {
+    if (routine.category === 'SLEEP') continue;
+
+    if (routine.classification === 'FIXED') {
+      const startMin = timeToMinutes(routine.startTime);
+      let endMin = timeToMinutes(routine.endTime);
+      if (endMin <= startMin) {
+        endMin = Math.min(1440, startMin + (routine.durationMinutes || 60));
+      }
+
+      const clampedStart = Math.max(0, startMin);
+      const clampedEnd = Math.min(1440, endMin);
+
+      const rBlock: ScheduledBlockOutput = {
+        id: `routine-${routine.id}`,
+        startTime: routine.startTime,
+        endTime: minutesToTime(clampedEnd),
+        startMinute: clampedStart,
+        endMinute: clampedEnd,
+        durationMinutes: clampedEnd - clampedStart,
+        blockType: routine.category === 'MEAL' ? 'MEAL' : 'ROUTINE',
+        isFixed: true,
+        title: routine.name,
+        color: routine.color || getRoutineDefaultColor(routine.category),
+        metadata: {
+          routineId: routine.id,
+          category: routine.category,
+          classification: 'FIXED',
+          notes: routine.description,
+        },
+      };
+
+      routineBlocks.push(rBlock);
+      occupiedIntervals.push({
+        startMinute: clampedStart,
+        endMinute: clampedEnd,
+      });
+    } else {
+      flexibleRoutines.push(routine);
+    }
+  }
+
   // 4. Reserve Meal Blocks (Breakfast, Lunch, Dinner)
   const mealBlocks: ScheduledBlockOutput[] = [];
   const includeMeals = options?.includeMeals !== false;
@@ -217,12 +301,22 @@ export function calculateAvailability(request: SchedulerRequest): AvailabilityRe
     ];
 
     for (const meal of mealConfigs) {
+      // Check if user already has an active custom routine covering this meal
+      const hasCustomMealRoutine = activeRoutines.some(
+        (r) =>
+          r.category === 'MEAL' &&
+          (r.name.toLowerCase().includes(meal.name.toLowerCase()) ||
+            Math.abs(timeToMinutes(r.startTime) - timeToMinutes(meal.time)) <= 60)
+      );
+
+      if (hasCustomMealRoutine) continue;
+
       const mealStart = timeToMinutes(meal.time);
       const mealEnd = mealStart + mealDuration;
 
       // Only schedule within waking window
       if (mealStart >= wakeMinute && mealEnd <= sleepMinute) {
-        // Check if meal overlaps with existing fixed blocks
+        // Check if meal overlaps with existing fixed blocks or routines
         const collidesWithFixed = occupiedIntervals.some(
           (occ) => mealStart < occ.endMinute && occ.startMinute < mealEnd
         );
@@ -264,6 +358,8 @@ export function calculateAvailability(request: SchedulerRequest): AvailabilityRe
     wakingInterval,
     fixedBlocks,
     mealBlocks,
+    routineBlocks,
+    flexibleRoutines,
     occupiedIntervals: mergeIntervals(occupiedIntervals),
     availableIntervals,
   };

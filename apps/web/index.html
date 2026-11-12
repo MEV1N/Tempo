@@ -3,17 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0284c7" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#080808" />
     <meta name="description" content="Tempo — Find your rhythm. Intelligent daily planning, scheduling & productivity." />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Tempo" />
     <link rel="manifest" href="/manifest.json" />
     <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
-    <title>Tempo - Intelligent Daily Scheduling</title>
+    
+    <!-- Google Fonts: Caveat (Handwritten) & Inter (Interface) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    
+    <title>Tempo — Find your rhythm.</title>
+    <script>
+      (function() {
+        try {
+          var mode = localStorage.getItem('tempo_theme_preference') || 'AUTO';
+          var isDark = false;
+          if (mode === 'DARK') {
+            isDark = true;
+          } else if (mode === 'LIGHT') {
+            isDark = false;
+          } else {
+            var tz = localStorage.getItem('tempo_user_timezone');
+            var hour;
+            if (tz) {
+              try {
+                var formatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', hour12: false, timeZone: tz });
+                hour = parseInt(formatter.format(new Date()), 10);
+              } catch (e) {
+                hour = new Date().getHours();
+              }
+            } else {
+              hour = new Date().getHours();
+            }
+            isDark = hour < 6 || hour >= 18;
+          }
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body class="bg-slate-50 text-slate-900 antialiased min-h-screen">
+  <body class="bg-[#FAFAFA] dark:bg-[#121212] text-[#080808] dark:text-[#F3F3F3] antialiased min-h-screen selection:bg-[#080808] selection:text-[#FFFFFF] dark:selection:bg-[#F3F3F3] dark:selection:text-[#080808]">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

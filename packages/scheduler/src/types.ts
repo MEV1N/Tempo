@@ -4,7 +4,7 @@ export type TaskTimeOfDay = 'ANYTIME' | 'MORNING' | 'AFTERNOON' | 'EVENING' | 'N
 export type TaskStatusType = 'TODO' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELED' | 'SKIPPED';
 
 export type BlockType =
-  'TASK' | 'COLLEGE' | 'EVENT' | 'MEAL' | 'BREAK' | 'LEISURE' | 'BUFFER' | 'FREE_TIME';
+  'TASK' | 'COLLEGE' | 'EVENT' | 'MEAL' | 'BREAK' | 'LEISURE' | 'BUFFER' | 'FREE_TIME' | 'ROUTINE';
 
 export type UnscheduledReason =
   | 'DEADLINE_PASSED'
@@ -93,11 +93,36 @@ export interface SchedulerCalendarContext {
   }>;
 }
 
+export interface SchedulerRoutine {
+  id: string;
+  name: string;
+  category:
+    | 'SLEEP'
+    | 'MEAL'
+    | 'EXERCISE'
+    | 'MORNING_ROUTINE'
+    | 'EVENING_ROUTINE'
+    | 'WORK'
+    | 'STUDY'
+    | 'PERSONAL'
+    | 'RELAXATION'
+    | 'OTHER';
+  classification: 'FIXED' | 'FLEXIBLE';
+  startTime: string; // "HH:mm"
+  endTime: string; // "HH:mm"
+  durationMinutes: number;
+  daysOfWeek: number[]; // 1 = Monday ... 7 = Sunday
+  isEnabled: boolean;
+  color?: string | null;
+  description?: string | null;
+}
+
 export interface SchedulerRequest {
   userId: string;
   targetDate: string; // "YYYY-MM-DD"
   preferences: SchedulerUserPreferences;
   tasks: SchedulerTaskInput[];
+  routines?: SchedulerRoutine[];
   calendarContext?: SchedulerCalendarContext;
   fixedCommitments?: SchedulerFixedCommitment[];
   options?: {
@@ -134,6 +159,10 @@ export interface ScheduledBlockOutput {
     totalSessions?: number;
     location?: string | null;
     notes?: string | null;
+    routineId?: string | null;
+    category?: string | null;
+    classification?: string | null;
+    [key: string]: any;
   };
 }
 
@@ -186,6 +215,7 @@ export interface RescheduleRequest {
   targetDate: string; // "YYYY-MM-DD"
   preferences: SchedulerUserPreferences;
   tasks: SchedulerTaskInput[];
+  routines?: SchedulerRoutine[];
   calendarContext?: SchedulerCalendarContext;
   reason?: string;
   taskModifications?: Array<{

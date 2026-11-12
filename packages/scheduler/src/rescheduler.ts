@@ -11,6 +11,7 @@ import { timeToMinutes, intervalsOverlap, subtractIntervals, getTotalMinutes } f
 import { allocateTasks } from './allocation';
 import { allocateLeisureAndFreeTime } from './breaks';
 import { validateSchedule } from './validation';
+import { getDayOfWeekFromDate } from './availability';
 
 export class TempoRescheduler {
   reschedule(request: RescheduleRequest): RescheduleResult {
@@ -19,13 +20,27 @@ export class TempoRescheduler {
       targetDate,
       preferences,
       tasks,
+      routines = [],
       taskModifications = [],
       newEvents = [],
       reason = 'Schedule revised',
     } = request;
 
-    const wakeMin = timeToMinutes(preferences.wakeTime || '07:00');
+    const targetDayOfWeek = getDayOfWeekFromDate(targetDate);
+    const activeSleepRoutine = (routines || []).find(
+      (r) =>
+        r.isEnabled !== false &&
+        r.category === 'SLEEP' &&
+        (r.daysOfWeek || []).includes(targetDayOfWeek)
+    );
+
+    let wakeMin = timeToMinutes(preferences.wakeTime || '07:00');
     let sleepMin = timeToMinutes(preferences.sleepTime || '23:00');
+
+    if (activeSleepRoutine) {
+      if (activeSleepRoutine.startTime) sleepMin = timeToMinutes(activeSleepRoutine.startTime);
+      if (activeSleepRoutine.endTime) wakeMin = timeToMinutes(activeSleepRoutine.endTime);
+    }
     if (sleepMin <= wakeMin) sleepMin = 1440;
 
     const wakingInterval: TimeInterval = { startMinute: wakeMin, endMinute: sleepMin };

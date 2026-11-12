@@ -28,6 +28,7 @@ export interface UserDTO {
   id: string;
   email: string;
   name: string | null;
+  avatarUrl?: string | null;
   createdAt: string;
   updatedAt: string;
   onboardingCompleted?: boolean;
@@ -57,6 +58,7 @@ export interface UserPreferenceDTO {
   notifyScheduleReminders: boolean;
   notifyScheduleChanges: boolean;
   preferredPlanningTime: string;
+  themePreference?: 'AUTO' | 'LIGHT' | 'DARK';
   createdAt: string;
   updatedAt: string;
 }
@@ -75,7 +77,7 @@ export interface TaskDTO {
 }
 
 export type BlockType =
-  'TASK' | 'COLLEGE' | 'EVENT' | 'MEAL' | 'BREAK' | 'LEISURE' | 'BUFFER' | 'FREE_TIME';
+  'TASK' | 'COLLEGE' | 'EVENT' | 'MEAL' | 'BREAK' | 'LEISURE' | 'BUFFER' | 'FREE_TIME' | 'ROUTINE';
 
 export type ScheduleStatus = 'PROPOSED' | 'CONFIRMED' | 'ARCHIVED';
 
@@ -191,6 +193,7 @@ export const userPreferenceSchema = z.object({
   notifyScheduleReminders: z.boolean().default(true),
   notifyScheduleChanges: z.boolean().default(true),
   preferredPlanningTime: timeStringSchema.default('21:00'),
+  themePreference: z.enum(['AUTO', 'LIGHT', 'DARK']).default('AUTO'),
 });
 
 export type UserPreferenceInput = z.infer<typeof userPreferenceSchema>;
@@ -203,7 +206,9 @@ export const updateProfileSchema = z.object({
     .string()
     .trim()
     .min(1, 'Name cannot be empty')
-    .max(100, 'Name must be 100 characters or fewer'),
+    .max(100, 'Name must be 100 characters or fewer')
+    .optional(),
+  avatarUrl: z.string().trim().url('Invalid URL').max(1000).nullable().optional(),
 });
 
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
@@ -219,6 +224,7 @@ export const API_ROUTES = {
   },
   PREFERENCES: '/api/preferences',
   PROFILE: '/api/profile',
+  ROUTINES: '/api/routines',
   CATEGORIES: '/api/categories',
   TASKS: '/api/tasks',
   RECURRING_TASKS: '/api/recurring-tasks',
@@ -1092,3 +1098,176 @@ export interface GoogleCalendarSyncJobPayload {
   userId: string;
   forceFullSync?: boolean;
 }
+
+// ==========================================
+// PHASE 8: PERSONAL ROUTINES & PROFILE
+// ==========================================
+
+export type RoutineCategory =
+  | 'SLEEP'
+  | 'MEAL'
+  | 'EXERCISE'
+  | 'MORNING_ROUTINE'
+  | 'EVENING_ROUTINE'
+  | 'WORK'
+  | 'STUDY'
+  | 'PERSONAL'
+  | 'RELAXATION'
+  | 'OTHER';
+
+export type RoutineClassification = 'FIXED' | 'FLEXIBLE';
+
+export interface PersonalRoutineDTO {
+  id: string;
+  userId: string;
+  name: string;
+  category: RoutineCategory;
+  classification: RoutineClassification;
+  startTime: string; // "HH:mm"
+  endTime: string; // "HH:mm"
+  durationMinutes: number;
+  daysOfWeek: number[]; // 1 = Monday ... 7 = Sunday
+  isEnabled: boolean;
+  color?: string | null;
+  description?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const createRoutineSchema = z.object({
+  name: z.string().trim().min(1, 'Routine name is required').max(100),
+  category: z
+    .enum([
+      'SLEEP',
+      'MEAL',
+      'EXERCISE',
+      'MORNING_ROUTINE',
+      'EVENING_ROUTINE',
+      'WORK',
+      'STUDY',
+      'PERSONAL',
+      'RELAXATION',
+      'OTHER',
+    ])
+    .default('OTHER'),
+  classification: z.enum(['FIXED', 'FLEXIBLE']).default('FIXED'),
+  startTime: timeStringSchema,
+  endTime: timeStringSchema,
+  durationMinutes: z.number().int().min(5).max(1440).optional(),
+  daysOfWeek: z
+    .array(z.number().int().min(1).max(7))
+    .min(1, 'At least one day must be selected')
+    .default([1, 2, 3, 4, 5, 6, 7]),
+  isEnabled: z.boolean().default(true),
+  color: z.string().trim().max(30).nullable().optional(),
+  description: z.string().trim().max(500).nullable().optional(),
+});
+
+export type CreateRoutineInput = z.infer<typeof createRoutineSchema>;
+
+export const updateRoutineSchema = createRoutineSchema.partial();
+export type UpdateRoutineInput = z.infer<typeof updateRoutineSchema>;
+
+export const copyRoutinesSchema = z.object({
+  fromDay: z.number().int().min(1).max(7),
+  toDays: z.array(z.number().int().min(1).max(7)).min(1, 'Select at least one destination day'),
+});
+
+export type CopyRoutinesInput = z.infer<typeof copyRoutinesSchema>;
+
+// ==========================================
+// TIME FORMATTING UTILITIES (12-HOUR FORMAT)
+// ==========================================
+
+/**
+ * Formats a 24-hour time string ("HH:mm"), "HH:mm:ss", or ISO timestamp string into a 12-hour format with AM/PM.
+ * Examples:
+ *   "06:00" -> "6:00 AM"
+ *   "12:30" -> "12:30 PM"
+ *   "00:00" -> "12:00 AM"
+ *   "23:45" -> "11:45 PM"
+ * Correctly handles midnight (12:00 AM) and noon (12:00 PM).
+ */
+export function formatTimeTo12Hour(
+  timeStr: string | null | undefined,
+  timezone?: string
+): string {
+  if (!timeStr || typeof timeStr !== 'string') return '';
+
+  const trimmed = timeStr.trim();
+  if (!trimmed) return '';
+
+  // Check if it's HH:mm or HH:mm:ss
+  const match = trimmed.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if (match) {
+    let hour = parseInt(match[1], 10);
+    const minute = match[2];
+    if (isNaN(hour)) return trimmed;
+
+    const period = hour >= 12 ? 'PM' : 'AM';
+    hour = hour % 12;
+    if (hour === 0) hour = 12;
+
+    return `${hour}:${minute} ${period}`;
+  }
+
+  // Check if it's an ISO timestamp or date-time string
+  if (trimmed.includes('T') || trimmed.includes('-')) {
+    try {
+      const date = new Date(trimmed);
+      if (isNaN(date.getTime())) return trimmed;
+
+      const options: Intl.DateTimeFormatOptions = {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+        ...(timezone ? { timeZone: timezone } : {}),
+      };
+      return new Intl.DateTimeFormat('en-US', options).format(date);
+    } catch {
+      return trimmed;
+    }
+  }
+
+  return trimmed;
+}
+
+/**
+ * Formats start and end times into a 12-hour range string (e.g. "9:00 AM - 10:30 AM")
+ */
+export function formatTimeRange(
+  startTime: string | null | undefined,
+  endTime: string | null | undefined,
+  timezone?: string
+): string {
+  const start = formatTimeTo12Hour(startTime, timezone);
+  const end = formatTimeTo12Hour(endTime, timezone);
+  if (start && end) return `${start} - ${end}`;
+  return start || end || '';
+}
+
+/**
+ * Formats a generic time display string (which may already be a range like "09:00 - 10:30"
+ * or a single time "14:00" or special label like "All Day") into 12-hour format with AM/PM.
+ */
+export function formatTimeDisplayString(
+  timeDisplayStr: string | null | undefined,
+  timezone?: string
+): string {
+  if (!timeDisplayStr || typeof timeDisplayStr !== 'string') return '';
+  const trimmed = timeDisplayStr.trim();
+  if (!trimmed) return '';
+
+  if (trimmed.includes(' - ')) {
+    const parts = trimmed.split(' - ');
+    if (parts.length === 2) {
+      const start = formatTimeTo12Hour(parts[0], timezone);
+      const end = formatTimeTo12Hour(parts[1], timezone);
+      if (start && end) return `${start} - ${end}`;
+    }
+  }
+
+  return formatTimeTo12Hour(trimmed, timezone);
+}
+
+

@@ -30,6 +30,8 @@ model User {
   pushSubscriptions  PushSubscription[]
   notifications      Notification[]
   oauthConnections   OAuthConnection[]
+  avatarUrl          String?
+  routines           PersonalRoutine[]
 
   @@map("users")
 }
@@ -57,6 +59,7 @@ model UserPreference {
   notifyScheduleReminders    Boolean  @default(true)
   notifyScheduleChanges      Boolean  @default(true)
   preferredPlanningTime      String   @default("21:00")
+  themePreference            String   @default("AUTO")
   createdAt                  DateTime @default(now())
   updatedAt                  DateTime @updatedAt
 
@@ -322,6 +325,7 @@ enum BlockType {
   LEISURE
   BUFFER
   FREE_TIME
+  ROUTINE
 }
 
 model Schedule {
@@ -500,4 +504,48 @@ model OAuthConnection {
   @@unique([userId, provider])
   @@index([userId])
   @@map("oauth_connections")
+}
+
+// ==========================================
+// PHASE 8: PERSONAL ROUTINES & PROFILE
+// ==========================================
+
+enum RoutineCategory {
+  SLEEP
+  MEAL
+  EXERCISE
+  MORNING_ROUTINE
+  EVENING_ROUTINE
+  WORK
+  STUDY
+  PERSONAL
+  RELAXATION
+  OTHER
+}
+
+enum RoutineClassification {
+  FIXED
+  FLEXIBLE
+}
+
+model PersonalRoutine {
+  id              String                @id @default(uuid())
+  userId          String
+  user            User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name            String
+  category        RoutineCategory       @default(OTHER)
+  classification  RoutineClassification @default(FIXED)
+  startTime       String                // "HH:mm"
+  endTime         String                // "HH:mm"
+  durationMinutes Int                   @default(60)
+  daysOfWeek      Int[]                 // 1 = Monday ... 7 = Sunday
+  isEnabled       Boolean               @default(true)
+  color           String?
+  description     String?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  @@index([userId])
+  @@index([userId, isEnabled])
+  @@map("personal_routines")
 }

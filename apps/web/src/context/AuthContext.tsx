@@ -30,6 +30,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const refreshAuth = async () => {
+    const mock = typeof window !== 'undefined' ? localStorage.getItem('tempo_mock_auth') : null;
+    if (mock) {
+      try {
+        const parsed = JSON.parse(mock);
+        setUser(parsed.user);
+        setPreference(parsed.preference);
+        setLoading(false);
+        return;
+      } catch {
+        // Fall through to real api request
+      }
+    }
     try {
       const data = await apiRequest<AuthResponseData>('/api/auth/me');
       setUser(data.user);

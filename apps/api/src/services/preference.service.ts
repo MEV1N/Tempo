@@ -40,6 +40,7 @@ export async function updatePreferences(
       maxContinuousWorkDuration: input.maxContinuousWorkDuration ?? 90,
       dailyLeisureTarget: input.dailyLeisureTarget ?? 120,
       onboardingCompleted: input.onboardingCompleted ?? false,
+      themePreference: input.themePreference ?? 'AUTO',
     },
     update: {
       ...input,

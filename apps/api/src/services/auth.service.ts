@@ -101,6 +101,7 @@ export function toUserDTO(
     id: user.id,
     email: user.email,
     name: user.name,
+    avatarUrl: (user as any).avatarUrl || null,
     createdAt:
       typeof user.createdAt === 'string'
         ? user.createdAt
@@ -140,6 +141,7 @@ export function toUserPreferenceDTO(pref: Partial<UserPreference>): UserPreferen
     notifyScheduleReminders: pref.notifyScheduleReminders ?? true,
     notifyScheduleChanges: pref.notifyScheduleChanges ?? true,
     preferredPlanningTime: pref.preferredPlanningTime || '21:00',
+    themePreference: (pref.themePreference as any) || 'AUTO',
     createdAt:
       typeof pref.createdAt === 'string'
         ? pref.createdAt
@@ -198,6 +200,7 @@ export async function register(
     },
     include: {
       preference: true,
+      oauthConnections: true,
     },
   });
 
@@ -212,12 +215,20 @@ export async function login(
   input: LoginInput,
   meta: { userAgent?: string; ipAddress?: string }
 ): Promise<SessionResult> {
+  // eslint-disable-next-line no-console
+  console.log(`[AUTH_DIAGNOSTIC] login: Attempt for ${input.email}`);
+
   const user = await prisma.user.findUnique({
     where: { email: input.email },
-    include: { preference: true },
+    include: {
+      preference: true,
+      oauthConnections: true,
+    },
   });
 
   if (!user) {
+    // eslint-disable-next-line no-console
+    console.log(`[AUTH_DIAGNOSTIC] login: User not found for email ${input.email}`);
     const error: any = new Error('Invalid email or password');
     error.code = 'INVALID_CREDENTIALS';
     error.status = 401;
@@ -225,6 +236,8 @@ export async function login(
   }
 
   if (!user.passwordHash) {
+    // eslint-disable-next-line no-console
+    console.log(`[AUTH_DIAGNOSTIC] login: User ${user.id} has no password (Google auth account)`);
     const error: any = new Error(
       'This account was created with Google. Please use Continue with Google or set a password in settings.'
     );
@@ -235,6 +248,8 @@ export async function login(
 
   const isPasswordValid = await verifyPassword(input.password, user.passwordHash);
   if (!isPasswordValid) {
+    // eslint-disable-next-line no-console
+    console.log(`[AUTH_DIAGNOSTIC] login: Password verification failed for user ${user.id}`);
     const error: any = new Error('Invalid email or password');
     error.code = 'INVALID_CREDENTIALS';
     error.status = 401;
@@ -253,6 +268,9 @@ export async function login(
       ipAddress: meta.ipAddress,
     },
   });
+
+  // eslint-disable-next-line no-console
+  console.log(`[AUTH_DIAGNOSTIC] login: Session created successfully for user ${user.id}`);
 
   return {
     user: toUserDTO(user),

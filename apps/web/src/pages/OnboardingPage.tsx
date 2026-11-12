@@ -1,17 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import {
-  Clock,
-  Sun,
-  Briefcase,
-  Coffee,
-  Sparkles,
-  AlertCircle,
-  Loader2,
-  CheckCircle2,
-} from 'lucide-react';
-import { APP_CONFIG, TIME_REGEX } from '@tempo/shared';
+import { Clock, Sun, Briefcase, Coffee, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react';
+import { TIME_REGEX, formatTimeTo12Hour } from '@tempo/shared';
+import { TempoLogo } from '../components/TempoLogo';
 
 const TIMEZONES = [
   'Asia/Kolkata',
@@ -104,7 +96,7 @@ export function OnboardingPage() {
         preferredBreakDuration: Number(preferredBreakDuration),
         maxContinuousWorkDuration: Number(maxContinuousWorkDuration),
         dailyLeisureTarget: Number(dailyLeisureTarget),
-        onboardingCompleted: true, // Only marked complete once successfully saved
+        onboardingCompleted: true,
       });
 
       navigate('/', { replace: true });
@@ -116,40 +108,39 @@ export function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto space-y-8">
+    <div className="min-h-screen bg-[#FAFAFA] text-[#080808] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 items-center justify-center font-bold text-white shadow-lg shadow-sky-500/20 mb-2">
-            <Sparkles className="w-5 h-5" />
-          </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white">
-            Set Up Your Daily Rhythm
+          <TempoLogo size="lg" showTagline={false} className="items-center" />
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#080808] flex items-baseline justify-center gap-2">
+            <span>Set up your daily</span>
+            <span className="font-handwritten text-3xl font-normal text-[#777777]">rhythm</span>
           </h1>
-          <p className="text-slate-400 text-sm max-w-lg mx-auto">
-            {APP_CONFIG.APP_NAME} adapts around your actual routine. Customize your sleep, working
-            hours, and meal intervals. You can adjust these anytime in settings.
+          <p className="text-[#777777] text-xs sm:text-sm max-w-md mx-auto">
+            Tempo adapts around your natural routine. Configure your baseline sleep, working hours,
+            and meal intervals. You can adjust these anytime in settings.
           </p>
         </div>
 
         {error && (
-          <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs flex items-center space-x-3">
-            <AlertCircle className="w-5 h-5 shrink-0" />
+          <div className="p-4 rounded-xl bg-[#F5F5F5] border border-[#080808] text-[#080808] text-xs flex items-center space-x-3">
+            <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* 1. Identity & Timezone */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-            <div className="flex items-center space-x-2 text-sky-400 text-sm font-semibold">
+          <div className="bg-[#FFFFFF] border border-[#D9D9D9] rounded-2xl p-6 space-y-4 shadow-sm">
+            <div className="flex items-center space-x-2 text-[#080808] text-sm font-semibold">
               <Clock className="w-4 h-4" />
               <span>General Profile & Timezone</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                <label className="block text-xs font-medium text-[#404040] mb-1.5">
                   Your Preferred Name
                 </label>
                 <input
@@ -157,16 +148,16 @@ export function OnboardingPage() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">Timezone</label>
+                <label className="block text-xs font-medium text-[#404040] mb-1.5">Timezone</label>
                 <select
                   value={timezone}
                   onChange={(e) => setTimezone(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF]"
                 >
                   {TIMEZONES.map((tz) => (
                     <option key={tz} value={tz}>
@@ -179,77 +170,97 @@ export function OnboardingPage() {
           </div>
 
           {/* 2. Sleep & Awakening Cycle */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-            <div className="flex items-center space-x-2 text-indigo-400 text-sm font-semibold">
+          <div className="bg-[#FFFFFF] border border-[#D9D9D9] rounded-2xl p-6 space-y-4 shadow-sm">
+            <div className="flex items-center space-x-2 text-[#080808] text-sm font-semibold">
               <Sun className="w-4 h-4" />
               <span>Sleep & Awakening Cycle</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                  Typical Wake-up Time
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-medium text-[#404040]">
+                    Typical Wake-up Time
+                  </label>
+                  <span className="text-[11px] font-mono font-bold text-[#080808]">
+                    {formatTimeTo12Hour(wakeTime)}
+                  </span>
+                </div>
                 <input
                   type="time"
                   required
                   value={wakeTime}
                   onChange={(e) => setWakeTime(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                  Target Sleep Time
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-medium text-[#404040]">
+                    Target Sleep Time
+                  </label>
+                  <span className="text-[11px] font-mono font-bold text-[#080808]">
+                    {formatTimeTo12Hour(sleepTime)}
+                  </span>
+                </div>
                 <input
                   type="time"
                   required
                   value={sleepTime}
                   onChange={(e) => setSleepTime(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF]"
                 />
               </div>
             </div>
           </div>
 
           {/* 3. Work & Study Habits */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-            <div className="flex items-center space-x-2 text-emerald-400 text-sm font-semibold">
+          <div className="bg-[#FFFFFF] border border-[#D9D9D9] rounded-2xl p-6 space-y-4 shadow-sm">
+            <div className="flex items-center space-x-2 text-[#080808] text-sm font-semibold">
               <Briefcase className="w-4 h-4" />
               <span>Work & Study Habits</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                  Work Start Time
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-medium text-[#404040]">
+                    Work Start Time
+                  </label>
+                  <span className="text-[11px] font-mono font-bold text-[#080808]">
+                    {formatTimeTo12Hour(preferredWorkStart)}
+                  </span>
+                </div>
                 <input
                   type="time"
                   required
                   value={preferredWorkStart}
                   onChange={(e) => setPreferredWorkStart(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                  Work End Time
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-medium text-[#404040]">
+                    Work End Time
+                  </label>
+                  <span className="text-[11px] font-mono font-bold text-[#080808]">
+                    {formatTimeTo12Hour(preferredWorkEnd)}
+                  </span>
+                </div>
                 <input
                   type="time"
                   required
                   value={preferredWorkEnd}
                   onChange={(e) => setPreferredWorkEnd(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                <label className="block text-xs font-medium text-[#404040] mb-1.5">
                   Preferred Break Duration (minutes)
                 </label>
                 <input
@@ -259,12 +270,12 @@ export function OnboardingPage() {
                   required
                   value={preferredBreakDuration}
                   onChange={(e) => setPreferredBreakDuration(parseInt(e.target.value, 10))}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                <label className="block text-xs font-medium text-[#404040] mb-1.5">
                   Max Continuous Work Duration (minutes)
                 </label>
                 <input
@@ -274,22 +285,22 @@ export function OnboardingPage() {
                   required
                   value={maxContinuousWorkDuration}
                   onChange={(e) => setMaxContinuousWorkDuration(parseInt(e.target.value, 10))}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF]"
                 />
               </div>
             </div>
           </div>
 
           {/* 4. Meals & Leisure */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-            <div className="flex items-center space-x-2 text-amber-400 text-sm font-semibold">
+          <div className="bg-[#FFFFFF] border border-[#D9D9D9] rounded-2xl p-6 space-y-4 shadow-sm">
+            <div className="flex items-center space-x-2 text-[#080808] text-sm font-semibold">
               <Coffee className="w-4 h-4" />
-              <span>Meal Timings & Leisure</span>
+              <span>Meal Timings & Downtime</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                <label className="block text-xs font-medium text-[#404040] mb-1.5">
                   Breakfast Time
                 </label>
                 <input
@@ -297,12 +308,12 @@ export function OnboardingPage() {
                   required
                   value={breakfastTime}
                   onChange={(e) => setBreakfastTime(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                <label className="block text-xs font-medium text-[#404040] mb-1.5">
                   Lunch Time
                 </label>
                 <input
@@ -310,12 +321,12 @@ export function OnboardingPage() {
                   required
                   value={lunchTime}
                   onChange={(e) => setLunchTime(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                <label className="block text-xs font-medium text-[#404040] mb-1.5">
                   Dinner Time
                 </label>
                 <input
@@ -323,13 +334,13 @@ export function OnboardingPage() {
                   required
                   value={dinnerTime}
                   onChange={(e) => setDinnerTime(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF]"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1.5">
+              <label className="block text-xs font-medium text-[#404040] mb-1.5">
                 Daily Leisure / Personal Downtime Target (minutes)
               </label>
               <input
@@ -339,19 +350,19 @@ export function OnboardingPage() {
                 required
                 value={dailyLeisureTarget}
                 onChange={(e) => setDailyLeisureTarget(parseInt(e.target.value, 10))}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-sky-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAFA] border border-[#D9D9D9] text-[#080808] text-sm focus:outline-none focus:border-[#080808] focus:bg-[#FFFFFF]"
               />
-              <p className="text-[11px] text-slate-500 mt-1">
-                E.g. 120 minutes = 2 hours reserved for exercise, hobbies, reading, or family.
+              <p className="text-[11px] text-[#777777] mt-1">
+                E.g. 120 minutes = 2 hours reserved for exercise, hobbies, reading, or downtime.
               </p>
             </div>
           </div>
 
-          <div className="flex justify-end pt-4">
+          <div className="flex justify-end pt-2">
             <button
               type="submit"
               disabled={submitting}
-              className="px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition flex items-center space-x-2 disabled:opacity-50 shadow-xl shadow-sky-500/20"
+              className="px-6 py-3 rounded-xl bg-[#080808] hover:bg-[#171717] text-[#FFFFFF] font-medium text-sm transition flex items-center space-x-2 disabled:opacity-50 active:scale-[0.99]"
             >
               {submitting ? (
                 <>

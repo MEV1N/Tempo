@@ -136,12 +136,35 @@ export class SchedulerService {
       createdAt: t.createdAt.toISOString(),
     }));
 
+    // 5b. Fetch active personal routines
+    const dbRoutines = await prisma.personalRoutine.findMany({
+      where: {
+        userId,
+        isEnabled: true,
+      },
+    });
+
+    const routines = dbRoutines.map((r: any) => ({
+      id: r.id,
+      name: r.name,
+      category: r.category as any,
+      classification: r.classification as any,
+      startTime: r.startTime,
+      endTime: r.endTime,
+      durationMinutes: r.durationMinutes,
+      daysOfWeek: r.daysOfWeek,
+      isEnabled: r.isEnabled,
+      color: r.color,
+      description: r.description,
+    }));
+
     // 6. Build normalized SchedulerRequest
     const schedulerRequest: SchedulerRequest = {
       userId,
       targetDate,
       preferences,
       tasks,
+      routines,
       calendarContext: {
         timetableSessions: daySessions.map((s: any) => ({
           id: s.id,
@@ -413,15 +436,39 @@ export class SchedulerService {
       throw err;
     }
 
-    // Check user preferences (waking boundaries)
-    const pref = await prisma.userPreference.findUnique({ where: { userId } });
-    const wakeMin = timeToMinutes(pref?.wakeTime || '07:00');
-    let sleepMin = timeToMinutes(pref?.sleepTime || '23:00');
+    // Check waking boundaries (from active sleep routine or user preferences)
+    const dayOfWeek = getDayOfWeekFromDate(targetDate);
+    const activeSleepRoutine = await prisma.personalRoutine.findFirst({
+      where: {
+        userId,
+        category: 'SLEEP',
+        isEnabled: true,
+        daysOfWeek: { has: dayOfWeek },
+      },
+    });
+
+    let wakeMin: number;
+    let sleepMin: number;
+    let wakeTimeStr: string;
+    let sleepTimeStr: string;
+
+    if (activeSleepRoutine) {
+      wakeTimeStr = activeSleepRoutine.endTime;
+      sleepTimeStr = activeSleepRoutine.startTime;
+      wakeMin = timeToMinutes(wakeTimeStr);
+      sleepMin = timeToMinutes(sleepTimeStr);
+    } else {
+      const pref = await prisma.userPreference.findUnique({ where: { userId } });
+      wakeTimeStr = pref?.wakeTime || '07:00';
+      sleepTimeStr = pref?.sleepTime || '23:00';
+      wakeMin = timeToMinutes(wakeTimeStr);
+      sleepMin = timeToMinutes(sleepTimeStr);
+    }
     if (sleepMin <= wakeMin) sleepMin = 1440;
 
     if (newStartMin < wakeMin || newEndMin > sleepMin) {
       const err: any = new Error(
-        `Block cannot be scheduled during sleep hours (wake: ${pref?.wakeTime || '07:00'}, sleep: ${pref?.sleepTime || '23:00'})`
+        `Block cannot be scheduled during sleep hours (wake: ${wakeTimeStr}, sleep: ${sleepTimeStr})`
       );
       err.code = 'SLEEP_CONFLICT';
       throw err;
@@ -622,12 +669,31 @@ export class SchedulerService {
       };
     });
 
+    // Fetch active personal routines
+    const dbRoutines = await prisma.personalRoutine.findMany({
+      where: { userId, isEnabled: true },
+    });
+    const routines = dbRoutines.map((r: any) => ({
+      id: r.id,
+      name: r.name,
+      category: r.category as any,
+      classification: r.classification as any,
+      startTime: r.startTime,
+      endTime: r.endTime,
+      durationMinutes: r.durationMinutes,
+      daysOfWeek: r.daysOfWeek,
+      isEnabled: r.isEnabled,
+      color: r.color,
+      description: r.description,
+    }));
+
     // Run Intelligent Rescheduler
     const rescheduleResult = this.rescheduler.reschedule({
       currentBlocks,
       targetDate: schedule.date,
       preferences,
       tasks,
+      routines,
       taskModifications: input.taskModifications,
       newEvents: input.newEvents,
       reason: input.reason,

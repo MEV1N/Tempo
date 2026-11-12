@@ -1,7 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
-  Clock,
   User,
   LogOut,
   LayoutDashboard,
@@ -9,8 +8,9 @@ import {
   Calendar,
   Sparkles,
   BarChart3,
+  Settings,
 } from 'lucide-react';
-import { APP_CONFIG } from '@tempo/shared';
+import { TempoLogo } from './TempoLogo';
 import { NotificationCenter } from './NotificationCenter';
 import { OfflineIndicator } from './OfflineIndicator';
 
@@ -26,169 +26,175 @@ export function Navbar() {
 
   if (!user) return null;
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    if (path === '/profile') {
+      return location.pathname === '/profile' || location.pathname === '/settings';
+    }
+    return location.pathname === path;
+  };
+
+  const navItems = [
+    { path: '/', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/tasks', label: 'Tasks', icon: CheckSquare },
+    { path: '/schedule', label: 'Schedule', icon: Sparkles },
+    { path: '/calendar', label: 'Calendar', icon: Calendar },
+    { path: '/analytics', label: 'Analytics', icon: BarChart3 },
+    { path: '/profile', label: 'Profile', icon: User },
+  ];
+
+  // Mobile bottom bar: 5 streamlined primary destinations (Analytics is linked via Profile & Dashboard)
+  const mobileNavItems = [
+    { path: '/', label: 'Today', icon: LayoutDashboard },
+    { path: '/schedule', label: 'Schedule', icon: Sparkles },
+    { path: '/tasks', label: 'Tasks', icon: CheckSquare },
+    { path: '/calendar', label: 'Calendar', icon: Calendar },
+    { path: '/profile', label: 'Profile', icon: User },
+  ];
 
   return (
-    <header className="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center space-x-6">
-          <Link to="/" className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center font-bold text-white shadow-md shadow-sky-500/20">
-              <Clock className="w-4 h-4" />
-            </div>
-            <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-sky-400 to-indigo-300 bg-clip-text text-transparent">
-              {APP_CONFIG.APP_NAME}
-            </span>
-          </Link>
+    <>
+      {/* ========================================================================= */}
+      {/* 1. DESKTOP LEFT SIDEBAR (Fixed w-64 on md: and above)                      */}
+      {/* ========================================================================= */}
+      <aside className="hidden md:flex fixed top-0 left-0 bottom-0 w-64 bg-[#FFFFFF] dark:bg-[#161616] border-r border-[#D9D9D9] dark:border-[#262626] z-40 flex-col justify-between p-6 select-none overflow-y-auto transition-colors">
+        <div className="space-y-6">
+          {/* Logo & Tagline */}
+          <div className="pt-1">
+            <TempoLogo size="md" showTagline={true} />
+          </div>
 
-          <nav className="hidden sm:flex items-center space-x-1">
-            <Link
-              to="/"
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-                isActive('/')
-                  ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <LayoutDashboard className="w-3.5 h-3.5" />
-              <span>Dashboard</span>
-            </Link>
-            <Link
-              to="/tasks"
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-                isActive('/tasks')
-                  ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <CheckSquare className="w-3.5 h-3.5" />
-              <span>Tasks</span>
-            </Link>
-            <Link
-              to="/calendar"
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-                isActive('/calendar')
-                  ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <Calendar className="w-3.5 h-3.5" />
-              <span>Timetable & Calendar</span>
-            </Link>
-            <Link
-              to="/schedule"
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-                isActive('/schedule')
-                  ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5 text-sky-400" />
-              <span>Schedule</span>
-            </Link>
-            <Link
-              to="/analytics"
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-                isActive('/analytics')
-                  ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <BarChart3 className="w-3.5 h-3.5" />
-              <span>Analytics</span>
-            </Link>
-            <Link
-              to="/profile"
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-                isActive('/profile')
-                  ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <User className="w-3.5 h-3.5" />
-              <span>Profile</span>
-            </Link>
+          {/* Desktop Navigation Links */}
+          <nav className="space-y-1 pt-4">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const active = isActive(item.path);
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                    active
+                      ? 'bg-[#080808] dark:bg-[#F3F3F3] text-[#FFFFFF] dark:text-[#080808] shadow-xs'
+                      : 'text-[#404040] dark:text-[#A3A3A3] hover:text-[#080808] dark:hover:text-[#FFFFFF] hover:bg-[#F5F5F5] dark:hover:bg-[#222222]'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 shrink-0" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
           </nav>
         </div>
 
-        <div className="flex items-center space-x-3">
-          <NotificationCenter />
-          <div className="text-right hidden sm:block">
-            <p className="text-xs font-medium text-slate-200">{user.name || 'User'}</p>
-            <p className="text-[11px] text-slate-500 font-mono truncate max-w-[150px]">
-              {user.email}
-            </p>
+        {/* Desktop Sidebar Bottom: Notifications, Settings, Profile & Logout */}
+        <div className="pt-6 border-t border-[#EFEFEF] dark:border-[#262626] space-y-3">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-xs font-medium text-[#777777] dark:text-[#888888]">Activity Alerts</span>
+            <NotificationCenter />
           </div>
+
+          <Link
+            to="/settings"
+            className={`flex items-center space-x-3 px-3.5 py-2 rounded-xl text-xs font-medium transition ${
+              isActive('/settings')
+                ? 'bg-[#080808] dark:bg-[#F3F3F3] text-white dark:text-[#080808] font-semibold shadow-xs'
+                : 'text-[#404040] dark:text-[#A3A3A3] hover:text-[#080808] dark:hover:text-[#FFFFFF] hover:bg-[#F5F5F5] dark:hover:bg-[#222222]'
+            }`}
+          >
+            <Settings className="w-4 h-4 shrink-0" />
+            <span>Settings</span>
+          </Link>
+
+          <Link
+            to="/profile"
+            className="flex items-center space-x-3 p-2 rounded-xl hover:bg-[#F5F5F5] dark:hover:bg-[#222222] transition group"
+          >
+            <div className="w-8 h-8 rounded-full bg-[#171717] dark:bg-[#262626] text-[#FFFFFF] dark:text-[#F3F3F3] flex items-center justify-center text-xs font-semibold uppercase shrink-0 border border-transparent dark:border-[#383838]">
+              {user.name ? user.name.charAt(0) : 'U'}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold text-[#080808] dark:text-[#F3F3F3] truncate group-hover:underline">
+                {user.name || 'User'}
+              </p>
+              <p className="text-[11px] text-[#777777] dark:text-[#888888] truncate font-mono">{user.email}</p>
+            </div>
+          </Link>
 
           <button
             onClick={handleLogout}
-            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-slate-800 hover:border-rose-500/20 transition"
-            title="Log out"
+            className="w-full flex items-center justify-center space-x-2 py-2 px-3 rounded-xl text-xs font-medium text-[#777777] dark:text-[#A3A3A3] hover:text-[#080808] dark:hover:text-[#F3F3F3] hover:bg-[#F5F5F5] dark:hover:bg-[#222222] border border-[#D9D9D9] dark:border-[#2E2E2E] transition"
+            title="Log out of Tempo"
           >
             <LogOut className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Logout</span>
+            <span>Log out</span>
           </button>
         </div>
-      </div>
+      </aside>
 
-      {/* Mobile Navigation bar */}
-      <div className="sm:hidden border-t border-slate-800/60 bg-slate-950/90 px-3 py-2 flex items-center justify-around">
-        <Link
-          to="/"
-          className={`flex flex-col items-center py-1 text-[11px] ${
-            isActive('/') ? 'text-sky-400 font-semibold' : 'text-slate-400'
-          }`}
-        >
-          <LayoutDashboard className="w-4 h-4 mb-0.5" />
-          <span>Home</span>
-        </Link>
-        <Link
-          to="/tasks"
-          className={`flex flex-col items-center py-1 text-[11px] ${
-            isActive('/tasks') ? 'text-sky-400 font-semibold' : 'text-slate-400'
-          }`}
-        >
-          <CheckSquare className="w-4 h-4 mb-0.5" />
-          <span>Tasks</span>
-        </Link>
-        <Link
-          to="/calendar"
-          className={`flex flex-col items-center py-1 text-[11px] ${
-            isActive('/calendar') ? 'text-sky-400 font-semibold' : 'text-slate-400'
-          }`}
-        >
-          <Calendar className="w-4 h-4 mb-0.5" />
-          <span>Calendar</span>
-        </Link>
-        <Link
-          to="/schedule"
-          className={`flex flex-col items-center py-1 text-[11px] ${
-            isActive('/schedule') ? 'text-sky-400 font-semibold' : 'text-slate-400'
-          }`}
-        >
-          <Sparkles className="w-4 h-4 mb-0.5" />
-          <span>Schedule</span>
-        </Link>
-        <Link
-          to="/analytics"
-          className={`flex flex-col items-center py-1 text-[11px] ${
-            isActive('/analytics') ? 'text-sky-400 font-semibold' : 'text-slate-400'
-          }`}
-        >
-          <BarChart3 className="w-4 h-4 mb-0.5" />
-          <span>Analytics</span>
-        </Link>
-        <Link
-          to="/profile"
-          className={`flex flex-col items-center py-1 text-[11px] ${
-            isActive('/profile') ? 'text-sky-400 font-semibold' : 'text-slate-400'
-          }`}
-        >
-          <User className="w-4 h-4 mb-0.5" />
-          <span>Profile</span>
-        </Link>
-      </div>
+      {/* ========================================================================= */}
+      {/* 2. MOBILE TOP HEADER (Sticky h-14 only on < md)                           */}
+      {/* ========================================================================= */}
+      <header className="md:hidden sticky top-0 z-40 bg-[#FFFFFF]/95 dark:bg-[#161616]/95 backdrop-blur-md border-b border-[#D9D9D9] dark:border-[#262626] h-14 px-4 flex items-center justify-between transition-colors">
+        <TempoLogo size="sm" showTagline={false} />
+
+        <div className="flex items-center space-x-1.5">
+          <NotificationCenter />
+          <Link
+            to="/settings"
+            className={`p-2 rounded-xl transition min-w-[44px] min-h-[44px] flex items-center justify-center ${
+              isActive('/settings')
+                ? 'bg-[#080808] dark:bg-[#F3F3F3] text-white dark:text-[#080808]'
+                : 'text-[#777777] dark:text-[#A3A3A3] hover:text-[#080808] dark:hover:text-[#FFFFFF] hover:bg-[#F5F5F5] dark:hover:bg-[#222222]'
+            }`}
+            aria-label="Settings"
+          >
+            <Settings className="w-4 h-4" />
+          </Link>
+          <Link
+            to="/profile"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label="User Profile"
+          >
+            <div className="w-8 h-8 rounded-full bg-[#171717] dark:bg-[#262626] text-[#FFFFFF] dark:text-[#F3F3F3] flex items-center justify-center text-xs font-semibold uppercase ring-2 ring-transparent hover:ring-[#080808] dark:hover:ring-[#F3F3F3] transition">
+              {user.name ? user.name.charAt(0) : 'U'}
+            </div>
+          </Link>
+        </div>
+      </header>
+
+      {/* ========================================================================= */}
+      {/* 3. MOBILE BOTTOM NAVIGATION (Fixed thumb bar with safe area on < md)      */}
+      {/* ========================================================================= */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#FFFFFF]/98 dark:bg-[#161616]/98 backdrop-blur-md border-t border-[#EAEAEA] dark:border-[#262626] px-1 pt-1 pb-[max(0.4rem,env(safe-area-inset-bottom))] flex items-center justify-around shadow-sm transition-colors">
+        {mobileNavItems.map((item) => {
+          const Icon = item.icon;
+          const active = isActive(item.path);
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl text-[10px] transition-colors min-w-[52px] min-h-[44px] ${
+                active
+                  ? 'text-[#080808] dark:text-[#F3F3F3] font-bold'
+                  : 'text-[#777777] dark:text-[#888888] hover:text-[#080808] dark:hover:text-[#F3F3F3]'
+              }`}
+            >
+              <div
+                className={`p-1 rounded-lg transition-all ${
+                  active
+                    ? 'bg-[#080808] dark:bg-[#F3F3F3] text-[#FFFFFF] dark:text-[#080808]'
+                    : 'text-[#777777] dark:text-[#888888]'
+                }`}
+              >
+                <Icon className="w-4 h-4" />
+              </div>
+              <span className="mt-0.5 tracking-tight font-medium leading-none">{item.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
+
       <OfflineIndicator />
-    </header>
+    </>
   );
 }

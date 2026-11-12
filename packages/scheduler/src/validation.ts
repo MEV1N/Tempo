@@ -23,8 +23,26 @@ export function validateSchedule(
   const violations: ValidationViolation[] = [];
   const { preferences, tasks, targetDate } = request;
 
-  const wakeMin = timeToMinutes(preferences.wakeTime || '07:00');
+  let wakeMin = timeToMinutes(preferences.wakeTime || '07:00');
   let sleepMin = timeToMinutes(preferences.sleepTime || '23:00');
+
+  // Check for day-specific sleep routine override
+  const targetDayOfWeek =
+    request.targetDate.split('-').length === 3
+      ? (() => {
+          const [y, m, d] = request.targetDate.split('-').map(Number);
+          const js = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+          return js === 0 ? 7 : js;
+        })()
+      : 1;
+
+  const sleepRoutine = (request.routines || []).find(
+    (r) => r.category === 'SLEEP' && r.isEnabled !== false && r.daysOfWeek.includes(targetDayOfWeek)
+  );
+  if (sleepRoutine) {
+    if (sleepRoutine.startTime) sleepMin = timeToMinutes(sleepRoutine.startTime);
+    if (sleepRoutine.endTime) wakeMin = timeToMinutes(sleepRoutine.endTime);
+  }
   if (sleepMin <= wakeMin) sleepMin = 1440;
 
   // Sort blocks chronologically

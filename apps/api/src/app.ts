@@ -19,6 +19,7 @@ import { notificationRouter } from './routes/notification.routes';
 import { planningRouter } from './routes/planning.routes';
 import { googleAuthRouter } from './routes/google-auth.routes';
 import { googleCalendarRouter } from './routes/google-calendar.routes';
+import { routineRouter } from './routes/routine.routes';
 
 export function createApp(): Express {
   const app: Express = express();
@@ -102,6 +103,7 @@ export function createApp(): Express {
   app.use('/api/auth', authRouter);
   app.use('/api/preferences', preferenceRouter);
   app.use('/api/profile', profileRouter);
+  app.use('/api/routines', routineRouter);
   app.use('/api/categories', categoryRouter);
   app.use('/api/tasks', taskRouter);
   app.use('/api/recurring-tasks', recurrenceRouter);

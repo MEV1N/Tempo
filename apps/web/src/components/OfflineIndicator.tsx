@@ -7,11 +7,10 @@ export function OfflineIndicator() {
   if (isOnline) return null;
 
   return (
-    <div className="bg-amber-500/10 border-b border-amber-500/20 text-amber-300 text-xs py-2 px-4 sticky top-16 z-40 backdrop-blur flex items-center justify-center space-x-2">
+    <div className="bg-[#171717] border-b border-[#080808] text-[#FFFFFF] text-xs py-2 px-4 sticky top-16 z-40 backdrop-blur flex items-center justify-center space-x-2">
       <WifiOff className="w-3.5 h-3.5" />
       <span>
-        You are currently offline. Application shell is active; changes requiring the server will
-        sync when connected.
+        You are currently offline. Application shell is active; changes will sync when connected.
       </span>
     </div>
   );

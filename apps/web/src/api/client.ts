@@ -2,17 +2,37 @@ import { ApiResponse, APP_CONFIG } from '@tempo/shared';
 
 export class ApiError extends Error {
   code: string;
+  status: number;
   details?: any;
 
-  constructor(message: string, code = 'API_ERROR', details?: any) {
+  constructor(message: string, code = 'API_ERROR', status = 500, details?: any) {
     super(message);
     this.name = 'ApiError';
     this.code = code;
+    this.status = status;
     this.details = details;
   }
 }
 
+export function resolveApiUrl(endpoint: string): string {
+  if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
+    return endpoint;
+  }
+
+  // Prepend base URL if explicitly provided, otherwise use relative path (supporting Vite proxy)
+  const metaEnv = typeof import.meta !== 'undefined' ? (import.meta as any).env : undefined;
+  const baseUrl = (metaEnv?.VITE_API_URL as string) || '';
+  if (baseUrl) {
+    const cleanBase = baseUrl.replace(/\/+$/, '');
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    return `${cleanBase}${cleanEndpoint}`;
+  }
+
+  return endpoint;
+}
+
 export async function apiRequest<T = any>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  const url = resolveApiUrl(endpoint);
   const headers = new Headers(options.headers || {});
 
   // Always send CSRF header for state-changing requests
@@ -23,30 +43,66 @@ export async function apiRequest<T = any>(endpoint: string, options: RequestInit
     }
   }
 
-  const response = await fetch(endpoint, {
-    ...options,
-    headers,
-    credentials: 'include', // Essential for secure HTTP-only cookies
-  });
-
-  const contentType = response.headers.get('content-type');
-  let data: ApiResponse<T>;
-
-  if (contentType && contentType.includes('application/json')) {
-    data = await response.json();
-  } else {
-    if (!response.ok) {
-      throw new ApiError(`Request failed with status ${response.status}`, 'HTTP_ERROR');
-    }
-    return {} as T;
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      ...options,
+      headers,
+      credentials: 'include', // Essential for secure HTTP-only cookies
+    });
+  } catch (networkError: any) {
+    // Network failure, connection refused, offline, or CORS network drop
+    throw new ApiError(
+      'Unable to connect to Tempo server. Please verify the API server is running or check your connection.',
+      'NETWORK_ERROR',
+      0,
+      networkError
+    );
   }
 
-  if (!response.ok || !data.success) {
-    const error = data.error || {
-      code: 'REQUEST_FAILED',
-      message: `Request failed with status ${response.status}`,
-    };
-    throw new ApiError(error.message, error.code, error.details);
+  const contentType = response.headers.get('content-type') || '';
+  let data: ApiResponse<T> | null = null;
+
+  if (contentType.includes('application/json')) {
+    try {
+      data = await response.json();
+    } catch {
+      data = null;
+    }
+  }
+
+  if (!response.ok || !data || !data.success) {
+    let code = data?.error?.code || 'REQUEST_FAILED';
+    let message = data?.error?.message;
+
+    if (!message) {
+      if (response.status === 400) {
+        code = 'VALIDATION_ERROR';
+        message = 'Invalid request data. Please check your inputs.';
+      } else if (response.status === 401) {
+        code = 'UNAUTHORIZED';
+        message = 'Invalid email or password.';
+      } else if (response.status === 403) {
+        code = 'FORBIDDEN';
+        message = 'Access forbidden or CSRF validation failed.';
+      } else if (response.status === 404) {
+        code = 'NOT_FOUND';
+        message = 'The requested resource was not found.';
+      } else if (response.status === 429) {
+        code = 'RATE_LIMIT_EXCEEDED';
+        message = 'Too many requests. Please wait a few moments and try again.';
+      } else if (response.status === 503) {
+        code = 'DATABASE_UNAVAILABLE';
+        message = 'Service temporarily unavailable. Please try again shortly.';
+      } else if (response.status >= 500) {
+        code = 'INTERNAL_SERVER_ERROR';
+        message = 'An unexpected server error occurred. Please try again.';
+      } else {
+        message = `Request failed with status ${response.status}`;
+      }
+    }
+
+    throw new ApiError(message, code, response.status, data?.error?.details);
   }
 
   return data.data as T;

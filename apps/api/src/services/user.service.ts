@@ -34,8 +34,9 @@ export async function updateProfile(
     where: { id: userId },
     data: {
       ...(input.name !== undefined ? { name: input.name } : {}),
+      ...(input.avatarUrl !== undefined ? { avatarUrl: input.avatarUrl } : {}),
     },
-    include: { preference: true },
+    include: { preference: true, oauthConnections: true },
   });
 
   return {

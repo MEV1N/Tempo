@@ -35,14 +35,14 @@ export function PWAInstallBanner() {
   };
 
   return (
-    <div className="bg-gradient-to-r from-sky-950/80 to-indigo-950/80 border border-sky-500/30 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
+    <div className="bg-[#FFFFFF] border border-[#D9D9D9] rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
       <div className="flex items-center space-x-3">
-        <div className="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-500/30 text-sky-400 flex items-center justify-center shrink-0">
-          <Download className="w-5 h-5" />
+        <div className="w-9 h-9 rounded-xl bg-[#F5F5F5] border border-[#D9D9D9] text-[#080808] flex items-center justify-center shrink-0">
+          <Download className="w-4 h-4" />
         </div>
         <div>
-          <p className="text-xs font-bold text-white">Install Tempo as a Web App</p>
-          <p className="text-[11px] text-slate-400">
+          <p className="text-xs font-semibold text-[#080808]">Install Tempo as a Web App</p>
+          <p className="text-[11px] text-[#777777]">
             Enjoy full standalone experience, offline access, and real-time push reminders.
           </p>
         </div>
@@ -51,14 +51,14 @@ export function PWAInstallBanner() {
       <div className="flex items-center space-x-2 self-end sm:self-auto">
         <button
           onClick={() => setDismissed(true)}
-          className="p-1.5 rounded-lg text-slate-400 hover:text-white transition"
+          className="p-1.5 rounded-lg text-[#777777] hover:text-[#080808] hover:bg-[#F5F5F5] transition"
           title="Dismiss"
         >
           <X className="w-4 h-4" />
         </button>
         <button
           onClick={handleInstallClick}
-          className="px-3.5 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold transition shadow-md shadow-sky-500/20"
+          className="px-3.5 py-1.5 rounded-lg bg-[#080808] hover:bg-[#171717] text-[#FFFFFF] text-xs font-semibold transition"
         >
           Install App
         </button>
