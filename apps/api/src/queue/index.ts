@@ -15,10 +15,11 @@ let backgroundQueue: Queue | null = null;
 let notificationQueue: Queue | null = null;
 let isRedisAvailable = false;
 
-// Only initialize Redis client if REDIS_URL is explicitly set and not in offline/test without redis
+// Only initialize Redis client if REDIS_URL is explicitly set and not running inside a serverless function
 const redisUrl = process.env.REDIS_URL;
+const isServerless = process.env.VERCEL === '1' || Boolean(process.env.AWS_LAMBDA_FUNCTION_NAME);
 
-if (redisUrl && redisUrl.trim() !== '') {
+if (!isServerless && redisUrl && redisUrl.trim() !== '') {
   try {
     redisClient = new IORedis(redisUrl, {
       maxRetriesPerRequest: null,

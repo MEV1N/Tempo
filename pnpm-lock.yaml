@@ -35,6 +35,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@prisma/client':
+        specifier: ^5.20.0
+        version: 5.22.0(prisma@5.22.0)
       '@tempo/database':
         specifier: workspace:*
         version: link:../../packages/database
@@ -96,6 +99,9 @@ importers:
       '@types/web-push':
         specifier: ^3.6.4
         version: 3.6.4
+      esbuild:
+        specifier: ^0.28.2
+        version: 0.28.2
       supertest:
         specifier: ^7.3.2
         version: 7.3.2

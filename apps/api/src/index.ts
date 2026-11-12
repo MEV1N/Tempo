@@ -51,13 +51,3 @@ if (process.env.VERCEL !== '1' && process.env.NODE_ENV !== 'test') {
 
 export { app };
 export default app;
-
-if (typeof module !== 'undefined' && module.exports) {
-  // Support both direct CommonJS function require and ES default export
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (module.exports as any) = app;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (module.exports as any).default = app;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (module.exports as any).app = app;
-}
