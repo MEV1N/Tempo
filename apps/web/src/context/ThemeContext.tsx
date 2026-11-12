@@ -31,7 +31,7 @@ export function computeAutoTheme(timezone?: string): ResolvedTheme {
   }
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const { preference, updatePreferences } = useAuth();

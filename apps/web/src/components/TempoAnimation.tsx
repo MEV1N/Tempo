@@ -1,5 +1,6 @@
-import { memo, useState } from 'react';
+import { memo, useState, useContext } from 'react';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
+import { ThemeContext } from '../context/ThemeContext';
 
 export type AnimationAssetName = 'loading' | 'tea' | 'sun' | 'moon' | 'tasks' | 'clock';
 
@@ -12,8 +13,8 @@ export interface TempoAnimationProps {
   fallback?: React.ReactNode;
 }
 
-// Map of canonical animation asset paths in apps/web/public/animations/
-const ANIMATION_URLS: Record<AnimationAssetName, string> = {
+// Canonical animation asset paths in apps/web/public/animations/
+const LIGHT_ANIMATION_URLS: Record<AnimationAssetName, string> = {
   loading: '/animations/loading.gif',
   tea: '/animations/tea.gif',
   sun: '/animations/sun.gif',
@@ -22,8 +23,19 @@ const ANIMATION_URLS: Record<AnimationAssetName, string> = {
   clock: '/animations/clock.gif',
 };
 
+// Dark-themed variants ending with dark; falls back to light asset if no dark asset exists
+const DARK_ANIMATION_URLS: Record<AnimationAssetName, string> = {
+  loading: '/animations/loading dark.gif',
+  tea: '/animations/tea.gif',
+  sun: '/animations/sun.gif',
+  moon: '/animations/moon.gif',
+  tasks: '/animations/tasks dark.gif',
+  clock: '/animations/clock.gif',
+};
+
 /**
  * Universal Tempo animation component usable across both Desktop and Mobile.
+ * - Automatically selects theme-appropriate animation (light vs dark variant)
  * - Aspect-ratio preserved (~309x309 square)
  * - Safe from React rerender flickering/restarts
  * - Respects prefers-reduced-motion with static icon fallback
@@ -39,13 +51,18 @@ export const TempoAnimation = memo(function TempoAnimation({
 }: TempoAnimationProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [loadError, setLoadError] = useState(false);
+  const themeContext = useContext(ThemeContext);
 
   // If user prefers reduced motion or asset fails to load, render fallback
   if ((prefersReducedMotion || loadError) && fallback) {
     return <>{fallback}</>;
   }
 
-  const src = ANIMATION_URLS[name];
+  const isDark =
+    themeContext?.resolvedTheme === 'dark' ||
+    (typeof document !== 'undefined' && document.documentElement.classList.contains('dark'));
+
+  const src = isDark ? DARK_ANIMATION_URLS[name] : LIGHT_ANIMATION_URLS[name];
 
   return (
     <img

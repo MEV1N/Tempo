@@ -107,15 +107,15 @@ export function NotificationCenter() {
   const getIcon = (type: string) => {
     switch (type) {
       case 'TOMORROW_PLAN_READY':
-        return <Sparkles className="w-3.5 h-3.5 text-[#080808] dark:text-[#F3F3F3]" />;
+        return <Sparkles className="w-3.5 h-3.5 text-[#080808] dark:text-[#F5F5F5]" />;
       case 'SCHEDULE_REMINDER':
-        return <Clock className="w-3.5 h-3.5 text-[#080808] dark:text-[#F3F3F3]" />;
+        return <Clock className="w-3.5 h-3.5 text-[#080808] dark:text-[#F5F5F5]" />;
       case 'TASK_REMINDER':
-        return <CheckSquare className="w-3.5 h-3.5 text-[#080808] dark:text-[#F3F3F3]" />;
+        return <CheckSquare className="w-3.5 h-3.5 text-[#080808] dark:text-[#F5F5F5]" />;
       case 'SCHEDULE_CHANGE':
-        return <Calendar className="w-3.5 h-3.5 text-[#080808] dark:text-[#F3F3F3]" />;
+        return <Calendar className="w-3.5 h-3.5 text-[#080808] dark:text-[#F5F5F5]" />;
       default:
-        return <AlertCircle className="w-3.5 h-3.5 text-[#777777] dark:text-[#A3A3A3]" />;
+        return <AlertCircle className="w-3.5 h-3.5 text-[#777777] dark:text-[#858585]" />;
     }
   };
 
@@ -124,13 +124,13 @@ export function NotificationCenter() {
       {/* Bell Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-[#777777] dark:text-[#A3A3A3] hover:text-[#080808] dark:hover:text-[#F3F3F3] hover:bg-[#F5F5F5] dark:hover:bg-[#222222] border border-[#D9D9D9] dark:border-[#2E2E2E] transition focus:outline-none"
+        className="relative p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-[#777777] dark:text-[#B0B0B0] hover:text-[#080808] dark:hover:text-[#F5F5F5] hover:bg-[#F5F5F5] dark:hover:bg-[#292929] border border-[#D9D9D9] dark:border-[#353535] transition focus:outline-none"
         title="Notifications"
         aria-label="Notifications"
       >
         <Bell className="w-4 h-4" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#080808] dark:bg-[#F3F3F3] text-[#FFFFFF] dark:text-[#080808] text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#080808] dark:bg-[#F5F5F5] text-[#FFFFFF] dark:text-[#101010] text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -138,13 +138,13 @@ export function NotificationCenter() {
 
       {/* Notification Dropdown Panel */}
       {isOpen && (
-        <div className="absolute right-0 md:left-0 md:right-auto mt-2 w-80 sm:w-96 max-w-[calc(100vw-2rem)] bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#2E2E2E] rounded-2xl shadow-xl z-50 overflow-hidden divide-y divide-[#EFEFEF] dark:divide-[#262626]">
+        <div className="absolute right-0 md:left-0 md:right-auto mt-2 w-80 sm:w-96 max-w-[calc(100vw-2rem)] bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#D9D9D9] dark:border-[#353535] rounded-2xl shadow-xl z-50 overflow-hidden divide-y divide-[#EFEFEF] dark:divide-[#353535]">
           {/* Header */}
-          <div className="p-3.5 flex items-center justify-between bg-[#FAFAFA] dark:bg-[#1E1E1E]">
+          <div className="p-3.5 flex items-center justify-between bg-[#FAFAFA] dark:bg-[#262626]">
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-semibold text-[#080808] dark:text-[#F3F3F3]">Notifications</span>
+              <span className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">Notifications</span>
               {unreadCount > 0 && (
-                <span className="px-1.5 py-0.5 rounded bg-[#080808] dark:bg-[#F3F3F3] text-[#FFFFFF] dark:text-[#080808] text-[10px] font-medium">
+                <span className="px-1.5 py-0.5 rounded bg-[#080808] dark:bg-[#F5F5F5] text-[#FFFFFF] dark:text-[#101010] text-[10px] font-medium">
                   {unreadCount} unread
                 </span>
               )}
@@ -154,7 +154,7 @@ export function NotificationCenter() {
               <button
                 onClick={handleMarkAllRead}
                 disabled={loading}
-                className="text-[11px] text-[#777777] dark:text-[#A3A3A3] hover:text-[#080808] dark:hover:text-[#F3F3F3] flex items-center space-x-1 font-medium transition"
+                className="text-[11px] text-[#777777] dark:text-[#B0B0B0] hover:text-[#080808] dark:hover:text-[#F5F5F5] flex items-center space-x-1 font-medium transition"
               >
                 <CheckCheck className="w-3.5 h-3.5" />
                 <span>Mark all as read</span>
@@ -163,9 +163,9 @@ export function NotificationCenter() {
           </div>
 
           {/* List */}
-          <div className="max-h-80 overflow-y-auto divide-y divide-[#EFEFEF] dark:divide-[#262626]">
+          <div className="max-h-80 overflow-y-auto divide-y divide-[#EFEFEF] dark:divide-[#353535]">
             {notifications.length === 0 ? (
-              <div className="py-8 text-center text-xs text-[#777777] dark:text-[#888888]">
+              <div className="py-8 text-center text-xs text-[#777777] dark:text-[#858585]">
                 No notifications right now.
               </div>
             ) : (
@@ -175,28 +175,28 @@ export function NotificationCenter() {
                   onClick={() => handleNotificationClick(notif)}
                   className={`p-3.5 flex items-start justify-between gap-3 cursor-pointer transition ${
                     !notif.readAt
-                      ? 'bg-[#F5F5F5]/60 dark:bg-[#222222]/60 hover:bg-[#EFEFEF]/80 dark:hover:bg-[#282828]'
-                      : 'hover:bg-[#F5F5F5] dark:hover:bg-[#222222]'
+                      ? 'bg-[#F5F5F5]/60 dark:bg-[#262626]/60 hover:bg-[#EFEFEF]/80 dark:hover:bg-[#292929]'
+                      : 'hover:bg-[#F5F5F5] dark:hover:bg-[#262626]'
                   }`}
                 >
                   <div className="flex items-start space-x-3">
-                    <div className="p-1.5 rounded-lg bg-[#FFFFFF] dark:bg-[#262626] border border-[#D9D9D9] dark:border-[#383838] mt-0.5 shadow-2xs">
+                    <div className="p-1.5 rounded-lg bg-[#FFFFFF] dark:bg-[#262626] border border-[#D9D9D9] dark:border-[#353535] mt-0.5 shadow-2xs">
                       {getIcon(notif.type)}
                     </div>
 
                     <div className="space-y-0.5">
                       <div className="flex items-center space-x-1.5">
-                        <p className="text-xs font-semibold text-[#080808] dark:text-[#F3F3F3] leading-tight">
+                        <p className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5] leading-tight">
                           {notif.title}
                         </p>
                         {!notif.readAt && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#080808] dark:bg-[#F3F3F3]" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#080808] dark:bg-[#F5F5F5]" />
                         )}
                       </div>
 
-                      <p className="text-[11px] text-[#404040] dark:text-[#A3A3A3] leading-snug">{notif.body}</p>
+                      <p className="text-[11px] text-[#404040] dark:text-[#B0B0B0] leading-snug">{notif.body}</p>
 
-                      <div className="flex items-center space-x-2 text-[10px] text-[#777777] dark:text-[#888888] pt-0.5">
+                      <div className="flex items-center space-x-2 text-[10px] text-[#777777] dark:text-[#858585] pt-0.5">
                         <span>
                           {new Date(notif.createdAt).toLocaleTimeString([], {
                             hour: 'numeric',
@@ -205,7 +205,7 @@ export function NotificationCenter() {
                           })}
                         </span>
                         {notif.data?.url && (
-                          <span className="text-[#080808] dark:text-[#F3F3F3] font-medium flex items-center space-x-0.5 underline">
+                          <span className="text-[#080808] dark:text-[#F5F5F5] font-medium flex items-center space-x-0.5 underline">
                             <span>Open</span>
                             <ExternalLink className="w-2.5 h-2.5" />
                           </span>
@@ -216,7 +216,7 @@ export function NotificationCenter() {
 
                   <button
                     onClick={(e) => handleDelete(notif.id, e)}
-                    className="p-1 rounded-md text-[#777777] dark:text-[#888888] hover:text-[#080808] dark:hover:text-[#F3F3F3] hover:bg-[#EFEFEF] dark:hover:bg-[#2A2A2A] transition shrink-0"
+                    className="p-1 rounded-md text-[#777777] dark:text-[#858585] hover:text-[#080808] dark:hover:text-[#F5F5F5] hover:bg-[#EFEFEF] dark:hover:bg-[#292929] transition shrink-0"
                     title="Delete"
                   >
                     <Trash2 className="w-3.5 h-3.5" />

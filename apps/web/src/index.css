@@ -17,14 +17,14 @@
 
   .dark {
     --tempo-black: #F5F5F5;
-    --tempo-secondary: #E5E5E5;
+    --tempo-secondary: #B0B0B0;
     --tempo-charcoal: #A3A3A3;
-    --tempo-muted: #888888;
-    --tempo-border: #2A2A2A;
-    --tempo-light: #222222;
-    --tempo-surface: #1A1A1A;
-    --tempo-offwhite: #121212;
-    --tempo-white: #181818;
+    --tempo-muted: #858585;
+    --tempo-border: #353535;
+    --tempo-light: #262626;
+    --tempo-surface: #1E1E1E;
+    --tempo-offwhite: #101010;
+    --tempo-white: #171717;
   }
 
   html, body {
@@ -39,8 +39,83 @@
   }
 
   html.dark, body.dark {
-    background-color: #121212;
+    background-color: #101010;
     color: #F5F5F5;
+  }
+
+  /* Universal Dark Theme Form & Input Adaptations */
+  .dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+  .dark textarea,
+  .dark select {
+    background-color: #191919;
+    color: #F5F5F5;
+    border-color: #353535;
+  }
+
+  .dark input::placeholder,
+  .dark textarea::placeholder {
+    color: #858585;
+  }
+
+  .dark input:focus,
+  .dark textarea:focus,
+  .dark select:focus {
+    border-color: #858585;
+  }
+
+  .dark select option {
+    background-color: #191919;
+    color: #F5F5F5;
+  }
+
+  .dark button:disabled,
+  .dark input:disabled {
+    color: #666666 !important;
+    opacity: 0.6;
+  }
+
+  /* Universal Dark Theme Adaptations for Unscoped Light Utilities */
+  .dark .bg-white:not([class*="dark:bg-"]) {
+    background-color: #1E1E1E;
+  }
+  .dark .bg-\[\#FFFFFF\]:not([class*="dark:bg-"]) {
+    background-color: #1E1E1E;
+  }
+  .dark .bg-\[\#FAFAFA\]:not([class*="dark:bg-"]) {
+    background-color: #1E1E1E;
+  }
+  .dark .bg-\[\#F5F5F5\]:not([class*="dark:bg-"]) {
+    background-color: #262626;
+  }
+  .dark .border-\[\#D9D9D9\]:not([class*="dark:border-"]) {
+    border-color: #353535;
+  }
+  .dark .border-\[\#EAEAEA\]:not([class*="dark:border-"]) {
+    border-color: #353535;
+  }
+  .dark .border-\[\#EFEFEF\]:not([class*="dark:border-"]) {
+    border-color: #353535;
+  }
+  .dark .divide-\[\#EFEFEF\] > :not([hidden]) ~ :not([hidden]):not([class*="dark:divide-"]) {
+    border-color: #353535;
+  }
+  .dark .divide-\[\#EAEAEA\] > :not([hidden]) ~ :not([hidden]):not([class*="dark:divide-"]) {
+    border-color: #353535;
+  }
+  .dark .text-\[\#080808\]:not([class*="dark:text-"]) {
+    color: #F5F5F5;
+  }
+  .dark .text-\[\#171717\]:not([class*="dark:text-"]) {
+    color: #F5F5F5;
+  }
+  .dark .text-\[\#404040\]:not([class*="dark:text-"]) {
+    color: #B0B0B0;
+  }
+  .dark .text-\[\#555555\]:not([class*="dark:text-"]) {
+    color: #B0B0B0;
+  }
+  .dark .text-\[\#777777\]:not([class*="dark:text-"]) {
+    color: #858585;
   }
 
   /* Focus visible accessibility outline */
@@ -48,26 +123,6 @@
     outline: 2px solid var(--tempo-black);
     outline-offset: 2px;
   }
-}
-
-/* Explicit Reusable Typography Classes with guaranteed priority */
-.font-brand {
-  font-family: 'Caveat', cursive, sans-serif !important;
-  font-optical-sizing: auto;
-}
-
-.font-handwritten {
-  font-family: 'Caveat', cursive, sans-serif !important;
-  font-optical-sizing: auto;
-}
-
-.font-handwriting {
-  font-family: 'Caveat', cursive, sans-serif !important;
-  font-optical-sizing: auto;
-}
-
-.font-interface {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
 /* Subtle clean scrollbars */
@@ -84,6 +139,13 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #777777;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #353535;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #666666;
 }
 
 /* Reduced motion */

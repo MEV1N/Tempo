@@ -13,14 +13,14 @@ export function AppLoadingScreen({
   onRetry?: () => void;
 }) {
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#121212] text-[#080808] dark:text-[#F3F3F3] flex items-center justify-center p-6 select-none transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F5F5F5] flex items-center justify-center p-6 select-none transition-colors">
       {error ? (
         <div className="flex flex-col items-center text-center space-y-3 max-w-sm">
           <p className="text-xs text-[#777777] dark:text-[#A3A3A3]">{error}</p>
           {onRetry && (
             <button
               onClick={onRetry}
-              className="px-4 py-2 bg-[#080808] dark:bg-[#F3F3F3] text-[#FFFFFF] dark:text-[#080808] text-xs font-semibold rounded-xl hover:opacity-90 transition shadow-xs"
+              className="px-4 py-2 bg-[#080808] dark:bg-[#F5F5F5] text-[#FFFFFF] dark:text-[#101010] text-xs font-semibold rounded-xl hover:opacity-90 transition shadow-xs"
             >
               Retry Connection
             </button>
@@ -33,7 +33,7 @@ export function AppLoadingScreen({
             alt="Tempo loading animation"
             size={76}
             eager
-            fallback={<Clock className="w-8 h-8 animate-spin text-[#080808] dark:text-[#F3F3F3]" />}
+            fallback={<Clock className="w-8 h-8 animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
           />
         </div>
       )}

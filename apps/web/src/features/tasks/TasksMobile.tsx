@@ -49,7 +49,7 @@ export function TasksMobile(props: UseTasksReturn) {
   } = props;
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#121212] text-[#080808] dark:text-[#F3F3F3] font-interface pb-28 transition-colors">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#101010] text-[#080808] dark:text-[#F5F5F5] font-interface pb-28 transition-colors">
       <Navbar />
 
       <main className="max-w-xl mx-auto px-5 py-5 space-y-3.5">

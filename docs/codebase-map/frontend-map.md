@@ -157,10 +157,13 @@ interface AuthContextType {
 - **Timezone Aware:** Evaluates local hours using the user's configured timezone (`preference.timezone`) via `Intl.DateTimeFormat`, with browser timezone fallback.
 - **Listeners & Recalculation:** Re-evaluates every 30 seconds and on window `visibilitychange` / `focus`.
 - **Zero-Flash Execution:** Inline bootstrap script in `apps/web/index.html` resolves the active theme from `localStorage` before DOM paint and attaches `.dark` to `<html>`.
-- **Monochrome Aesthetics:** Light mode uses `#FAFAFA`/`#FFFFFF` with `#080808` text. Dark mode uses layered charcoal `#121212`, `#181818`, `#222222` with `#F3F3F3`/`#D4D4D4` text and `#2A2A2A`/`#333333` borders.
+- **Monochrome Aesthetics:** Light mode uses `#FAFAFA`/`#FFFFFF` with `#080808` text. Dark mode uses cohesive dark palette tokens: main background `#101010`, secondary `#171717`, cards `#1E1E1E`, elevated `#262626`, borders `#353535`, primary text `#F5F5F5`, secondary text `#B0B0B0`, muted `#858585`, disabled `#666666`, inputs `#191919`, hover `#292929`.
 
 ### Universal Animation Integration (`apps/web/src/components/TempoAnimation.tsx`)
-- **Shared Assets:** `apps/web/public/animations/` (`clock.gif`, `loading.gif`, `moon.gif`, `sun.gif`, `tasks.gif`, `tea.gif`).
+- **Shared Assets:** `apps/web/public/animations/`:
+  - Light variants: `clock.gif`, `loading.gif`, `moon.gif`, `sun.gif`, `tasks.gif`, `tea.gif`.
+  - Dark variants: `loading dark.gif` (for `loading`), `tasks dark.gif` (for `tasks`). Assets without dedicated dark variants (`tea`, `sun`, `moon`, `clock`) cleanly reuse their monochromatic light gifs.
+- **Theme-Aware Selection:** `TempoAnimation` automatically selects dark variant assets when dark theme is active (`useTheme().effectiveTheme === 'DARK'`).
 - **Platform Agnostic:** Uniformly rendered across desktop and mobile presentation layers.
 - **Contextual Placements:**
   - `loading`: Website bootstrap initial loading screen (standalone centered loading animation without logos or text).
