@@ -13,6 +13,8 @@ out/
 
 # Prisma
 generated/
+apps/api/*.node
+apps/api/schema.prisma
 
 # Logs
 npm-debug.log*

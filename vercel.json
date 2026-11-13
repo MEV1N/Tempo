@@ -4,7 +4,7 @@
     "api": {
       "root": "apps/api",
       "framework": "express",
-      "entrypoint": "src/index.ts",
+      "entrypoint": "serverless.js",
       "buildCommand": "pnpm --filter @tempo/shared build && pnpm --filter @tempo/scheduler build && pnpm --filter @tempo/database build && pnpm --filter @tempo/api build"
     },
     "web": {
