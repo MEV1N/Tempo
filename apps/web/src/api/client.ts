@@ -14,21 +14,81 @@ export class ApiError extends Error {
   }
 }
 
+export function isLocalhostUrl(url: string): boolean {
+  return /^(https?:\/\/)?(localhost|127\.0\.0\.1|0\.0\.0\.0|::1)(:\d+)?/i.test(url.trim());
+}
+
+export function isProductionEnvironment(): boolean {
+  return Boolean(import.meta.env.PROD);
+}
+
+export function getApiBaseUrl(): string {
+  if (import.meta.env.PROD) {
+    const rawEnv = (import.meta.env.VITE_API_URL as string)?.trim() || '';
+    // In production, default to relative '/api'.
+    // If VITE_API_URL is set to a stale localhost/loopback address, safely discard it.
+    if (!rawEnv || isLocalhostUrl(rawEnv)) {
+      return '/api';
+    }
+
+    const clean = rawEnv.replace(/\/+$/, '');
+    return clean.endsWith('/api') ? clean : `${clean}/api`;
+  }
+
+  // Local development
+  const rawEnv = (import.meta.env.VITE_API_URL as string)?.trim() || '';
+  if (rawEnv) {
+    const clean = rawEnv.replace(/\/+$/, '');
+    return clean.endsWith('/api') ? clean : `${clean}/api`;
+  }
+
+  const port = 5000;
+  const host = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : 'localhost';
+  const proto = typeof window !== 'undefined' && window.location.protocol ? window.location.protocol : 'http:';
+  return `${proto}//${host}:${port}/api`;
+}
+
 export function resolveApiUrl(endpoint: string): string {
+  if (!endpoint) {
+    return getApiBaseUrl();
+  }
+
+  // Preserve external/absolute URLs
   if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
     return endpoint;
   }
 
-  // Prepend base URL if explicitly provided, otherwise use relative path (supporting Vite proxy)
-  const metaEnv = typeof import.meta !== 'undefined' ? (import.meta as any).env : undefined;
-  const baseUrl = (metaEnv?.VITE_API_URL as string) || '';
-  if (baseUrl) {
-    const cleanBase = baseUrl.replace(/\/+$/, '');
-    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-    return `${cleanBase}${cleanEndpoint}`;
+  const baseUrl = getApiBaseUrl();
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+
+  // If endpoint is already prefixed with `/api`
+  if (cleanEndpoint === '/api' || cleanEndpoint.startsWith('/api/')) {
+    if (baseUrl === '/api') {
+      return cleanEndpoint;
+    }
+    if (baseUrl.endsWith('/api')) {
+      const origin = baseUrl.slice(0, -4);
+      return `${origin}${cleanEndpoint}`;
+    }
+    return `${baseUrl.replace(/\/api$/, '')}${cleanEndpoint}`;
   }
 
-  return endpoint;
+  // Special-case root health check
+  if (cleanEndpoint === '/health') {
+    if (baseUrl.startsWith('http://') || baseUrl.startsWith('https://')) {
+      try {
+        const parsed = new URL(baseUrl);
+        return `${parsed.origin}/health`;
+      } catch {
+        // Fallback
+      }
+    }
+    return '/health';
+  }
+
+  // Endpoint without `/api/` prefix
+  const cleanBase = baseUrl.replace(/\/+$/, '');
+  return `${cleanBase}${cleanEndpoint}`;
 }
 
 export async function apiRequest<T = any>(endpoint: string, options: RequestInit = {}): Promise<T> {

@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { apiRequest, ApiError, resolveApiUrl } from '../../../apps/web/src/api/client';
+import {
+  apiRequest,
+  ApiError,
+  resolveApiUrl,
+  getApiBaseUrl,
+  isLocalhostUrl,
+} from '../../../apps/web/src/api/client';
 
 describe('Frontend API Client (client.ts) Hardening & Error Handling', () => {
   const originalFetch = globalThis.fetch;
@@ -13,17 +19,52 @@ describe('Frontend API Client (client.ts) Hardening & Error Handling', () => {
   });
 
   it('1. resolveApiUrl handles relative URLs and custom VITE_API_URL cleanly', () => {
-    // When VITE_API_URL is configured
-    const currentBase = import.meta.env?.VITE_API_URL;
-    if (currentBase) {
-      expect(resolveApiUrl('/api/auth/login')).toBe(
-        `${currentBase.replace(/\/+$/, '')}/api/auth/login`
-      );
-    } else {
-      expect(resolveApiUrl('/api/auth/login')).toBe('/api/auth/login');
-    }
     expect(resolveApiUrl('http://external.com/api')).toBe('http://external.com/api');
     expect(resolveApiUrl('https://external.com/api')).toBe('https://external.com/api');
+  });
+
+  it('1b. isLocalhostUrl accurately detects localhost and loopback addresses', () => {
+    expect(isLocalhostUrl('http://localhost:5000')).toBe(true);
+    expect(isLocalhostUrl('http://127.0.0.1:5000')).toBe(true);
+    expect(isLocalhostUrl('https://localhost:3000')).toBe(true);
+    expect(isLocalhostUrl('localhost:5000')).toBe(true);
+    expect(isLocalhostUrl('/api')).toBe(false);
+    expect(isLocalhostUrl('https://api.tempo.app')).toBe(false);
+  });
+
+  it('1c. getApiBaseUrl and resolveApiUrl enforce production defaults and discard stale localhost', () => {
+    // Save original env
+    const origProd = import.meta.env.PROD;
+    const origUrl = import.meta.env.VITE_API_URL;
+
+    try {
+      // Simulate Production with stale localhost
+      (import.meta.env as any).PROD = true;
+      (import.meta.env as any).VITE_API_URL = 'http://localhost:5000';
+
+      expect(getApiBaseUrl()).toBe('/api');
+      expect(resolveApiUrl('/api/auth/me')).toBe('/api/auth/me');
+      expect(resolveApiUrl('/api/auth/login')).toBe('/api/auth/login');
+      expect(resolveApiUrl('/auth/me')).toBe('/api/auth/me');
+      expect(resolveApiUrl('/health')).toBe('/health');
+
+      // Simulate Production with custom remote API domain
+      (import.meta.env as any).VITE_API_URL = 'https://api.tempo.app';
+      expect(getApiBaseUrl()).toBe('https://api.tempo.app/api');
+      expect(resolveApiUrl('/api/auth/me')).toBe('https://api.tempo.app/api/auth/me');
+
+      // Simulate Development
+      (import.meta.env as any).PROD = false;
+      (import.meta.env as any).VITE_API_URL = '';
+      expect(getApiBaseUrl()).toBe('http://localhost:5000/api');
+      expect(resolveApiUrl('/api/auth/me')).toBe('http://localhost:5000/api/auth/me');
+      expect(resolveApiUrl('/api/auth/login')).toBe('http://localhost:5000/api/auth/login');
+      expect(resolveApiUrl('/auth/me')).toBe('http://localhost:5000/api/auth/me');
+      expect(resolveApiUrl('/health')).toBe('http://localhost:5000/health');
+    } finally {
+      (import.meta.env as any).PROD = origProd;
+      (import.meta.env as any).VITE_API_URL = origUrl;
+    }
   });
 
   it('2. Successfully returns data for 200 OK JSON responses', async () => {
