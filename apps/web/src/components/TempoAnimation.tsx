@@ -13,40 +13,21 @@ export interface TempoAnimationProps {
   fallback?: React.ReactNode;
 }
 
-// Canonical animation GIF paths in apps/web/public/animations/
-const LIGHT_GIF_URLS: Record<AnimationAssetName, string> = {
-  loading: '/animations/loading.gif',
-  tea: '/animations/tea.gif',
-  sun: '/animations/sun.gif',
-  moon: '/animations/moon.gif',
-  tasks: '/animations/tasks.gif',
-  clock: '/animations/clock.gif',
-};
-
-// Dark-themed GIF variants
-const DARK_GIF_URLS: Record<AnimationAssetName, string> = {
+// Canonical dark-themed animation asset paths (crisp white line strokes on 100% transparent background)
+const ANIMATION_GIF_URLS: Record<AnimationAssetName, string> = {
   loading: '/animations/loading%20dark.gif',
   tea: '/animations/tea%20dark.gif',
-  sun: '/animations/sun.gif',
+  sun: '/animations/sun%20dark.gif',
   moon: '/animations/moon.gif',
   tasks: '/animations/tasks%20dark.gif',
   clock: '/animations/clock%20dark.gif',
 };
 
-// Modern high-performance animated WebP alternatives (60-75% smaller, faster decode)
-const LIGHT_WEBP_URLS: Record<AnimationAssetName, string> = {
-  loading: '/animations/loading.webp',
-  tea: '/animations/tea.webp',
-  sun: '/animations/sun.webp',
-  moon: '/animations/moon.webp',
-  tasks: '/animations/tasks.webp',
-  clock: '/animations/clock.webp',
-};
-
-const DARK_WEBP_URLS: Record<AnimationAssetName, string> = {
+// High-performance animated WebP alternatives (60-75% smaller payload, hardware-accelerated decode)
+const ANIMATION_WEBP_URLS: Record<AnimationAssetName, string> = {
   loading: '/animations/loading%20dark.webp',
   tea: '/animations/tea%20dark.webp',
-  sun: '/animations/sun.webp',
+  sun: '/animations/sun%20dark.webp',
   moon: '/animations/moon.webp',
   tasks: '/animations/tasks%20dark.webp',
   clock: '/animations/clock%20dark.webp',
@@ -64,8 +45,8 @@ function preloadAsset(url: string) {
 if (typeof window !== 'undefined') {
   const schedulePreload = () => {
     (['loading', 'sun', 'moon', 'clock', 'tea', 'tasks'] as AnimationAssetName[]).forEach((name) => {
-      preloadAsset(LIGHT_WEBP_URLS[name]);
-      preloadAsset(DARK_WEBP_URLS[name]);
+      preloadAsset(ANIMATION_WEBP_URLS[name]);
+      preloadAsset(ANIMATION_GIF_URLS[name]);
     });
   };
   if ('requestIdleCallback' in window) {
@@ -77,9 +58,12 @@ if (typeof window !== 'undefined') {
 
 /**
  * Universal Tempo animation component usable across both Desktop and Mobile.
+ * - Uses dark mode assets (white line art on 100% transparent background) for both modes.
+ * - In light mode, inverts colors (filter: invert(1)) so strokes become black lines on transparent background.
+ * - In dark mode, renders native white strokes on transparent background.
  * - Prioritizes lightweight animated WebP with automatic GIF fallback via <picture>
  * - In-memory preloading for zero-latency instant rendering
- * - Aspect-ratio preserved (~309x309 square)
+ * - Aspect-ratio preserved with object-contain
  * - Safe from React rerender flickering/restarts
  * - Respects prefers-reduced-motion with static icon fallback
  * - Graceful fallback if asset fails to load
@@ -105,23 +89,13 @@ export const TempoAnimation = memo(function TempoAnimation({
     themeContext?.resolvedTheme === 'dark' ||
     (typeof document !== 'undefined' && document.documentElement.classList.contains('dark'));
 
-  const gifSrc = isDark ? DARK_GIF_URLS[name] : LIGHT_GIF_URLS[name];
-  const webpSrc = isDark ? DARK_WEBP_URLS[name] : LIGHT_WEBP_URLS[name];
+  // Always use the transparent dark-themed assets
+  const gifSrc = ANIMATION_GIF_URLS[name];
+  const webpSrc = ANIMATION_WEBP_URLS[name];
 
-  // Contrast adaptation:
-  // 1. In dark mode, sun (black strokes on white bg) must be inverted to yield white strokes on black bg.
-  // 2. In light mode, moon (white strokes on transparent bg) must be inverted to yield black strokes on transparent bg.
-  const shouldInvert = (isDark && name === 'sun') || (!isDark && name === 'moon');
-
-  // In dark mode: inverted sun has a solid black background that requires 'screen' to become transparent.
-  // In light mode: assets with solid white/off-white background (sun, loading, clock, tasks, tea) require 'multiply' to blend cleanly onto card surfaces without a visible square box edge.
-  const blendMode: React.CSSProperties['mixBlendMode'] = isDark
-    ? name === 'sun'
-      ? 'screen'
-      : undefined
-    : name !== 'moon'
-      ? 'multiply'
-      : undefined;
+  // For light mode: invert the dark mode gif/webp so white lines become crisp black lines on transparent background
+  // For dark mode: render original white strokes on transparent background
+  const shouldInvert = !isDark;
 
   return (
     <picture
@@ -144,7 +118,6 @@ export const TempoAnimation = memo(function TempoAnimation({
           maxWidth: `${size}px`,
           maxHeight: `${size}px`,
           filter: shouldInvert ? 'invert(1)' : undefined,
-          mixBlendMode: blendMode,
         }}
       />
     </picture>

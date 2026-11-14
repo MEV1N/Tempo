@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tempo-pwa-v3';
+const CACHE_NAME = 'tempo-pwa-v4';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -7,24 +7,16 @@ const PRECACHE_ASSETS = [
   '/logo/logo.png',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
-  '/animations/loading.gif',
-  '/animations/loading.webp',
   '/animations/loading%20dark.gif',
   '/animations/loading%20dark.webp',
-  '/animations/sun.gif',
-  '/animations/sun.webp',
+  '/animations/sun%20dark.gif',
+  '/animations/sun%20dark.webp',
   '/animations/moon.gif',
   '/animations/moon.webp',
-  '/animations/clock.gif',
-  '/animations/clock.webp',
   '/animations/clock%20dark.gif',
   '/animations/clock%20dark.webp',
-  '/animations/tasks.gif',
-  '/animations/tasks.webp',
   '/animations/tasks%20dark.gif',
   '/animations/tasks%20dark.webp',
-  '/animations/tea.gif',
-  '/animations/tea.webp',
   '/animations/tea%20dark.gif',
   '/animations/tea%20dark.webp',
 ];
