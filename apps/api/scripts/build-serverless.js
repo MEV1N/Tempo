@@ -5,9 +5,11 @@ const { buildSync } = require('esbuild');
 const apiRoot = path.resolve(__dirname, '..');
 const monorepoRoot = path.resolve(apiRoot, '../..');
 const entryPoint = path.join(apiRoot, 'src/index.ts');
-const outputFile = path.join(apiRoot, 'serverless.js');
+const indexFile = path.join(apiRoot, 'index.js');
+const serverlessFile = path.join(apiRoot, 'serverless.js');
+const appFile = path.join(apiRoot, 'app.js');
 
-console.log('[build-serverless] Bundling Express API into standalone serverless.js...');
+console.log('[build-serverless] Bundling Express API into standalone index.js...');
 
 buildSync({
   entryPoints: [entryPoint],
@@ -15,16 +17,25 @@ buildSync({
   platform: 'node',
   target: 'node20',
   format: 'cjs',
-  outfile: outputFile,
+  outfile: indexFile,
   footer: {
     js: 'module.exports = app; module.exports.default = app; module.exports.app = app;',
   },
   define: {
     'process.env.NODE_ENV': '"production"',
+    'process.env.VERCEL': '"1"',
   },
 });
 
-console.log(`[build-serverless] Bundle successfully created at: ${outputFile}`);
+console.log(`[build-serverless] Bundle successfully created at: ${indexFile}`);
+
+// Mirror bundle to serverless.js and app.js for complete compatibility across Vercel resolution strategies
+fs.copyFileSync(indexFile, serverlessFile);
+fs.writeFileSync(
+  appFile,
+  "const app = require('./index.js');\nmodule.exports = app;\nmodule.exports.default = app;\nmodule.exports.app = app;\n"
+);
+console.log(`[build-serverless] Mirrored bundle to ${serverlessFile} and ${appFile}`);
 
 // Helper to find files recursively
 function findFiles(dir, predicate) {

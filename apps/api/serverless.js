@@ -148842,7 +148842,7 @@ var backgroundQueue = null;
 var notificationQueue = null;
 var isRedisAvailable = false;
 var redisUrl = process.env.REDIS_URL;
-var isServerless = process.env.VERCEL === "1" || Boolean(process.env.AWS_LAMBDA_FUNCTION_NAME);
+var isServerless = true;
 if (!isServerless && redisUrl && redisUrl.trim() !== "") {
   try {
     redisClient = new import_ioredis.default(redisUrl, {
@@ -151081,7 +151081,7 @@ import_dotenv.default.config({ path: import_path.default.resolve(__dirname, "../
 import_dotenv.default.config({ path: import_path.default.resolve(__dirname, "../../../.env") });
 var PORT = parseInt(process.env.PORT || `${import_shared21.APP_CONFIG.DEFAULT_PORT}`, 10);
 var app = createApp();
-if (process.env.VERCEL !== "1" && true) {
+if (false) {
   const server = app.listen(PORT, () => {
     console.log(`===============================================`);
     console.log(`\u{1F680} Tempo API Server running on port ${PORT}`);

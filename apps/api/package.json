@@ -1,7 +1,7 @@
 {
   "name": "@tempo/api",
   "version": "0.1.0",
-  "main": "./dist/index.js",
+  "main": "./index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc && node scripts/build-serverless.js",
