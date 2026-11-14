@@ -54,7 +54,7 @@ export function ProtectedRoute({ children }: { children: ReactNode }) {
   }
 
   // Redirect users who have not completed onboarding to onboarding
-  const isOnboardingDone = preference?.onboardingCompleted ?? user.onboardingCompleted ?? false;
+  const isOnboardingDone = Boolean(preference?.onboardingCompleted || user.onboardingCompleted);
   if (!isOnboardingDone && location.pathname !== '/onboarding') {
     return <Navigate to="/onboarding" replace />;
   }

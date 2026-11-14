@@ -84,6 +84,10 @@ export function OnboardingPage() {
         await updateProfile({ name: name.trim() });
       }
 
+      const storedTheme = (
+        typeof window !== 'undefined' ? localStorage.getItem('tempo_theme_preference') : null
+      ) as 'AUTO' | 'LIGHT' | 'DARK' | null;
+
       await updatePreferences({
         timezone,
         wakeTime,
@@ -97,6 +101,9 @@ export function OnboardingPage() {
         maxContinuousWorkDuration: Number(maxContinuousWorkDuration),
         dailyLeisureTarget: Number(dailyLeisureTarget),
         onboardingCompleted: true,
+        ...(storedTheme && ['AUTO', 'LIGHT', 'DARK'].includes(storedTheme)
+          ? { themePreference: storedTheme }
+          : {}),
       });
 
       navigate('/', { replace: true });

@@ -47,6 +47,13 @@
     min-height: 100vh;
   }
 
+  /* Base Shell Transitions */
+  html, body, #root, aside, header, nav, main {
+    transition-property: background-color, border-color, color;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
   html.dark, html.dark body, html.dark #root {
     background-color: #181818 !important;
     color: #F5F5F5 !important;
@@ -197,6 +204,43 @@
   background: #505050;
 }
 
+/* ========================================================================= */
+/* NAVIGATION & THEME TRANSITION ANIMATIONS                                  */
+/* ========================================================================= */
+
+/* Page Enter Navigation Animation */
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+main,
+.animate-page-enter {
+  animation: pageEnter 220ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  will-change: opacity, transform;
+}
+
+/* Smooth fade animation on theme toggle */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              fill 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              stroke 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              filter 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-delay: 0s !important;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
@@ -207,5 +251,9 @@
     scroll-behavior: auto !important;
     transition-duration: 0s !important;
     transition-delay: 0s !important;
+  }
+  main,
+  .animate-page-enter {
+    animation: none !important;
   }
 }

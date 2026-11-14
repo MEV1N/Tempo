@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 
 export type ThemeMode = 'AUTO' | 'LIGHT' | 'DARK';
@@ -32,10 +32,30 @@ export function computeAutoTheme(timezone?: string): ResolvedTheme {
   }
 }
 
+function triggerThemeTransition() {
+  if (typeof document === 'undefined') return;
+  if (
+    typeof window !== 'undefined' &&
+    window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    return;
+  }
+  const root = document.documentElement;
+  root.classList.add('theme-transition');
+  if ((root as any).__themeTransitionTimeout) {
+    clearTimeout((root as any).__themeTransitionTimeout);
+  }
+  (root as any).__themeTransitionTimeout = setTimeout(() => {
+    root.classList.remove('theme-transition');
+  }, 350);
+}
+
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const { preference, updatePreferences } = useAuth();
+  const isInitialMount = useRef(true);
 
   // Initialize theme mode from storage or backend preference, defaulting to AUTO
   const [themeMode, setThemeModeState] = useState<ThemeMode>(() => {
@@ -118,7 +138,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const applyThemeToDOM = useCallback((resolved: ResolvedTheme) => {
     if (typeof document === 'undefined') return;
     const root = document.documentElement;
-    if (resolved === 'dark') {
+    const isDark = resolved === 'dark';
+    const isCurrentlyDark = root.classList.contains('dark');
+
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else if (isCurrentlyDark !== isDark) {
+      triggerThemeTransition();
+    }
+
+    if (isDark) {
       root.classList.add('dark');
       root.style.backgroundColor = '#181818';
       root.style.color = '#F5F5F5';

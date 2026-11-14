@@ -48441,7 +48441,7 @@ var require_dist = __commonJS({
   "../../packages/shared/dist/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.copyRoutinesSchema = exports2.updateRoutineSchema = exports2.createRoutineSchema = exports2.setPasswordSchema = exports2.JOB_NAMES = exports2.QUEUE_NAMES = exports2.triggerPlanningSchema = exports2.updateNotificationPreferencesSchema = exports2.notificationFilterSchema = exports2.deletePushSubscriptionSchema = exports2.createPushSubscriptionSchema = exports2.APP_CONFIG = exports2.activityFilterSchema = exports2.updateActivitySchema = exports2.createActivitySchema = exports2.restoreVersionSchema = exports2.rescheduleSchema = exports2.toggleBlockLockSchema = exports2.updateScheduleBlockSchema = exports2.generateScheduleSchema = exports2.updateCalendarExceptionSchema = exports2.createCalendarExceptionSchema = exports2.updateCalendarEventSchema = exports2.createCalendarEventSchema = exports2.updateTimetableSchema = exports2.createTimetableSchema = exports2.updateSessionSchema = exports2.createSessionSchema = exports2.updateRecurringTaskSchema = exports2.createRecurringTaskSchema = exports2.taskFilterSchema = exports2.updateTaskSchema = exports2.createTaskSchema = exports2.updateCategorySchema = exports2.createCategorySchema = exports2.API_ROUTES = exports2.updateProfileSchema = exports2.updatePreferencesSchema = exports2.userPreferenceSchema = exports2.loginSchema = exports2.registerSchema = exports2.timeStringSchema = exports2.TIME_REGEX = void 0;
+    exports2.copyRoutinesSchema = exports2.updateRoutineSchema = exports2.createRoutineSchema = exports2.setPasswordSchema = exports2.JOB_NAMES = exports2.QUEUE_NAMES = exports2.triggerPlanningSchema = exports2.updateNotificationPreferencesSchema = exports2.notificationFilterSchema = exports2.deletePushSubscriptionSchema = exports2.createPushSubscriptionSchema = exports2.APP_CONFIG = exports2.activityFilterSchema = exports2.updateActivitySchema = exports2.createActivitySchema = exports2.restoreVersionSchema = exports2.rescheduleSchema = exports2.toggleBlockLockSchema = exports2.updateScheduleBlockSchema = exports2.generateScheduleSchema = exports2.updateCalendarExceptionSchema = exports2.createCalendarExceptionSchema = exports2.updateCalendarEventSchema = exports2.createCalendarEventSchema = exports2.updateTimetableSchema = exports2.createTimetableSchema = exports2.updateSessionSchema = exports2.createSessionSchema = exports2.updateRecurringTaskSchema = exports2.createRecurringTaskSchema = exports2.taskFilterSchema = exports2.updateTaskSchema = exports2.createTaskSchema = exports2.updateCategorySchema = exports2.createCategorySchema = exports2.API_ROUTES = exports2.updateProfileSchema = exports2.updatePreferencesSchema = exports2.userPreferenceSchema = exports2.baseUserPreferenceSchema = exports2.loginSchema = exports2.registerSchema = exports2.timeStringSchema = exports2.TIME_REGEX = void 0;
     exports2.formatTimeTo12Hour = formatTimeTo12Hour;
     exports2.formatTimeRange = formatTimeRange;
     exports2.formatTimeDisplayString = formatTimeDisplayString;
@@ -48457,29 +48457,51 @@ var require_dist = __commonJS({
       email: zod_1.z.string().trim().email("Invalid email address").max(255).toLowerCase(),
       password: zod_1.z.string().min(1, "Password is required")
     });
-    exports2.userPreferenceSchema = zod_1.z.object({
-      timezone: zod_1.z.string().trim().min(1, "Timezone is required").default("Asia/Kolkata"),
-      wakeTime: exports2.timeStringSchema.default("07:00"),
-      sleepTime: exports2.timeStringSchema.default("23:00"),
-      preferredWorkStart: exports2.timeStringSchema.default("09:00"),
-      preferredWorkEnd: exports2.timeStringSchema.default("18:00"),
-      breakfastTime: exports2.timeStringSchema.default("08:30"),
-      lunchTime: exports2.timeStringSchema.default("13:00"),
-      dinnerTime: exports2.timeStringSchema.default("20:30"),
-      preferredBreakDuration: zod_1.z.number().int("Break duration must be an integer").min(5, "Minimum break is 5 minutes").max(120, "Maximum break is 120 minutes").default(15),
-      maxContinuousWorkDuration: zod_1.z.number().int("Max continuous work must be an integer").min(15, "Minimum continuous work is 15 minutes").max(360, "Maximum continuous work is 360 minutes").default(90),
-      dailyLeisureTarget: zod_1.z.number().int("Daily leisure target must be an integer").min(0, "Leisure target cannot be negative").max(720, "Maximum leisure target is 720 minutes").default(120),
-      onboardingCompleted: zod_1.z.boolean().default(false),
-      pushNotificationsEnabled: zod_1.z.boolean().default(true),
-      autoNightlyPlanningEnabled: zod_1.z.boolean().default(true),
-      notifyTomorrowPlanReady: zod_1.z.boolean().default(true),
-      notifyTaskReminders: zod_1.z.boolean().default(true),
-      notifyScheduleReminders: zod_1.z.boolean().default(true),
-      notifyScheduleChanges: zod_1.z.boolean().default(true),
-      preferredPlanningTime: exports2.timeStringSchema.default("21:00"),
-      themePreference: zod_1.z.enum(["AUTO", "LIGHT", "DARK"]).default("AUTO")
+    exports2.baseUserPreferenceSchema = zod_1.z.object({
+      timezone: zod_1.z.string().trim().min(1, "Timezone is required"),
+      wakeTime: exports2.timeStringSchema,
+      sleepTime: exports2.timeStringSchema,
+      preferredWorkStart: exports2.timeStringSchema,
+      preferredWorkEnd: exports2.timeStringSchema,
+      breakfastTime: exports2.timeStringSchema,
+      lunchTime: exports2.timeStringSchema,
+      dinnerTime: exports2.timeStringSchema,
+      preferredBreakDuration: zod_1.z.number().int("Break duration must be an integer").min(5, "Minimum break is 5 minutes").max(120, "Maximum break is 120 minutes"),
+      maxContinuousWorkDuration: zod_1.z.number().int("Max continuous work must be an integer").min(15, "Minimum continuous work is 15 minutes").max(360, "Maximum continuous work is 360 minutes"),
+      dailyLeisureTarget: zod_1.z.number().int("Daily leisure target must be an integer").min(0, "Leisure target cannot be negative").max(720, "Maximum leisure target is 720 minutes"),
+      onboardingCompleted: zod_1.z.boolean(),
+      pushNotificationsEnabled: zod_1.z.boolean(),
+      autoNightlyPlanningEnabled: zod_1.z.boolean(),
+      notifyTomorrowPlanReady: zod_1.z.boolean(),
+      notifyTaskReminders: zod_1.z.boolean(),
+      notifyScheduleReminders: zod_1.z.boolean(),
+      notifyScheduleChanges: zod_1.z.boolean(),
+      preferredPlanningTime: exports2.timeStringSchema,
+      themePreference: zod_1.z.enum(["AUTO", "LIGHT", "DARK"])
     });
-    exports2.updatePreferencesSchema = exports2.userPreferenceSchema.partial();
+    exports2.userPreferenceSchema = zod_1.z.object({
+      timezone: exports2.baseUserPreferenceSchema.shape.timezone.default("Asia/Kolkata"),
+      wakeTime: exports2.baseUserPreferenceSchema.shape.wakeTime.default("07:00"),
+      sleepTime: exports2.baseUserPreferenceSchema.shape.sleepTime.default("23:00"),
+      preferredWorkStart: exports2.baseUserPreferenceSchema.shape.preferredWorkStart.default("09:00"),
+      preferredWorkEnd: exports2.baseUserPreferenceSchema.shape.preferredWorkEnd.default("18:00"),
+      breakfastTime: exports2.baseUserPreferenceSchema.shape.breakfastTime.default("08:30"),
+      lunchTime: exports2.baseUserPreferenceSchema.shape.lunchTime.default("13:00"),
+      dinnerTime: exports2.baseUserPreferenceSchema.shape.dinnerTime.default("20:30"),
+      preferredBreakDuration: exports2.baseUserPreferenceSchema.shape.preferredBreakDuration.default(15),
+      maxContinuousWorkDuration: exports2.baseUserPreferenceSchema.shape.maxContinuousWorkDuration.default(90),
+      dailyLeisureTarget: exports2.baseUserPreferenceSchema.shape.dailyLeisureTarget.default(120),
+      onboardingCompleted: exports2.baseUserPreferenceSchema.shape.onboardingCompleted.default(false),
+      pushNotificationsEnabled: exports2.baseUserPreferenceSchema.shape.pushNotificationsEnabled.default(true),
+      autoNightlyPlanningEnabled: exports2.baseUserPreferenceSchema.shape.autoNightlyPlanningEnabled.default(true),
+      notifyTomorrowPlanReady: exports2.baseUserPreferenceSchema.shape.notifyTomorrowPlanReady.default(true),
+      notifyTaskReminders: exports2.baseUserPreferenceSchema.shape.notifyTaskReminders.default(true),
+      notifyScheduleReminders: exports2.baseUserPreferenceSchema.shape.notifyScheduleReminders.default(true),
+      notifyScheduleChanges: exports2.baseUserPreferenceSchema.shape.notifyScheduleChanges.default(true),
+      preferredPlanningTime: exports2.baseUserPreferenceSchema.shape.preferredPlanningTime.default("21:00"),
+      themePreference: exports2.baseUserPreferenceSchema.shape.themePreference.default("AUTO")
+    });
+    exports2.updatePreferencesSchema = exports2.baseUserPreferenceSchema.partial();
     exports2.updateProfileSchema = zod_1.z.object({
       name: zod_1.z.string().trim().min(1, "Name cannot be empty").max(100, "Name must be 100 characters or fewer").optional(),
       avatarUrl: zod_1.z.string().trim().url("Invalid URL").max(1e3).nullable().optional()

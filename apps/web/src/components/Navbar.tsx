@@ -72,14 +72,21 @@ export function Navbar() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  className={`group flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 active:scale-[0.98] ${
                     active
-                      ? 'bg-[#080808] dark:bg-[#282828] text-[#FFFFFF] dark:text-[#F5F5F5] border border-transparent dark:border-[#383838] shadow-xs'
-                      : 'text-[#404040] dark:text-[#BDBDBD] hover:text-[#080808] dark:hover:text-[#F5F5F5] hover:bg-[#F5F5F5] dark:hover:bg-[#202020]'
+                      ? 'bg-[#080808] dark:bg-[#282828] text-[#FFFFFF] dark:text-[#F5F5F5] border border-transparent dark:border-[#383838] shadow-xs translate-x-0.5'
+                      : 'text-[#404040] dark:text-[#BDBDBD] hover:text-[#080808] dark:hover:text-[#F5F5F5] hover:bg-[#F5F5F5] dark:hover:bg-[#202020] hover:translate-x-1'
                   }`}
                 >
-                  <Icon className="w-4 h-4 shrink-0" />
+                  <Icon
+                    className={`w-4 h-4 shrink-0 transition-transform duration-200 ${
+                      active ? 'scale-110' : 'group-hover:scale-110 group-active:scale-95'
+                    }`}
+                  />
                   <span>{item.label}</span>
+                  {active && (
+                    <span className="ml-auto w-1.5 h-1.5 rounded-full bg-white dark:bg-[#F5F5F5] animate-pulse" />
+                  )}
                 </Link>
               );
             })}
@@ -95,21 +102,21 @@ export function Navbar() {
 
           <Link
             to="/settings"
-            className={`flex items-center space-x-3 px-3.5 py-2 rounded-xl text-xs font-medium transition ${
+            className={`group flex items-center space-x-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-all duration-200 active:scale-[0.98] ${
               isActive('/settings')
-                ? 'bg-[#080808] dark:bg-[#282828] text-white dark:text-[#F5F5F5] border border-transparent dark:border-[#383838] font-semibold shadow-xs'
-                : 'text-[#404040] dark:text-[#BDBDBD] hover:text-[#080808] dark:hover:text-[#F5F5F5] hover:bg-[#F5F5F5] dark:hover:bg-[#202020]'
+                ? 'bg-[#080808] dark:bg-[#282828] text-white dark:text-[#F5F5F5] border border-transparent dark:border-[#383838] font-semibold shadow-xs translate-x-0.5'
+                : 'text-[#404040] dark:text-[#BDBDBD] hover:text-[#080808] dark:hover:text-[#F5F5F5] hover:bg-[#F5F5F5] dark:hover:bg-[#202020] hover:translate-x-1'
             }`}
           >
-            <Settings className="w-4 h-4 shrink-0" />
+            <Settings className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:rotate-45" />
             <span>Settings</span>
           </Link>
 
           <Link
             to="/profile"
-            className="flex items-center space-x-3 p-2 rounded-xl hover:bg-[#F5F5F5] dark:hover:bg-[#202020] transition group"
+            className="flex items-center space-x-3 p-2 rounded-xl hover:bg-[#F5F5F5] dark:hover:bg-[#202020] transition-all duration-200 active:scale-[0.98] group"
           >
-            <div className="w-8 h-8 rounded-full bg-[#171717] dark:bg-[#202020] text-[#FFFFFF] dark:text-[#F5F5F5] flex items-center justify-center text-xs font-semibold uppercase shrink-0 border border-transparent dark:border-[#383838]">
+            <div className="w-8 h-8 rounded-full bg-[#171717] dark:bg-[#202020] text-[#FFFFFF] dark:text-[#F5F5F5] flex items-center justify-center text-xs font-semibold uppercase shrink-0 border border-transparent dark:border-[#383838] transition-transform duration-200 group-hover:scale-105">
               {user.name ? user.name.charAt(0) : 'U'}
             </div>
             <div className="min-w-0 flex-1">
@@ -122,10 +129,10 @@ export function Navbar() {
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center space-x-2 py-2 px-3 rounded-xl text-xs font-medium text-[#777777] dark:text-[#BDBDBD] hover:text-[#080808] dark:hover:text-[#F5F5F5] hover:bg-[#F5F5F5] dark:hover:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] transition"
+            className="w-full flex items-center justify-center space-x-2 py-2 px-3 rounded-xl text-xs font-medium text-[#777777] dark:text-[#BDBDBD] hover:text-[#080808] dark:hover:text-[#F5F5F5] hover:bg-[#F5F5F5] dark:hover:bg-[#202020] border border-[#D9D9D9] dark:border-[#383838] transition-all duration-200 active:scale-[0.98]"
             title="Log out of Tempo"
           >
-            <LogOut className="w-3.5 h-3.5" />
+            <LogOut className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-0.5" />
             <span>Log out</span>
           </button>
         </div>
@@ -141,21 +148,21 @@ export function Navbar() {
           <NotificationCenter />
           <Link
             to="/settings"
-            className={`p-2 rounded-xl transition min-w-[44px] min-h-[44px] flex items-center justify-center ${
+            className={`p-2 rounded-xl transition-all duration-200 active:scale-90 min-w-[44px] min-h-[44px] flex items-center justify-center ${
               isActive('/settings')
                 ? 'bg-[#080808] dark:bg-[#282828] text-white dark:text-[#F5F5F5] border border-transparent dark:border-[#383838]'
                 : 'text-[#777777] dark:text-[#BDBDBD] hover:text-[#080808] dark:hover:text-[#F5F5F5] hover:bg-[#F5F5F5] dark:hover:bg-[#202020]'
             }`}
             aria-label="Settings"
           >
-            <Settings className="w-4 h-4" />
+            <Settings className="w-4 h-4 active:rotate-45 transition-transform duration-300" />
           </Link>
           <Link
             to="/profile"
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center active:scale-90 transition-transform duration-150"
             aria-label="User Profile"
           >
-            <div className="w-8 h-8 rounded-full bg-[#171717] dark:bg-[#202020] text-[#FFFFFF] dark:text-[#F5F5F5] flex items-center justify-center text-xs font-semibold uppercase ring-2 ring-transparent hover:ring-[#080808] dark:hover:ring-[#F5F5F5] transition border border-transparent dark:border-[#383838]">
+            <div className="w-8 h-8 rounded-full bg-[#171717] dark:bg-[#202020] text-[#FFFFFF] dark:text-[#F5F5F5] flex items-center justify-center text-xs font-semibold uppercase ring-2 ring-transparent hover:ring-[#080808] dark:hover:ring-[#F5F5F5] transition-all border border-transparent dark:border-[#383838]">
               {user.name ? user.name.charAt(0) : 'U'}
             </div>
           </Link>
@@ -173,22 +180,28 @@ export function Navbar() {
             <Link
               key={item.path}
               to={item.path}
-              className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl text-[10px] transition-colors min-w-[52px] min-h-[44px] ${
+              className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl text-[10px] transition-all duration-200 active:scale-90 min-w-[52px] min-h-[44px] group ${
                 active
                   ? 'text-[#080808] dark:text-[#F5F5F5] font-bold'
                   : 'text-[#777777] dark:text-[#929292] hover:text-[#080808] dark:hover:text-[#F5F5F5]'
               }`}
             >
               <div
-                className={`p-1 rounded-lg transition-all ${
+                className={`p-1.5 rounded-lg transition-all duration-200 ${
                   active
-                    ? 'bg-[#080808] dark:bg-[#282828] text-[#FFFFFF] dark:text-[#F5F5F5] border border-transparent dark:border-[#383838]'
-                    : 'text-[#777777] dark:text-[#929292]'
+                    ? 'bg-[#080808] dark:bg-[#282828] text-[#FFFFFF] dark:text-[#F5F5F5] border border-transparent dark:border-[#383838] scale-110 shadow-xs'
+                    : 'text-[#777777] dark:text-[#929292] group-hover:scale-105'
                 }`}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className="w-4 h-4 transition-transform duration-200" />
               </div>
-              <span className="mt-0.5 tracking-tight font-medium leading-none">{item.label}</span>
+              <span
+                className={`mt-0.5 tracking-tight font-medium leading-none transition-all duration-200 ${
+                  active ? 'scale-105' : ''
+                }`}
+              >
+                {item.label}
+              </span>
             </Link>
           );
         })}

@@ -158,47 +158,67 @@ export const loginSchema = z.object({
 
 export type LoginInput = z.infer<typeof loginSchema>;
 
-export const userPreferenceSchema = z.object({
-  timezone: z.string().trim().min(1, 'Timezone is required').default('Asia/Kolkata'),
-  wakeTime: timeStringSchema.default('07:00'),
-  sleepTime: timeStringSchema.default('23:00'),
-  preferredWorkStart: timeStringSchema.default('09:00'),
-  preferredWorkEnd: timeStringSchema.default('18:00'),
-  breakfastTime: timeStringSchema.default('08:30'),
-  lunchTime: timeStringSchema.default('13:00'),
-  dinnerTime: timeStringSchema.default('20:30'),
+export const baseUserPreferenceSchema = z.object({
+  timezone: z.string().trim().min(1, 'Timezone is required'),
+  wakeTime: timeStringSchema,
+  sleepTime: timeStringSchema,
+  preferredWorkStart: timeStringSchema,
+  preferredWorkEnd: timeStringSchema,
+  breakfastTime: timeStringSchema,
+  lunchTime: timeStringSchema,
+  dinnerTime: timeStringSchema,
   preferredBreakDuration: z
     .number()
     .int('Break duration must be an integer')
     .min(5, 'Minimum break is 5 minutes')
-    .max(120, 'Maximum break is 120 minutes')
-    .default(15),
+    .max(120, 'Maximum break is 120 minutes'),
   maxContinuousWorkDuration: z
     .number()
     .int('Max continuous work must be an integer')
     .min(15, 'Minimum continuous work is 15 minutes')
-    .max(360, 'Maximum continuous work is 360 minutes')
-    .default(90),
+    .max(360, 'Maximum continuous work is 360 minutes'),
   dailyLeisureTarget: z
     .number()
     .int('Daily leisure target must be an integer')
     .min(0, 'Leisure target cannot be negative')
-    .max(720, 'Maximum leisure target is 720 minutes')
-    .default(120),
-  onboardingCompleted: z.boolean().default(false),
-  pushNotificationsEnabled: z.boolean().default(true),
-  autoNightlyPlanningEnabled: z.boolean().default(true),
-  notifyTomorrowPlanReady: z.boolean().default(true),
-  notifyTaskReminders: z.boolean().default(true),
-  notifyScheduleReminders: z.boolean().default(true),
-  notifyScheduleChanges: z.boolean().default(true),
-  preferredPlanningTime: timeStringSchema.default('21:00'),
-  themePreference: z.enum(['AUTO', 'LIGHT', 'DARK']).default('AUTO'),
+    .max(720, 'Maximum leisure target is 720 minutes'),
+  onboardingCompleted: z.boolean(),
+  pushNotificationsEnabled: z.boolean(),
+  autoNightlyPlanningEnabled: z.boolean(),
+  notifyTomorrowPlanReady: z.boolean(),
+  notifyTaskReminders: z.boolean(),
+  notifyScheduleReminders: z.boolean(),
+  notifyScheduleChanges: z.boolean(),
+  preferredPlanningTime: timeStringSchema,
+  themePreference: z.enum(['AUTO', 'LIGHT', 'DARK']),
+});
+
+export const userPreferenceSchema = z.object({
+  timezone: baseUserPreferenceSchema.shape.timezone.default('Asia/Kolkata'),
+  wakeTime: baseUserPreferenceSchema.shape.wakeTime.default('07:00'),
+  sleepTime: baseUserPreferenceSchema.shape.sleepTime.default('23:00'),
+  preferredWorkStart: baseUserPreferenceSchema.shape.preferredWorkStart.default('09:00'),
+  preferredWorkEnd: baseUserPreferenceSchema.shape.preferredWorkEnd.default('18:00'),
+  breakfastTime: baseUserPreferenceSchema.shape.breakfastTime.default('08:30'),
+  lunchTime: baseUserPreferenceSchema.shape.lunchTime.default('13:00'),
+  dinnerTime: baseUserPreferenceSchema.shape.dinnerTime.default('20:30'),
+  preferredBreakDuration: baseUserPreferenceSchema.shape.preferredBreakDuration.default(15),
+  maxContinuousWorkDuration: baseUserPreferenceSchema.shape.maxContinuousWorkDuration.default(90),
+  dailyLeisureTarget: baseUserPreferenceSchema.shape.dailyLeisureTarget.default(120),
+  onboardingCompleted: baseUserPreferenceSchema.shape.onboardingCompleted.default(false),
+  pushNotificationsEnabled: baseUserPreferenceSchema.shape.pushNotificationsEnabled.default(true),
+  autoNightlyPlanningEnabled: baseUserPreferenceSchema.shape.autoNightlyPlanningEnabled.default(true),
+  notifyTomorrowPlanReady: baseUserPreferenceSchema.shape.notifyTomorrowPlanReady.default(true),
+  notifyTaskReminders: baseUserPreferenceSchema.shape.notifyTaskReminders.default(true),
+  notifyScheduleReminders: baseUserPreferenceSchema.shape.notifyScheduleReminders.default(true),
+  notifyScheduleChanges: baseUserPreferenceSchema.shape.notifyScheduleChanges.default(true),
+  preferredPlanningTime: baseUserPreferenceSchema.shape.preferredPlanningTime.default('21:00'),
+  themePreference: baseUserPreferenceSchema.shape.themePreference.default('AUTO'),
 });
 
 export type UserPreferenceInput = z.infer<typeof userPreferenceSchema>;
 
-export const updatePreferencesSchema = userPreferenceSchema.partial();
+export const updatePreferencesSchema = baseUserPreferenceSchema.partial();
 export type UpdatePreferencesInput = z.infer<typeof updatePreferencesSchema>;
 
 export const updateProfileSchema = z.object({

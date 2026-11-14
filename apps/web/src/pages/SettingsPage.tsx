@@ -529,6 +529,7 @@ export function SettingsPage() {
         notifyScheduleReminders: notifyScheduleReminders,
         notifyScheduleChanges: notifyScheduleChanges,
         preferredPlanningTime: planningTime,
+        themePreference: themeMode,
       });
 
       setMessage({ type: 'success', text: 'Settings updated successfully' });

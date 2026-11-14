@@ -90,10 +90,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       method: 'PUT',
       body: JSON.stringify(data),
     });
-    setPreference(res);
-    if (res.onboardingCompleted && user) {
-      setUser({ ...user, onboardingCompleted: true });
-    }
+    setPreference((prev) => ({ ...(prev || {}), ...res }));
+    setUser((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        onboardingCompleted: prev.onboardingCompleted || Boolean(res.onboardingCompleted),
+      };
+    });
     return res;
   };
 

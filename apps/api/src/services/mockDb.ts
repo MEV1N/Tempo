@@ -23,6 +23,7 @@ export interface MockPreference {
   maxContinuousWorkDuration: number;
   dailyLeisureTarget: number;
   onboardingCompleted: boolean;
+  themePreference?: string;
   createdAt: Date;
   updatedAt: Date;
 }
