@@ -18,6 +18,27 @@ buildSync({
   target: 'node20',
   format: 'cjs',
   outfile: indexFile,
+  banner: {
+    js: `
+if (process.platform === 'linux' && !process.env.PRISMA_QUERY_ENGINE_LIBRARY) {
+  const path = require('path');
+  const fs = require('fs');
+  const candidates = [
+    path.join(__dirname, 'libquery_engine-rhel-openssl-3.0.x.so.node'),
+    path.join(process.cwd(), 'libquery_engine-rhel-openssl-3.0.x.so.node'),
+    path.join(process.cwd(), 'apps/api/libquery_engine-rhel-openssl-3.0.x.so.node'),
+    '/var/task/libquery_engine-rhel-openssl-3.0.x.so.node',
+    '/var/task/apps/api/libquery_engine-rhel-openssl-3.0.x.so.node',
+  ];
+  for (const c of candidates) {
+    if (fs.existsSync(c)) {
+      process.env.PRISMA_QUERY_ENGINE_LIBRARY = c;
+      break;
+    }
+  }
+}
+`,
+  },
   footer: {
     js: 'module.exports = app; module.exports.default = app; module.exports.app = app;',
   },
