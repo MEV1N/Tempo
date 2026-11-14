@@ -128,4 +128,22 @@ if (foundSchemaFile) {
   console.warn('[build-serverless] Warning: schema.prisma not found!');
 }
 
+// Ensure physical express directory exists in apps/api/node_modules if possible
+try {
+  const apiNodeModules = path.join(apiRoot, 'node_modules');
+  const targetExpress = path.join(apiNodeModules, 'express');
+  const rootExpress = path.join(monorepoRoot, 'node_modules', 'express');
+  if (fs.existsSync(rootExpress)) {
+    if (fs.existsSync(targetExpress) && fs.lstatSync(targetExpress).isSymbolicLink()) {
+      fs.unlinkSync(targetExpress);
+    }
+    if (!fs.existsSync(targetExpress)) {
+      fs.cpSync(rootExpress, targetExpress, { recursive: true, dereference: true });
+      console.log('[build-serverless] Copied physical express package to apps/api/node_modules/express');
+    }
+  }
+} catch (e) {
+  console.warn('[build-serverless] Warning copying express:', e.message);
+}
+
 console.log('[build-serverless] Serverless build completed successfully.');
