@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { googleCalendarService } from '../services/google-calendar.service';
 import { requireAuth, optionalAuth } from '../middleware/auth';
 import { verifySignedOAuthState } from '../services/crypto.service';
-import { FRONTEND_URL } from '../config';
+import { FRONTEND_URL, API_BASE_URL } from '../config';
 
 const router: Router = Router();
 
@@ -11,7 +11,12 @@ const router: Router = Router();
  * Initiates Google Calendar authorization with narrow read-only scope.
  */
 router.get('/connect', requireAuth, (req: Request, res: Response) => {
-  const { url, state } = googleCalendarService.getCalendarAuthUrl(req.user!.id);
+  const proto = (req.headers['x-forwarded-proto'] as string) || (req.secure ? 'https' : 'http');
+  const host = (req.headers['x-forwarded-host'] as string) || req.headers.host;
+  const currentOrigin = host ? `${proto}://${host}` : (API_BASE_URL.startsWith('http') ? API_BASE_URL : 'http://localhost:5000');
+  const redirectUri = `${currentOrigin.replace(/\/+$/, '')}/api/google-calendar/callback`;
+
+  const { url, state } = googleCalendarService.getCalendarAuthUrl(req.user!.id, redirectUri);
 
   if (req.headers.accept?.includes('application/json')) {
     return res.status(200).json({
@@ -31,13 +36,17 @@ router.get('/connect', requireAuth, (req: Request, res: Response) => {
 router.get('/callback', optionalAuth, async (req: Request, res: Response) => {
   const { code, state, error: googleError } = req.query;
 
+  const proto = (req.headers['x-forwarded-proto'] as string) || (req.secure ? 'https' : 'http');
+  const host = (req.headers['x-forwarded-host'] as string) || req.headers.host;
+  const currentOrigin = host ? `${proto}://${host}` : (FRONTEND_URL.startsWith('http') ? FRONTEND_URL : 'http://localhost:3000');
+
   if (googleError) {
     const errorMsg = encodeURIComponent(String(googleError));
-    return res.redirect(`${FRONTEND_URL}/profile?error=${errorMsg}`);
+    return res.redirect(`${currentOrigin}/profile?error=${errorMsg}`);
   }
 
   if (!code || !state) {
-    return res.redirect(`${FRONTEND_URL}/profile?error=missing_calendar_oauth_parameters`);
+    return res.redirect(`${currentOrigin}/profile?error=missing_calendar_oauth_parameters`);
   }
 
   // Recover user ID from state token if cookie session not passed directly

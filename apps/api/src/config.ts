@@ -39,10 +39,17 @@ const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_URL}`
     : undefined;
 
+const rawApiBase = process.env.API_BASE_URL;
 export const API_BASE_URL =
-  process.env.API_BASE_URL || vercelHost || `http://localhost:${process.env.PORT || 5000}`;
+  (rawApiBase && rawApiBase.startsWith('http') ? rawApiBase.replace(/\/+$/, '') : undefined) ||
+  vercelHost ||
+  `http://localhost:${process.env.PORT || 5000}`;
+
+const rawFrontendUrl = process.env.FRONTEND_URL || process.env.CORS_ORIGIN;
 export const FRONTEND_URL =
-  process.env.FRONTEND_URL || process.env.CORS_ORIGIN || vercelHost || 'http://localhost:3000';
+  (rawFrontendUrl && rawFrontendUrl.startsWith('http') ? rawFrontendUrl.replace(/\/+$/, '') : undefined) ||
+  vercelHost ||
+  'http://localhost:3000';
 export const ENCRYPTION_KEY =
   process.env.ENCRYPTION_KEY ||
   process.env.JWT_SECRET ||

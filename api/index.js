@@ -122807,8 +122807,10 @@ var VAPID_SUBJECT = process.env.VAPID_SUBJECT || "mailto:admin@tempo.app";
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "mock-google-client-id";
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "mock-google-client-secret";
 var vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : void 0;
-var API_BASE_URL = process.env.API_BASE_URL || vercelHost || `http://localhost:${process.env.PORT || 5e3}`;
-var FRONTEND_URL = process.env.FRONTEND_URL || process.env.CORS_ORIGIN || vercelHost || "http://localhost:3000";
+var rawApiBase = process.env.API_BASE_URL;
+var API_BASE_URL = (rawApiBase && rawApiBase.startsWith("http") ? rawApiBase.replace(/\/+$/, "") : void 0) || vercelHost || `http://localhost:${process.env.PORT || 5e3}`;
+var rawFrontendUrl = process.env.FRONTEND_URL || process.env.CORS_ORIGIN;
+var FRONTEND_URL = (rawFrontendUrl && rawFrontendUrl.startsWith("http") ? rawFrontendUrl.replace(/\/+$/, "") : void 0) || vercelHost || "http://localhost:3000";
 var ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || process.env.JWT_SECRET || "tempo-default-secret-encryption-key-for-dev";
 
 // src/middleware/csrf.ts
@@ -151645,11 +151647,12 @@ var GoogleAuthService = class {
         where: { id: userId },
         include: { preference: true, oauthConnections: true }
       });
+      const frontendOrigin2 = (verifiedState.redirectUri ? new URL(verifiedState.redirectUri).origin : FRONTEND_URL.startsWith("http") ? FRONTEND_URL : "http://localhost:3000").replace(/\/+$/, "");
       return {
         action: "link",
         user: user ? toUserDTO(user) : null,
         preference: user?.preference ? toUserPreferenceDTO(user.preference) : null,
-        redirectUrl: `${FRONTEND_URL}/profile?google_linked=success`
+        redirectUrl: `${frontendOrigin2}/profile?google_linked=success`
       };
     }
     const existingConnection = await prisma.oAuthConnection.findUnique({
@@ -151726,12 +151729,13 @@ var GoogleAuthService = class {
       }
     });
     const redirectPath = isNewUser ? "/onboarding" : "/dashboard";
+    const frontendOrigin = (verifiedState.redirectUri ? new URL(verifiedState.redirectUri).origin : FRONTEND_URL.startsWith("http") ? FRONTEND_URL : "http://localhost:3000").replace(/\/+$/, "");
     return {
       action: "login",
       user: toUserDTO(targetUser),
       preference: targetUser.preference ? toUserPreferenceDTO(targetUser.preference) : null,
       rawToken,
-      redirectUrl: `${FRONTEND_URL}${redirectPath}`,
+      redirectUrl: `${frontendOrigin}${redirectPath}`,
       isNewUser
     };
   }
@@ -151784,6 +151788,10 @@ var router2 = (0, import_express14.Router)();
 router2.get("/", optionalAuth, (req, res) => {
   const action = req.query.action === "link" ? "link" : "login";
   const authenticatedUserId = req.user?.id;
+  const proto = req.headers["x-forwarded-proto"] || (req.secure ? "https" : "http");
+  const host = req.headers["x-forwarded-host"] || req.headers.host;
+  const currentOrigin = host ? `${proto}://${host}` : API_BASE_URL.startsWith("http") ? API_BASE_URL : "http://localhost:5000";
+  const redirectUri = `${currentOrigin.replace(/\/+$/, "")}/api/auth/google/callback`;
   if (action === "link" && !authenticatedUserId) {
     return res.status(401).json({
       success: false,
@@ -151793,9 +151801,26 @@ router2.get("/", optionalAuth, (req, res) => {
       }
     });
   }
+  const isNotConfigured = !GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === "mock-google-client-id";
+  if (isNotConfigured && true) {
+    const errorMsg = encodeURIComponent(
+      "Google Login is not configured on this server yet. Please add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to your Vercel Environment Variables."
+    );
+    if (req.headers.accept?.includes("application/json")) {
+      return res.status(503).json({
+        success: false,
+        error: {
+          code: "GOOGLE_OAUTH_NOT_CONFIGURED",
+          message: "Google Login is not configured on this server yet. Please add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to your Vercel Environment Variables."
+        }
+      });
+    }
+    return res.redirect(`${currentOrigin}/login?error=GOOGLE_OAUTH_NOT_CONFIGURED&message=${errorMsg}`);
+  }
   const { url: url2, state } = googleAuthService.getGoogleAuthUrl({
     action,
-    userId: authenticatedUserId
+    userId: authenticatedUserId,
+    customRedirectUri: redirectUri
   });
   if (req.headers.accept?.includes("application/json")) {
     return res.status(200).json({
@@ -151807,12 +151832,15 @@ router2.get("/", optionalAuth, (req, res) => {
 });
 router2.get("/callback", optionalAuth, async (req, res) => {
   const { code, state, error: googleError } = req.query;
+  const proto = req.headers["x-forwarded-proto"] || (req.secure ? "https" : "http");
+  const host = req.headers["x-forwarded-host"] || req.headers.host;
+  const currentOrigin = host ? `${proto}://${host}` : FRONTEND_URL.startsWith("http") ? FRONTEND_URL : "http://localhost:3000";
   if (googleError) {
     const errorMsg = encodeURIComponent(String(googleError));
-    return res.redirect(`${FRONTEND_URL}/login?error=${errorMsg}`);
+    return res.redirect(`${currentOrigin}/login?error=${errorMsg}`);
   }
   if (!code || !state) {
-    return res.redirect(`${FRONTEND_URL}/login?error=missing_oauth_parameters`);
+    return res.redirect(`${currentOrigin}/login?error=missing_oauth_parameters`);
   }
   try {
     const result = await googleAuthService.handleCallback({
@@ -151831,7 +151859,7 @@ router2.get("/callback", optionalAuth, async (req, res) => {
   } catch (err) {
     const errorCode = err.code || "GOOGLE_AUTH_FAILED";
     const message = encodeURIComponent(err.message || "Google authentication failed");
-    return res.redirect(`${FRONTEND_URL}/login?error=${errorCode}&message=${message}`);
+    return res.redirect(`${currentOrigin}/login?error=${errorCode}&message=${message}`);
   }
 });
 router2.post(
@@ -151886,11 +151914,11 @@ var GoogleCalendarService = class {
   /**
    * Generates authorization URL for Google Calendar connection with narrow read-only scope.
    */
-  getCalendarAuthUrl(userId) {
+  getCalendarAuthUrl(userId, customRedirectUri) {
     const codeVerifier = generateCodeVerifier();
     const codeChallenge = generateCodeChallenge(codeVerifier);
     const nonce = generateNonce();
-    const redirectUri = `${API_BASE_URL}/api/google-calendar/callback`;
+    const redirectUri = customRedirectUri || `${API_BASE_URL}/api/google-calendar/callback`;
     const state = createSignedOAuthState({
       action: "calendar_connect",
       userId,
@@ -152029,8 +152057,9 @@ var GoogleCalendarService = class {
         `[Calendar] Initial sync warning for user=${params.authenticatedUserId}: ${err.message}`
       );
     }
+    const frontendOrigin = (verifiedState.redirectUri ? new URL(verifiedState.redirectUri).origin : FRONTEND_URL.startsWith("http") ? FRONTEND_URL : "http://localhost:3000").replace(/\/+$/, "");
     return {
-      redirectUrl: `${FRONTEND_URL}/profile?calendar_connected=success`
+      redirectUrl: `${frontendOrigin}/profile?calendar_connected=success`
     };
   }
   /**
@@ -152243,7 +152272,11 @@ var googleCalendarService = new GoogleCalendarService();
 // src/routes/google-calendar.routes.ts
 var router3 = (0, import_express15.Router)();
 router3.get("/connect", requireAuth, (req, res) => {
-  const { url: url2, state } = googleCalendarService.getCalendarAuthUrl(req.user.id);
+  const proto = req.headers["x-forwarded-proto"] || (req.secure ? "https" : "http");
+  const host = req.headers["x-forwarded-host"] || req.headers.host;
+  const currentOrigin = host ? `${proto}://${host}` : API_BASE_URL.startsWith("http") ? API_BASE_URL : "http://localhost:5000";
+  const redirectUri = `${currentOrigin.replace(/\/+$/, "")}/api/google-calendar/callback`;
+  const { url: url2, state } = googleCalendarService.getCalendarAuthUrl(req.user.id, redirectUri);
   if (req.headers.accept?.includes("application/json")) {
     return res.status(200).json({
       success: true,
@@ -152254,12 +152287,15 @@ router3.get("/connect", requireAuth, (req, res) => {
 });
 router3.get("/callback", optionalAuth, async (req, res) => {
   const { code, state, error: googleError } = req.query;
+  const proto = req.headers["x-forwarded-proto"] || (req.secure ? "https" : "http");
+  const host = req.headers["x-forwarded-host"] || req.headers.host;
+  const currentOrigin = host ? `${proto}://${host}` : FRONTEND_URL.startsWith("http") ? FRONTEND_URL : "http://localhost:3000";
   if (googleError) {
     const errorMsg = encodeURIComponent(String(googleError));
-    return res.redirect(`${FRONTEND_URL}/profile?error=${errorMsg}`);
+    return res.redirect(`${currentOrigin}/profile?error=${errorMsg}`);
   }
   if (!code || !state) {
-    return res.redirect(`${FRONTEND_URL}/profile?error=missing_calendar_oauth_parameters`);
+    return res.redirect(`${currentOrigin}/profile?error=missing_calendar_oauth_parameters`);
   }
   let targetUserId = req.user?.id;
   if (!targetUserId) {

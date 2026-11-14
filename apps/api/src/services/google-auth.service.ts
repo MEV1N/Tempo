@@ -238,11 +238,17 @@ export class GoogleAuthService {
         include: { preference: true, oauthConnections: true },
       });
 
+      const frontendOrigin = (
+        verifiedState.redirectUri
+          ? new URL(verifiedState.redirectUri).origin
+          : (FRONTEND_URL.startsWith('http') ? FRONTEND_URL : 'http://localhost:3000')
+      ).replace(/\/+$/, '');
+
       return {
         action: 'link',
         user: user ? toUserDTO(user) : null,
         preference: user?.preference ? toUserPreferenceDTO(user.preference) : null,
-        redirectUrl: `${FRONTEND_URL}/profile?google_linked=success`,
+        redirectUrl: `${frontendOrigin}/profile?google_linked=success`,
       };
     }
 
@@ -338,13 +344,18 @@ export class GoogleAuthService {
     });
 
     const redirectPath = isNewUser ? '/onboarding' : '/dashboard';
+    const frontendOrigin = (
+      verifiedState.redirectUri
+        ? new URL(verifiedState.redirectUri).origin
+        : (FRONTEND_URL.startsWith('http') ? FRONTEND_URL : 'http://localhost:3000')
+    ).replace(/\/+$/, '');
 
     return {
       action: 'login',
       user: toUserDTO(targetUser),
       preference: targetUser.preference ? toUserPreferenceDTO(targetUser.preference) : null,
       rawToken,
-      redirectUrl: `${FRONTEND_URL}${redirectPath}`,
+      redirectUrl: `${frontendOrigin}${redirectPath}`,
       isNewUser,
     };
   }

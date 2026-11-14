@@ -3,7 +3,7 @@ import { googleAuthService } from '../services/google-auth.service';
 import { requireAuth, optionalAuth } from '../middleware/auth';
 import { validateBody } from '../middleware/validate';
 import { setPasswordSchema } from '@tempo/shared';
-import { getAuthCookieOptions, AUTH_COOKIE_NAME, FRONTEND_URL } from '../config';
+import { getAuthCookieOptions, AUTH_COOKIE_NAME, FRONTEND_URL, API_BASE_URL, GOOGLE_CLIENT_ID } from '../config';
 
 const router: Router = Router();
 
@@ -15,6 +15,11 @@ router.get('/', optionalAuth, (req: Request, res: Response) => {
   const action = (req.query.action === 'link' ? 'link' : 'login') as 'login' | 'link';
   const authenticatedUserId = req.user?.id;
 
+  const proto = (req.headers['x-forwarded-proto'] as string) || (req.secure ? 'https' : 'http');
+  const host = (req.headers['x-forwarded-host'] as string) || req.headers.host;
+  const currentOrigin = host ? `${proto}://${host}` : (API_BASE_URL.startsWith('http') ? API_BASE_URL : 'http://localhost:5000');
+  const redirectUri = `${currentOrigin.replace(/\/+$/, '')}/api/auth/google/callback`;
+
   if (action === 'link' && !authenticatedUserId) {
     return res.status(401).json({
       success: false,
@@ -25,9 +30,29 @@ router.get('/', optionalAuth, (req: Request, res: Response) => {
     });
   }
 
+  // If in production and Google OAuth is not configured, redirect back with a clear explanation
+  const isNotConfigured = !GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === 'mock-google-client-id';
+  if (isNotConfigured && process.env.NODE_ENV === 'production') {
+    const errorMsg = encodeURIComponent(
+      'Google Login is not configured on this server yet. Please add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to your Vercel Environment Variables.'
+    );
+    if (req.headers.accept?.includes('application/json')) {
+      return res.status(503).json({
+        success: false,
+        error: {
+          code: 'GOOGLE_OAUTH_NOT_CONFIGURED',
+          message:
+            'Google Login is not configured on this server yet. Please add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to your Vercel Environment Variables.',
+        },
+      });
+    }
+    return res.redirect(`${currentOrigin}/login?error=GOOGLE_OAUTH_NOT_CONFIGURED&message=${errorMsg}`);
+  }
+
   const { url, state } = googleAuthService.getGoogleAuthUrl({
     action,
     userId: authenticatedUserId,
+    customRedirectUri: redirectUri,
   });
 
   if (req.headers.accept?.includes('application/json')) {
@@ -47,13 +72,17 @@ router.get('/', optionalAuth, (req: Request, res: Response) => {
 router.get('/callback', optionalAuth, async (req: Request, res: Response) => {
   const { code, state, error: googleError } = req.query;
 
+  const proto = (req.headers['x-forwarded-proto'] as string) || (req.secure ? 'https' : 'http');
+  const host = (req.headers['x-forwarded-host'] as string) || req.headers.host;
+  const currentOrigin = host ? `${proto}://${host}` : (FRONTEND_URL.startsWith('http') ? FRONTEND_URL : 'http://localhost:3000');
+
   if (googleError) {
     const errorMsg = encodeURIComponent(String(googleError));
-    return res.redirect(`${FRONTEND_URL}/login?error=${errorMsg}`);
+    return res.redirect(`${currentOrigin}/login?error=${errorMsg}`);
   }
 
   if (!code || !state) {
-    return res.redirect(`${FRONTEND_URL}/login?error=missing_oauth_parameters`);
+    return res.redirect(`${currentOrigin}/login?error=missing_oauth_parameters`);
   }
 
   try {
@@ -75,7 +104,7 @@ router.get('/callback', optionalAuth, async (req: Request, res: Response) => {
   } catch (err: any) {
     const errorCode = err.code || 'GOOGLE_AUTH_FAILED';
     const message = encodeURIComponent(err.message || 'Google authentication failed');
-    return res.redirect(`${FRONTEND_URL}/login?error=${errorCode}&message=${message}`);
+    return res.redirect(`${currentOrigin}/login?error=${errorCode}&message=${message}`);
   }
 });
 

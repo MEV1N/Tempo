@@ -64,12 +64,15 @@ export class GoogleCalendarService {
   /**
    * Generates authorization URL for Google Calendar connection with narrow read-only scope.
    */
-  getCalendarAuthUrl(userId: string): { url: string; state: string } {
+  getCalendarAuthUrl(
+    userId: string,
+    customRedirectUri?: string
+  ): { url: string; state: string } {
     const codeVerifier = generateCodeVerifier();
     const codeChallenge = generateCodeChallenge(codeVerifier);
     const nonce = generateNonce();
 
-    const redirectUri = `${API_BASE_URL}/api/google-calendar/callback`;
+    const redirectUri = customRedirectUri || `${API_BASE_URL}/api/google-calendar/callback`;
 
     const state = createSignedOAuthState({
       action: 'calendar_connect',
@@ -249,8 +252,14 @@ export class GoogleCalendarService {
       );
     }
 
+    const frontendOrigin = (
+      verifiedState.redirectUri
+        ? new URL(verifiedState.redirectUri).origin
+        : (FRONTEND_URL.startsWith('http') ? FRONTEND_URL : 'http://localhost:3000')
+    ).replace(/\/+$/, '');
+
     return {
-      redirectUrl: `${FRONTEND_URL}/profile?calendar_connected=success`,
+      redirectUrl: `${frontendOrigin}/profile?calendar_connected=success`,
     };
   }
 
