@@ -14,6 +14,7 @@ out/
 # Prisma
 generated/
 apps/api/query_engine-windows.dll.node
+api/query_engine-windows.dll.node
 
 # Logs
 npm-debug.log*

@@ -146,4 +146,24 @@ try {
   console.warn('[build-serverless] Warning copying express:', e.message);
 }
 
+// Mirror bundle and assets to root api/ directory for native Vercel Serverless Function resolution
+try {
+  const rootApiDir = path.join(monorepoRoot, 'api');
+  if (!fs.existsSync(rootApiDir)) {
+    fs.mkdirSync(rootApiDir, { recursive: true });
+  }
+  fs.copyFileSync(indexFile, path.join(rootApiDir, 'index.js'));
+  fs.copyFileSync(indexFile, path.join(rootApiDir, 'health.js'));
+  if (foundSchemaFile) {
+    fs.copyFileSync(foundSchemaFile, path.join(rootApiDir, 'schema.prisma'));
+  }
+  for (const enginePath of foundNodeFiles) {
+    const baseName = path.basename(enginePath);
+    fs.copyFileSync(enginePath, path.join(rootApiDir, baseName));
+  }
+  console.log('[build-serverless] Mirrored bundle and Prisma assets to root api/ directory');
+} catch (e) {
+  console.warn('[build-serverless] Warning mirroring to root api/:', e.message);
+}
+
 console.log('[build-serverless] Serverless build completed successfully.');
