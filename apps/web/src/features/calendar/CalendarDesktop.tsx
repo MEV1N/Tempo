@@ -15,6 +15,7 @@ import {
 import { formatTimeRange } from '@tempo/shared';
 import { UseCalendarReturn, DAYS_OF_WEEK } from './useCalendar';
 import { CalendarModals } from './CalendarModals';
+import { TempoAnimation } from '../../components/TempoAnimation';
 
 export function CalendarDesktop(props: UseCalendarReturn) {
   const {
@@ -36,6 +37,7 @@ export function CalendarDesktop(props: UseCalendarReturn) {
     setExceptionModalOpen,
     handleDeleteException,
     weekDaysData,
+    loading,
   } = props;
 
   return (
@@ -100,8 +102,21 @@ export function CalendarDesktop(props: UseCalendarReturn) {
             </div>
           )}
 
-          {/* TAB 1: CALENDAR VIEW */}
-          {activeTab === 'CALENDAR' && (
+          {loading ? (
+            <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl flex flex-col items-center justify-center space-y-3 shadow-xs">
+              <TempoAnimation
+                name="clock"
+                alt="Calendar timetable clock animation"
+                size={110}
+                eager
+                fallback={<Clock className="w-8 h-8 mx-auto animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
+              />
+              <p className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">Loading timetable & commitments...</p>
+            </div>
+          ) : (
+            <>
+              {/* TAB 1: CALENDAR VIEW */}
+              {activeTab === 'CALENDAR' && (
             <div className="space-y-4">
               {/* Date Navigation & Subview Bar */}
               <div className="flex items-center justify-between bg-white border border-[#D9D9D9] p-4 rounded-2xl shadow-sm">
@@ -502,8 +517,10 @@ export function CalendarDesktop(props: UseCalendarReturn) {
               </div>
             </div>
           )}
+        </>
+      )}
 
-          <CalendarModals {...props} />
+      <CalendarModals {...props} />
         </main>
       </div>
     </div>

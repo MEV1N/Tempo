@@ -372,10 +372,10 @@ export function ScheduleMobile(props: UseScheduleReturn) {
             </p>
           </div>
         ) : !schedule || schedule.blocks.length === 0 ? (
-          <div className="p-8 text-center bg-[#FFFFFF] border border-[#D9D9D9] rounded-2xl space-y-3">
-            <Sparkles className="w-6 h-6 text-[#080808] mx-auto opacity-40" />
-            <h3 className="text-sm font-semibold text-[#080808]">No schedule for today</h3>
-            <p className="text-xs text-[#777777] max-w-xs mx-auto">
+          <div className="p-8 text-center bg-[#FFFFFF] dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl space-y-3">
+            <Sparkles className="w-6 h-6 text-[#080808] dark:text-[#F5F5F5] mx-auto opacity-40" />
+            <h3 className="text-sm font-semibold text-[#080808] dark:text-[#F5F5F5]">No schedule for today</h3>
+            <p className="text-xs text-[#777777] dark:text-[#BDBDBD] max-w-xs mx-auto">
               Tap Generate Schedule above to construct your optimized daily plan.
             </p>
           </div>

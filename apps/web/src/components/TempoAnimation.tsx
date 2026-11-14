@@ -108,12 +108,26 @@ export const TempoAnimation = memo(function TempoAnimation({
   const gifSrc = isDark ? DARK_GIF_URLS[name] : LIGHT_GIF_URLS[name];
   const webpSrc = isDark ? DARK_WEBP_URLS[name] : LIGHT_WEBP_URLS[name];
 
-  // Contrast adaptation: clock, loading, tasks, tea, and moon have dedicated dark assets with white strokes.
-  // Only sun (lacking a dedicated dark asset) requires inversion in dark mode to yield white strokes.
-  const shouldInvert = isDark && name === 'sun';
+  // Contrast adaptation:
+  // 1. In dark mode, sun (black strokes on white bg) must be inverted to yield white strokes on black bg.
+  // 2. In light mode, moon (white strokes on transparent bg) must be inverted to yield black strokes on transparent bg.
+  const shouldInvert = (isDark && name === 'sun') || (!isDark && name === 'moon');
+
+  // In dark mode: inverted sun has a solid black background that requires 'screen' to become transparent.
+  // In light mode: assets with solid white/off-white background (sun, loading, clock, tasks, tea) require 'multiply' to blend cleanly onto card surfaces without a visible square box edge.
+  const blendMode: React.CSSProperties['mixBlendMode'] = isDark
+    ? name === 'sun'
+      ? 'screen'
+      : undefined
+    : name !== 'moon'
+      ? 'multiply'
+      : undefined;
 
   return (
-    <picture className={`inline-block leading-none ${className}`}>
+    <picture
+      key={`${name}-${isDark ? 'dark' : 'light'}`}
+      className={`inline-block leading-none ${className}`}
+    >
       <source type="image/webp" srcSet={webpSrc} />
       <img
         src={gifSrc}
@@ -130,7 +144,7 @@ export const TempoAnimation = memo(function TempoAnimation({
           maxWidth: `${size}px`,
           maxHeight: `${size}px`,
           filter: shouldInvert ? 'invert(1)' : undefined,
-          mixBlendMode: isDark ? 'screen' : undefined,
+          mixBlendMode: blendMode,
         }}
       />
     </picture>

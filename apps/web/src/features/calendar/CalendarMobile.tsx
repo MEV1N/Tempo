@@ -13,6 +13,7 @@ import {
 import { formatTimeRange } from '@tempo/shared';
 import { UseCalendarReturn, DAYS_OF_WEEK } from './useCalendar';
 import { CalendarModals } from './CalendarModals';
+import { MobileAnimation } from '../../components/MobileAnimation';
 
 export function CalendarMobile(props: UseCalendarReturn) {
   const {
@@ -38,6 +39,7 @@ export function CalendarMobile(props: UseCalendarReturn) {
     setSelectedMobileDay,
     selectedMobileWeekDayIndex,
     setSelectedMobileWeekDayIndex,
+    loading,
   } = props;
 
   return (
@@ -94,10 +96,23 @@ export function CalendarMobile(props: UseCalendarReturn) {
           </div>
         )}
 
-        {/* ========================================================================= */}
-        {/* TAB 1: CALENDAR VIEW                                                      */}
-        {/* ========================================================================= */}
-        {activeTab === 'CALENDAR' && (
+        {loading ? (
+          <div className="py-8 px-4 bg-[#FFFFFF] dark:bg-[#181818] border border-[#EAEAEA] dark:border-[#383838] rounded-2xl flex flex-col items-center justify-center space-y-2 text-center shadow-xs">
+            <MobileAnimation
+              name="clock"
+              alt="Calendar timetable clock animation"
+              size={90}
+              eager
+              fallback={<Clock className="w-8 h-8 animate-spin text-[#080808] dark:text-[#F5F5F5]" />}
+            />
+            <p className="text-xs font-semibold text-[#080808] dark:text-[#F5F5F5]">Loading timetable & commitments...</p>
+          </div>
+        ) : (
+          <>
+            {/* ========================================================================= */}
+            {/* TAB 1: CALENDAR VIEW                                                      */}
+            {/* ========================================================================= */}
+            {activeTab === 'CALENDAR' && (
           <div className="space-y-3">
             {/* Compact Navigation & Sub-view Row */}
             <div className="bg-[#FFFFFF] border border-[#D9D9D9] p-2 rounded-xl space-y-2 shadow-2xs">
@@ -523,8 +538,10 @@ export function CalendarMobile(props: UseCalendarReturn) {
             </div>
           </div>
         )}
+      </>
+    )}
 
-        <CalendarModals {...props} />
+    <CalendarModals {...props} />
       </main>
     </div>
   );

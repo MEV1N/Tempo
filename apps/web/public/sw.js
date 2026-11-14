@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tempo-pwa-v2';
+const CACHE_NAME = 'tempo-pwa-v3';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -17,6 +17,16 @@ const PRECACHE_ASSETS = [
   '/animations/moon.webp',
   '/animations/clock.gif',
   '/animations/clock.webp',
+  '/animations/clock%20dark.gif',
+  '/animations/clock%20dark.webp',
+  '/animations/tasks.gif',
+  '/animations/tasks.webp',
+  '/animations/tasks%20dark.gif',
+  '/animations/tasks%20dark.webp',
+  '/animations/tea.gif',
+  '/animations/tea.webp',
+  '/animations/tea%20dark.gif',
+  '/animations/tea%20dark.webp',
 ];
 
 // Install Event - Pre-cache core shell
