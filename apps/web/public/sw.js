@@ -1,10 +1,22 @@
-const CACHE_NAME = 'tempo-pwa-v1';
+const CACHE_NAME = 'tempo-pwa-v2';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/favicon.png',
+  '/logo/logo.png',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
+  '/animations/loading.gif',
+  '/animations/loading.webp',
+  '/animations/loading%20dark.gif',
+  '/animations/loading%20dark.webp',
+  '/animations/sun.gif',
+  '/animations/sun.webp',
+  '/animations/moon.gif',
+  '/animations/moon.webp',
+  '/animations/clock.gif',
+  '/animations/clock.webp',
 ];
 
 // Install Event - Pre-cache core shell
@@ -54,8 +66,10 @@ self.addEventListener('fetch', (event) => {
 
   // 3. Static Assets (scripts, styles, icons, fonts) - Stale-while-revalidate
   if (
-    url.pathname.match(/\.(js|css|png|svg|ico|woff2|woff|ttf)$/) ||
-    url.pathname.startsWith('/assets/')
+    url.pathname.match(/\.(js|css|png|jpg|jpeg|gif|webp|svg|ico|woff2|woff|ttf)$/) ||
+    url.pathname.startsWith('/assets/') ||
+    url.pathname.startsWith('/animations/') ||
+    url.pathname.startsWith('/logo/')
   ) {
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {

@@ -27,24 +27,45 @@ export function TempoLogo({
     xl: 'text-sm',
   };
 
+  const iconSizes = {
+    sm: 'w-6 h-6',
+    md: 'w-8 h-8',
+    lg: 'w-10 h-10',
+    xl: 'w-12 h-12',
+  };
+
+  const isCentered = className.includes('items-center');
+
   const content = (
-    <div className={`inline-flex flex-col select-none ${className}`}>
-      <div className="flex items-baseline space-x-1">
-        <span
-          className={`font-brand font-bold tracking-tight text-[#080808] dark:text-[#F5F5F5] leading-none ${fontSizes[size]}`}
-          style={{ letterSpacing: '-0.02em' }}
-        >
-          tempo
-        </span>
-        <span className="w-1.5 h-1.5 rounded-full bg-[#080808] dark:bg-[#F5F5F5] mb-1 transform translate-y-[-2px]" />
+    <div
+      className={`inline-flex ${
+        isCentered ? 'flex-col items-center text-center' : 'flex-row items-center gap-2.5'
+      } select-none ${className}`}
+    >
+      <img
+        src="/logo/logo.png"
+        alt="Tempo logo"
+        className={`${iconSizes[size]} object-contain shrink-0 ${isCentered ? 'mb-2' : ''}`}
+        loading="eager"
+      />
+      <div className={`inline-flex flex-col ${isCentered ? 'items-center' : ''}`}>
+        <div className="flex items-baseline space-x-1">
+          <span
+            className={`font-brand font-bold tracking-tight text-[#080808] dark:text-[#F5F5F5] leading-none ${fontSizes[size]}`}
+            style={{ letterSpacing: '-0.02em' }}
+          >
+            tempo
+          </span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#080808] dark:bg-[#F5F5F5] mb-1 transform translate-y-[-2px]" />
+        </div>
+        {showTagline && (
+          <span
+            className={`font-interface tracking-wide text-[#777777] dark:text-[#929292] font-normal leading-tight mt-0.5 ${taglineSizes[size]}`}
+          >
+            Find your rhythm.
+          </span>
+        )}
       </div>
-      {showTagline && (
-        <span
-          className={`font-interface tracking-wide text-[#777777] dark:text-[#929292] font-normal leading-tight mt-0.5 ${taglineSizes[size]}`}
-        >
-          Find your rhythm.
-        </span>
-      )}
     </div>
   );
 

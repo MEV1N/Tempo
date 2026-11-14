@@ -3,9 +3,10 @@
   "short_name": "Tempo",
   "description": "Tempo — Find your rhythm. Intelligent daily planning, scheduling & productivity.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#020617",
-  "theme_color": "#0284c7",
+  "background_color": "#080808",
+  "theme_color": "#080808",
   "orientation": "portrait-primary",
   "categories": ["productivity", "utilities"],
   "icons": [
@@ -44,6 +45,12 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/logo/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
