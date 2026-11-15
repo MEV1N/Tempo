@@ -144,28 +144,38 @@ export function Navbar() {
       <header className="md:hidden sticky top-0 z-40 bg-[#FFFFFF]/95 dark:bg-[#181818]/95 backdrop-blur-md border-b border-[#D9D9D9] dark:border-[#383838] h-14 px-4 flex items-center justify-between transition-colors">
         <TempoLogo size="sm" showTagline={false} />
 
-        <div className="flex items-center space-x-1.5">
+        <div className="flex items-center space-x-1">
           <NotificationCenter />
           <Link
             to="/settings"
-            className={`p-2 rounded-xl transition-all duration-200 active:scale-90 min-w-[44px] min-h-[44px] flex items-center justify-center ${
+            className={`p-2 rounded-xl transition-all duration-200 active:scale-90 min-w-[40px] min-h-[40px] flex items-center justify-center ${
               isActive('/settings')
                 ? 'bg-[#080808] dark:bg-[#282828] text-white dark:text-[#F5F5F5] border border-transparent dark:border-[#383838]'
                 : 'text-[#777777] dark:text-[#BDBDBD] hover:text-[#080808] dark:hover:text-[#F5F5F5] hover:bg-[#F5F5F5] dark:hover:bg-[#202020]'
             }`}
             aria-label="Settings"
+            title="Settings"
           >
             <Settings className="w-4 h-4 active:rotate-45 transition-transform duration-300" />
           </Link>
           <Link
             to="/profile"
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center active:scale-90 transition-transform duration-150"
+            className="min-w-[40px] min-h-[40px] flex items-center justify-center active:scale-90 transition-transform duration-150"
             aria-label="User Profile"
+            title="Profile"
           >
             <div className="w-8 h-8 rounded-full bg-[#171717] dark:bg-[#202020] text-[#FFFFFF] dark:text-[#F5F5F5] flex items-center justify-center text-xs font-semibold uppercase ring-2 ring-transparent hover:ring-[#080808] dark:hover:ring-[#F5F5F5] transition-all border border-transparent dark:border-[#383838]">
               {user.name ? user.name.charAt(0) : 'U'}
             </div>
           </Link>
+          <button
+            onClick={handleLogout}
+            className="p-2 rounded-xl transition-all duration-200 active:scale-90 min-w-[40px] min-h-[40px] flex items-center justify-center text-[#777777] dark:text-[#BDBDBD] hover:text-[#080808] dark:hover:text-[#F5F5F5] hover:bg-[#F5F5F5] dark:hover:bg-[#202020]"
+            aria-label="Log out"
+            title="Log out of Tempo"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
         </div>
       </header>
 

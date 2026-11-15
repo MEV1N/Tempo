@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Navbar } from '../components/Navbar';
 import { ActivityHeatmap } from '../components/ActivityHeatmap';
@@ -15,10 +15,17 @@ import {
   Loader2,
   ArrowRight,
   Coffee,
+  LogOut,
 } from 'lucide-react';
 
 export function ProfilePage() {
-  const { user, preference, updateProfile } = useAuth();
+  const { user, preference, updateProfile, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
 
   // Edit Profile Modal state
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -103,8 +110,8 @@ export function ProfilePage() {
                 </div>
               </div>
 
-              {/* Action Buttons: Edit Profile & Settings Gear */}
-              <div className="flex items-center space-x-2 self-start sm:self-auto">
+              {/* Action Buttons: Edit Profile, Settings Gear, and Log Out on Mobile */}
+              <div className="flex items-center space-x-2 self-start sm:self-auto flex-wrap gap-y-2">
                 <button
                   onClick={handleOpenEdit}
                   className="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl border border-[#D9D9D9] dark:border-[#383838] bg-[#FAFAFA] dark:bg-[#282828] hover:bg-white dark:hover:bg-[#282828] text-xs font-semibold text-[#080808] dark:text-[#F5F5F5] transition shadow-2xs min-h-[44px]"
@@ -123,6 +130,16 @@ export function ProfilePage() {
                   <Settings className="w-4 h-4" />
                   <span className="hidden sm:inline">Settings</span>
                 </Link>
+
+                <button
+                  onClick={handleLogout}
+                  className="md:hidden inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl border border-[#D9D9D9] dark:border-[#383838] bg-[#FAFAFA] dark:bg-[#202020] hover:bg-[#F5F5F5] dark:hover:bg-[#282828] text-xs font-semibold text-[#777777] dark:text-[#BDBDBD] hover:text-[#080808] dark:hover:text-[#F5F5F5] transition shadow-2xs min-h-[44px]"
+                  aria-label="Log out"
+                  title="Log out of Tempo"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Log out</span>
+                </button>
               </div>
             </div>
           </div>
@@ -146,6 +163,17 @@ export function ProfilePage() {
             </div>
 
             <ActivityHeatmap />
+          </div>
+
+          {/* Mobile Explicit Log Out Action */}
+          <div className="md:hidden pt-1">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-xs font-semibold text-[#777777] dark:text-[#BDBDBD] hover:text-[#080808] dark:hover:text-[#F5F5F5] bg-white dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] transition shadow-2xs active:scale-[0.98] min-h-[44px]"
+            >
+              <LogOut className="w-4 h-4 text-[#777777] dark:text-[#BDBDBD]" />
+              <span>Log out of Tempo</span>
+            </button>
           </div>
 
           {/* Decorative Calm Break / Tea Cup Animation */}

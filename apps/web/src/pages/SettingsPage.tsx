@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { Navbar } from '../components/Navbar';
@@ -31,6 +31,7 @@ import {
   Layers,
   ArrowLeft,
   Sliders,
+  LogOut,
 } from 'lucide-react';
 import {
   TIME_REGEX,
@@ -93,9 +94,15 @@ const ROUTINE_CATEGORIES: Array<{
 type SettingsSection = 'account' | 'routines' | 'preferences' | 'notifications' | 'integrations';
 
 export function SettingsPage() {
-  const { user, preference, updateProfile, updatePreferences } = useAuth();
+  const { user, preference, updateProfile, updatePreferences, logout } = useAuth();
   const { themeMode, resolvedTheme, setThemeMode } = useTheme();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
 
   // Active section state
   const [activeSection, setActiveSection] = useState<SettingsSection>('account');
@@ -750,6 +757,25 @@ export function SettingsPage() {
                   </form>
                 </div>
               )}
+
+              {/* Mobile Explicit Log Out */}
+              <div className="md:hidden bg-white dark:bg-[#181818] border border-[#D9D9D9] dark:border-[#383838] rounded-2xl p-5 space-y-3 shadow-xs">
+                <div className="flex items-center space-x-2">
+                  <LogOut className="w-4 h-4 text-[#777777] dark:text-[#929292]" />
+                  <h3 className="text-sm font-bold text-[#080808] dark:text-[#F5F5F5]">Account Session</h3>
+                </div>
+                <p className="text-xs text-[#777777] dark:text-[#929292]">
+                  Sign out of your Tempo account on this device.
+                </p>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-semibold text-[#777777] dark:text-[#BDBDBD] hover:text-[#080808] dark:hover:text-[#F5F5F5] border border-[#D9D9D9] dark:border-[#383838] hover:bg-[#F5F5F5] dark:hover:bg-[#202020] transition active:scale-[0.98] min-h-[44px]"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Log out of Tempo</span>
+                </button>
+              </div>
             </div>
           )}
 
